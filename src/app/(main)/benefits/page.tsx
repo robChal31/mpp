@@ -1,361 +1,484 @@
 'use client'
 
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { useState, useEffect, JSX } from 'react'
 import { Card } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Gift,
   BookOpen,
   Users,
-  ArrowRight,
   Calendar,
-  Clock,
   CheckCircle,
-  AlertCircle,
+  Loader2,
+  TrendingUp,
+  Trophy,
+  Briefcase,
+  Globe,
+  Mic,
+  Star,
+  ChevronDown,
+  ChevronUp,
+  Filter,
+  X
 } from 'lucide-react'
+import { formatDate } from '@/lib/utils/date'
+import { BenefitGroupV2, FlattenedBenefit, PK } from '@/types/benefit/benefit.type'
+import { toast } from 'sonner'
 
-type BenefitStatus = 'active' | 'upcoming' | 'expired'
-type BenefitCategory = 'MPP' | 'HY' | 'Training' | 'Other'
-
-interface Benefit {
-  id: number
-  name: string
-  description: string
-  category: BenefitCategory
-  status: BenefitStatus
-  validFrom: string
-  validUntil: string
-  gracePeriodUntil?: string
-  usageRules: string[]
+const getBenefitIcon = (type: string, size: number = 20) => {
+  const icons: Record<string, JSX.Element> = {
+    'Curriculum & Training': <BookOpen size={size} />,
+    'Guest English Teacher': <Mic size={size} />,
+    'Pengembangan Pimpinan': <Briefcase size={size} />,
+    'Training Kolektif Online': <Globe size={size} />,
+    'Training Kolektif Offline': <Users size={size} />,
+    'Masterclass Digital': <TrendingUp size={size} />,
+    'Pelajar Berkreasi': <Trophy size={size} />,
+    'Jambore': <Star size={size} />
+  }
+  return icons[type] || <Gift size={size} />
 }
 
-const mockBenefits: Benefit[] = [
-  {
-    id: 1,
-    name: 'Digital Learning Platform Access',
-    description: 'Full access to our comprehensive digital learning platform for all teachers and students.',
-    category: 'MPP',
-    status: 'active',
-    validFrom: 'Jan 15, 2025',
-    validUntil: 'Dec 31, 2025',
-    usageRules: [
-      'Available for all staff members',
-      'Up to 500 concurrent users',
-      'Monthly reporting available',
-      'Technical support included',
-    ],
-  },
-  {
-    id: 2,
-    name: 'Book Collection Package',
-    description: 'Curated collection of 500+ educational books for library integration.',
-    category: 'HY',
-    status: 'active',
-    validFrom: 'Jan 1, 2025',
-    validUntil: 'Mar 31, 2026',
-    gracePeriodUntil: 'Jan 31, 2025',
-    usageRules: [
-      'Physical books will be delivered in 2 shipments',
-      'Can select from approved catalog',
-      'Returns allowed within 30 days',
-    ],
-  },
-  {
-    id: 3,
-    name: 'Teacher Development Program',
-    description: 'Annual teacher training and professional development sessions.',
-    category: 'Training',
-    status: 'active',
-    validFrom: 'Feb 1, 2025',
-    validUntil: 'Jan 31, 2026',
-    usageRules: [
-      'Up to 10 training sessions per year',
-      'Can customize curriculum topics',
-      'Certificates issued upon completion',
-    ],
-  },
-  {
-    id: 4,
-    name: 'Science Lab Equipment Bundle',
-    description: 'Complete bundle of science lab equipment for physics and chemistry labs.',
-    category: 'MPP',
-    status: 'upcoming',
-    validFrom: 'Mar 1, 2025',
-    validUntil: 'Feb 28, 2026',
-    gracePeriodUntil: 'Mar 15, 2025',
-    usageRules: [
-      'Equipment delivery in Q1 2025',
-      'Installation support included',
-      'Maintenance warranty for 2 years',
-    ],
-  },
-  {
-    id: 5,
-    name: 'Student Competition Registration',
-    description: 'Free registration for student competitions and events throughout the year.',
-    category: 'HY',
-    status: 'active',
-    validFrom: 'Jan 1, 2025',
-    validUntil: 'Dec 31, 2025',
-    usageRules: [
-      'Includes up to 50 student registrations',
-      'Access to all competition tiers',
-      'Mentorship support available',
-    ],
-  },
-  {
-    id: 6,
-    name: 'Online Assessment Platform',
-    description: 'Comprehensive online assessment and exam management system.',
-    category: 'MPP',
-    status: 'active',
-    validFrom: 'Feb 1, 2025',
-    validUntil: 'Jan 31, 2026',
-    usageRules: [
-      'Unlimited assessments and quizzes',
-      'Detailed analytics and reporting',
-      'Mobile app access included',
-    ],
-  },
-]
+const getBenefitColor = (type: string) => {
+  const colors: Record<string, string> = {
+    'Curriculum & Training': 'bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400',
+    'Guest English Teacher': 'bg-purple-50 text-purple-700 dark:bg-purple-950/30 dark:text-purple-400',
+    'Pengembangan Pimpinan': 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/30 dark:text-indigo-400',
+    'Training Kolektif Online': 'bg-cyan-50 text-cyan-700 dark:bg-cyan-950/30 dark:text-cyan-400',
+    'Training Kolektif Offline': 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400',
+    'Masterclass Digital': 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400',
+    'Pelajar Berkreasi': 'bg-yellow-50 text-yellow-700 dark:bg-yellow-950/30 dark:text-yellow-400',
+    'Jambore': 'bg-orange-50 text-orange-700 dark:bg-orange-950/30 dark:text-orange-400'
+  }
+  return colors[type] || 'bg-gray-50 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
+}
 
+const isExpired = (expiredAt: string) => {
+  return new Date(expiredAt) < new Date()
+}
+
+// Interface untuk benefit group berdasarkan PK
+interface BenefitGroupByPK {
+  pk: PK
+  benefits: FlattenedBenefit[]
+  isExpired: boolean
+}
+
+// ============ MAIN COMPONENT ============
 export default function BenefitsPage() {
-  const [selectedBenefit, setSelectedBenefit] = useState<Benefit | null>(null)
-  const [categoryFilter, setCategoryFilter] = useState<BenefitCategory | 'all'>('all')
+  const [benefitGroups, setBenefitGroups] = useState<BenefitGroupByPK[]>([])
+  const [filteredGroups, setFilteredGroups] = useState<BenefitGroupByPK[]>([])
+  const [loading, setLoading] = useState(true)
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({})
+  const [selectedPK, setSelectedPK] = useState<string>('all')
+  const [searchQuery, setSearchQuery] = useState<string>('')
 
-  const filteredBenefits = mockBenefits.filter(
-    (b) => categoryFilter === 'all' || b.category === categoryFilter
-  )
+  // Fetch benefits
+  useEffect(() => {
+    const loadBenefits = async () => {
+      try {
+        const res = await fetch('/api/mpartner/benefits/benefit', {
+          method: 'POST',
+        })
+        const data = await res.json()
 
-  const getStatusColor = (status: BenefitStatus) => {
-    switch (status) {
-      case 'active':
-        return 'bg-green-100 text-green-800 border-green-300'
-      case 'upcoming':
-        return 'bg-blue-100 text-blue-800 border-blue-300'
-      case 'expired':
-        return 'bg-gray-100 text-gray-800 border-gray-300'
+        if (data.status === 'error') {
+          toast.error(data.message || 'Failed to load benefits')
+          setBenefitGroups([])
+        } else {
+          // Group by PK (benefit_id)
+          const groupsMap = new Map<string, BenefitGroupByPK>()
+          
+          data.data.benefits.forEach((pkg: BenefitGroupV2) => {
+            const pk = pkg.related_pks[0]
+            const pkId = pk.id
+            const pkExpired = isExpired(pk.expired_at)
+            
+            // Flatten benefits untuk PK ini
+            const flattenedBenefits: FlattenedBenefit[] = []
+            pkg.benefit_detail.forEach((benefit) => {
+              flattenedBenefits.push({
+                id_benefit_list: benefit.id_benefit_list,
+                benefit_name: benefit.benefit_name,
+                subbenefit: benefit.subbenefit,
+                description: benefit.description,
+                qty: benefit.qty,
+                qty2: benefit.qty2,
+                qty3: benefit.qty3,
+                pelaksanaan: benefit.pelaksanaan,
+                type: benefit.type,
+                redeemable: benefit.redeemable,
+                keterangan: benefit.keterangan,
+                packageId: pkg.benefit_id,
+                pk: pk,
+                subject_benefit: benefit.subject_benefit,
+                subbenefit_group: benefit.subbenefit_group
+              })
+            })
+            
+            // Cek apakah sudah ada group dengan PK ini
+            if (groupsMap.has(pkId)) {
+              const existing = groupsMap.get(pkId)!
+              existing.benefits.push(...flattenedBenefits)
+            } else {
+              groupsMap.set(pkId, {
+                pk: pk,
+                benefits: flattenedBenefits,
+                isExpired: pkExpired
+              })
+            }
+          })
+          
+          const groups = Array.from(groupsMap.values())
+          setBenefitGroups(groups)
+          setFilteredGroups(groups)
+          
+          // Set initial expanded state (expand all by default)
+          const initialExpanded: Record<string, boolean> = {}
+          groups.forEach(group => {
+            initialExpanded[group.pk.id] = true
+          })
+          setExpandedGroups(initialExpanded)
+        }
+        
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
     }
-  }
+    loadBenefits()
+  }, [])
 
-  const getStatusIcon = (status: BenefitStatus) => {
-    switch (status) {
-      case 'active':
-        return <CheckCircle size={16} />
-      case 'upcoming':
-        return <Clock size={16} />
-      case 'expired':
-        return <AlertCircle size={16} />
-    }
-  }
-
-  const getCategoryIcon = (category: BenefitCategory) => {
-    switch (category) {
-      case 'MPP':
-        return <BookOpen size={20} />
-      case 'HY':
-        return <Users size={20} />
-      case 'Training':
-        return <Users size={20} />
-      default:
-        return <Gift size={20} />
-    }
-  }
-
-  if (selectedBenefit) {
-    const isInGracePeriod = selectedBenefit.gracePeriodUntil && new Date() < new Date(selectedBenefit.gracePeriodUntil)
+  // Apply filters
+  useEffect(() => {
+    let filtered = [...benefitGroups]
     
+    // Filter by PK
+    if (selectedPK !== 'all') {
+      filtered = filtered.filter(group => group.pk.id === selectedPK)
+    }
+    
+    // Filter by search query (cari di benefit_name)
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase()
+      filtered = filtered.map(group => ({
+        ...group,
+        benefits: group.benefits.filter(benefit => 
+          benefit.benefit_name.toLowerCase().includes(query) ||
+          benefit.description?.toLowerCase().includes(query) ||
+          benefit.subbenefit?.toLowerCase().includes(query)
+        )
+      })).filter(group => group.benefits.length > 0)
+    }
+    
+    setFilteredGroups(filtered)
+  }, [selectedPK, searchQuery, benefitGroups])
+
+  const toggleGroup = (pkId: string) => {
+    setExpandedGroups(prev => ({ ...prev, [pkId]: !prev[pkId] }))
+  }
+
+  const expandAll = () => {
+    const allExpanded: Record<string, boolean> = {}
+    filteredGroups.forEach(group => {
+      allExpanded[group.pk.id] = true
+    })
+    setExpandedGroups(allExpanded)
+  }
+
+  const collapseAll = () => {
+    const allCollapsed: Record<string, boolean> = {}
+    filteredGroups.forEach(group => {
+      allCollapsed[group.pk.id] = false
+    })
+    setExpandedGroups(allCollapsed)
+  }
+
+  const clearFilters = () => {
+    setSelectedPK('all')
+    setSearchQuery('')
+  }
+
+  // Get unique PKs for filter
+  const uniquePKs = Array.from(new Map(benefitGroups.map(group => [group.pk.id, group])).values())
+
+  if (loading) {
     return (
-      <div className="space-y-8">
-        <Button
-          variant="outline"
-          onClick={() => setSelectedBenefit(null)}
-          className="gap-2"
-        >
-          ← Back to Benefits
-        </Button>
-
-        {/* Benefit Detail */}
-        <div className="space-y-6">
-          <div>
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground mb-2">
-                  {selectedBenefit.name}
-                </h1>
-                <div className="flex items-center gap-4 flex-wrap">
-                  <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-sm font-medium ${getStatusColor(selectedBenefit.status)}`}>
-                    {getStatusIcon(selectedBenefit.status)}
-                    {selectedBenefit.status.charAt(0).toUpperCase() +
-                      selectedBenefit.status.slice(1)}
-                  </span>
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary border border-primary/20 text-sm font-medium">
-                    {getCategoryIcon(selectedBenefit.category)}
-                    {selectedBenefit.category}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <p className="text-lg text-muted-foreground">
-              {selectedBenefit.description}
-            </p>
-          </div>
-
-          {/* Grace Period Alert */}
-          {isInGracePeriod && (
-            <Alert className="border-l-4 border-l-accent bg-accent/5">
-              <Clock className="h-4 w-4 text-accent" />
-              <AlertDescription className="text-foreground">
-                <strong>Grace Period Active:</strong> This benefit is in a grace period until{' '}
-                {selectedBenefit.gracePeriodUntil}. You can start using it after this date.
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {/* Validity Information */}
-          <Card className="p-6 border border-border bg-secondary/50">
-            <h3 className="text-lg font-bold text-foreground mb-4">Validity Period</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">Valid From</p>
-                <p className="text-lg font-semibold text-foreground">
-                  {selectedBenefit.validFrom}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">Valid Until</p>
-                <p className="text-lg font-semibold text-foreground">
-                  {selectedBenefit.validUntil}
-                </p>
-              </div>
-              {selectedBenefit.gracePeriodUntil && (
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">Grace Period Until</p>
-                  <p className="text-lg font-semibold text-accent">
-                    {selectedBenefit.gracePeriodUntil}
-                  </p>
-                </div>
-              )}
-            </div>
-          </Card>
-
-          {/* Usage Rules */}
-          <Card className="p-6 border border-border">
-            <h3 className="text-lg font-bold text-foreground mb-4">Usage Rules & Conditions</h3>
-            <ul className="space-y-3">
-              {selectedBenefit.usageRules.map((rule, index) => (
-                <li key={index} className="flex gap-3 text-foreground">
-                  <CheckCircle
-                    className="text-primary flex-shrink-0"
-                    size={20}
-                  />
-                  <span>{rule}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
-              disabled={isInGracePeriod || selectedBenefit.status !== 'active'}
-            >
-              Claim Benefit
-            </Button>
-            <Button
-              className="bg-accent text-accent-foreground hover:bg-accent/90"
-              disabled={selectedBenefit.status !== 'active'}
-            >
-              Redeem Benefit
-            </Button>
-            <Button variant="outline">
-              Download Details
-            </Button>
-          </div>
-        </div>
+      <div className="flex items-center justify-center min-h-100">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     )
   }
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Benefits</h1>
-        <p className="text-muted-foreground">
-          Manage and claim all benefits available to your school.
+        <h1 className="text-2xl font-bold">All Benefits</h1>
+        <p className="text-muted-foreground text-sm">
+          Available benefits from your partnership packages. Click on any claimable benefit to view details.
         </p>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-wrap gap-2">
-        <Button
-          variant={categoryFilter === 'all' ? 'default' : 'outline'}
-          onClick={() => setCategoryFilter('all')}
-          className={categoryFilter === 'all' ? 'bg-primary text-primary-foreground' : ''}
-        >
-          All Benefits
-        </Button>
-        {['MPP', 'HY', 'Training', 'Other'].map((cat) => (
-          <Button
-            key={cat}
-            variant={categoryFilter === cat as BenefitCategory ? 'default' : 'outline'}
-            onClick={() => setCategoryFilter(cat as BenefitCategory)}
-            className={categoryFilter === cat ? 'bg-primary text-primary-foreground' : ''}
-          >
-            {cat}
-          </Button>
-        ))}
+      {/* Filter Section */}
+      <div className="space-y-3">
+        {/* Filter Bar */}
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+          <div className="flex flex-wrap items-center gap-2">
+            <Filter size={16} className="text-muted-foreground" />
+            <span className="text-sm font-medium text-foreground">Filter by PK:</span>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={selectedPK === 'all' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setSelectedPK('all')}
+                className="h-7 px-3 text-xs"
+              >
+                All PKs
+              </Button>
+              {uniquePKs.map((group) => (
+                <Button
+                  key={group.pk.id}
+                  variant={selectedPK === group.pk.id ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setSelectedPK(group.pk.id)}
+                  className="h-7 px-3 text-xs"
+                >
+                  {group.pk.no_pk.replace(/&#39;/, "'").slice(0, 15)}...
+                </Button>
+              ))}
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            {/* Search Input */}
+            <input
+              type="text"
+              placeholder="Search benefits..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="px-3 py-1.5 text-sm rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-48"
+            />
+            
+            {/* Expand/Collapse Buttons */}
+            <div className="flex gap-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={expandAll}
+                className="h-8 px-2 text-xs"
+                title="Expand all"
+              >
+                <ChevronDown size={14} />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={collapseAll}
+                className="h-8 px-2 text-xs"
+                title="Collapse all"
+              >
+                <ChevronUp size={14} />
+              </Button>
+            </div>
+            
+            {/* Clear Filters */}
+            {(selectedPK !== 'all' || searchQuery) && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="h-8 px-2 text-xs gap-1 text-red-500 hover:text-red-600"
+              >
+                <X size={14} />
+                Clear
+              </Button>
+            )}
+          </div>
+        </div>
+        
+        {/* Active Filters Display */}
+        {(selectedPK !== 'all' || searchQuery) && (
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <span className="text-xs text-muted-foreground">Active filters:</span>
+            {selectedPK !== 'all' && (
+              <Badge variant="secondary" className="text-xs gap-1">
+                PK: {uniquePKs.find(g => g.pk.id === selectedPK)?.pk.no_pk.replace(/&#39;/, "'").slice(0, 15)}...
+                <X 
+                  size={10} 
+                  className="cursor-pointer hover:text-red-500" 
+                  onClick={() => setSelectedPK('all')}
+                />
+              </Badge>
+            )}
+            {searchQuery && (
+              <Badge variant="secondary" className="text-xs gap-1">
+                Search: {searchQuery}
+                <X 
+                  size={10} 
+                  className="cursor-pointer hover:text-red-500" 
+                  onClick={() => setSearchQuery('')}
+                />
+              </Badge>
+            )}
+          </div>
+        )}
+        
+        {/* Results Count */}
+        <div className="text-xs text-muted-foreground">
+          Showing {filteredGroups.reduce((acc, g) => acc + g.benefits.length, 0)} benefits from {filteredGroups.length} PK(s)
+        </div>
       </div>
 
-      {/* Benefits Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {filteredBenefits.map((benefit) => (
-          <Card
-            key={benefit.id}
-            className="p-6 border border-border hover:shadow-lg hover:border-primary/50 transition-all cursor-pointer group"
-            onClick={() => setSelectedBenefit(benefit)}
-          >
-            <div className="flex items-start justify-between mb-3">
-              <div className="p-3 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                {getCategoryIcon(benefit.category)}
+      {/* Benefits List - Grouped by PK */}
+      <div className="space-y-4">
+        {filteredGroups.map((group) => {
+          const isGroupExpanded = expandedGroups[group.pk.id] || false
+          const hasActiveBenefits = group.benefits.some(b => b.redeemable === '1' && !group.isExpired)
+          
+          return (
+            <Card key={group.pk.id} className="overflow-hidden border-border">
+              {/* PK Header */}
+              <div 
+                className={`p-4 bg-muted/30 border-b border-border cursor-pointer hover:bg-muted/50 transition-colors ${
+                  !hasActiveBenefits ? 'opacity-60' : ''
+                }`}
+                onClick={() => toggleGroup(group.pk.id)}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-primary/10">
+                      <Gift size={18} className="text-primary" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="font-semibold text-foreground">
+                          PK: {group.pk.no_pk.replace(/&#39;/, "'")}
+                        </h3>
+                        {group.isExpired ? (
+                          <Badge variant="destructive" className="text-[10px]">Expired</Badge>
+                        ) : (
+                          <Badge variant="default" className="text-[10px] bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                            Active
+                          </Badge>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
+                        <span className="flex items-center gap-1">
+                          <Calendar size={10} />
+                          Valid: {formatDate(group.pk.start_at)} - {formatDate(group.pk.expired_at)}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Users size={10} />
+                          {group.benefits.length} benefit{group.benefits.length !== 1 ? 's' : ''}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {!group.isExpired && (
+                      <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 gap-1 text-[10px]">
+                        <CheckCircle size={10} />
+                        {group.benefits.filter(b => b.redeemable === '1').length} claimable
+                      </Badge>
+                    )}
+                    {isGroupExpanded ? (
+                      <ChevronUp size={18} className="text-muted-foreground" />
+                    ) : (
+                      <ChevronDown size={18} className="text-muted-foreground" />
+                    )}
+                  </div>
+                </div>
               </div>
-              <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold border ${getStatusColor(benefit.status)}`}>
-                {getStatusIcon(benefit.status)}
-                {benefit.status}
-              </span>
-            </div>
 
-            <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-              {benefit.name}
-            </h3>
-            <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-              {benefit.description}
-            </p>
-
-            <div className="space-y-2 text-sm mb-4">
-              <p className="text-muted-foreground flex items-center gap-2">
-                <Calendar size={16} />
-                Valid: {benefit.validFrom} to {benefit.validUntil}
-              </p>
-            </div>
-
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full gap-2 bg-transparent"
-              onClick={(e) => {
-                e.stopPropagation()
-                setSelectedBenefit(benefit)
-              }}
-            >
-              View Details <ArrowRight size={14} />
-            </Button>
-          </Card>
-        ))}
+              {/* Benefits List - Collapsible */}
+              {isGroupExpanded && (
+                <div className="p-4 space-y-3">
+                  {group.benefits.map((benefit) => {
+                    const expired = group.isExpired
+                    const colorClass = getBenefitColor(benefit.type)
+                    const isRedeemable = benefit.redeemable === '1'
+                    const canClick = isRedeemable && !expired
+                    
+                    return (
+                      <Card 
+                        key={benefit.id_benefit_list}
+                        className={`p-4 transition-all ${
+                          canClick 
+                            ? 'cursor-pointer hover:shadow-md hover:border-primary' 
+                            : 'opacity-75'
+                        }`}
+                        onClick={() => {
+                          if (canClick) {
+                            window.location.href = `/benefits/${benefit.id_benefit_list}`
+                          }
+                        }}
+                      >
+                        <div className="flex items-start gap-4">
+                          <div className={`p-2 rounded-lg ${colorClass} shrink-0`}>
+                            {getBenefitIcon(benefit.type)}
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <div className={`flex flex-wrap items-center gap-2 ${benefit.subject_benefit ? '' : 'mb-1'}`}>
+                              <h4 className="font-semibold">{benefit.benefit_name}</h4>
+                              {benefit.subbenefit && (
+                                <span className="text-xs text-muted-foreground">
+                                  {benefit.subbenefit}
+                                </span>
+                              )}
+                            </div>
+                            {benefit.subject_benefit && <p className='text-[11px] text-gray-500 mb-1'>Subject: <span className='font-bold'>{benefit.subject_benefit}</span></p>}
+                            <p className="text-sm text-muted-foreground line-clamp-2">
+                              {benefit.description}
+                            </p>
+                            
+                            <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mt-2">
+                              <span className="flex items-center gap-1">
+                                <Users size={12} /> {benefit.qty} slots
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Calendar size={12} /> {benefit.pelaksanaan}
+                              </span>
+                            </div>
+                          </div>
+                          
+                          <div className="shrink-0">
+                            {expired ? (
+                              <Badge variant="destructive">Expired</Badge>
+                            ) : !isRedeemable ? (
+                              // <Badge variant="secondary"></Badge>
+                              <></>
+                            ) : (
+                              <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 gap-1">
+                                <CheckCircle size={12} /> Dapat Diklaim
+                              </Badge>
+                            )}
+                          </div>
+                        </div>
+                      </Card>
+                    )
+                  })}
+                  
+                  {group.benefits.length === 0 && (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No benefits found matching your search.
+                    </div>
+                  )}
+                </div>
+              )}
+            </Card>
+          )
+        })}
       </div>
+
+      {filteredGroups.length === 0 && (
+        <Card className="p-12 text-center text-muted-foreground">
+          No benefits available.
+        </Card>
+      )}
     </div>
   )
 }

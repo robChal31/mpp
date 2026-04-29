@@ -12,7 +12,6 @@ export function setSession(user: any) {
       path: "/",
     })
   })
-  console.log("set session success")
 }
 
 export async function getSession() {

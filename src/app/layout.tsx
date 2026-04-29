@@ -2,13 +2,14 @@ import React from "react"
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { Toaster } from 'sonner'
 import './globals.css'
 
 const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'MBS - Mentari Benefit System',
+  title: 'MPP - Mentari Premium Partner',
   description: 'School benefit management portal',
   generator: 'v0.app',
   icons: {
@@ -38,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans antialiased`}>
+        <Toaster />
         {children}
         <Analytics />
       </body>

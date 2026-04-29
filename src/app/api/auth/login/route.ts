@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server"
 import { loginService } from "@/server/services/auth.service"
+import { SignJWT } from "jose"
+
+const secret = new TextEncoder().encode(process.env.JWT_SECRET)
 
 export async function POST(req: Request) {
   const { email, password } = await req.json()
@@ -20,21 +23,25 @@ export async function POST(req: Request) {
     )
   }
 
-  const session = {
+  const token = await new SignJWT({
     id: user.id,
-    email: user.email,
     role: user.role,
-  }
+    email: user.email,
+    name: user.name
+  })
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("7h")
+    .sign(secret)
 
   const res = NextResponse.json({ ok: true })
 
-  res.cookies.set("mpp_session", JSON.stringify(session), {
+  res.cookies.set("mpp_session", token, {
     httpOnly: true,
     sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
     path: "/",
+    maxAge: 60 * 360,
   })
-
-  console.log("SESSION SET:", session)
 
   return res
 }

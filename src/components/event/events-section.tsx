@@ -1,0 +1,154 @@
+'use client'
+
+import { useEffect, useState, useRef } from 'react'
+import { Loader2, Ticket, CalendarDays } from 'lucide-react';
+import { EventI } from '@/types/event/event.types'
+import { EventCard } from './event-card'
+import { getEvents } from '@/server/services/hy/event.service';
+
+interface EventsSectionProps {
+  typeFilter?: string // Tambahin filter type
+}
+
+export default function EventsSection({ typeFilter = 'all' }: EventsSectionProps) {
+  const [events, setEvents] = useState<EventI[]>([])
+  const [loading, setLoading] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
+  const [page, setPage] = useState<number>(1)
+  const [totalEvents, setTotalEvents] = useState(0)
+  const [mounted, setMounted] = useState(false)
+  const observerRef = useRef<IntersectionObserver>(null);
+  const lastEventRef = useRef<HTMLDivElement>(null);
+  const limit: number = 9
+
+  useEffect(() => {
+    setMounted(true)
+    setPage(1)
+    setEvents([])
+    setHasMore(true)
+    loadMore(true)
+  }, [typeFilter])
+
+  useEffect(() => {
+    if (loading || !mounted) return
+
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+    }
+
+    observerRef.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore && !loading) {
+        loadMore()
+      }
+    }, {threshold: 0.1, rootMargin: '100px'})
+
+    if (lastEventRef.current) {
+      observerRef.current.observe(lastEventRef.current)
+    }
+
+    return () => observerRef.current?.disconnect()
+  }, [loading, hasMore, events, mounted])
+
+  const loadMore = async (reset = false) => {
+    if (loading || (!hasMore && !reset)) return
+
+    setLoading(true)
+    try {
+      const currentPage = reset ? 1 : page
+      // Kirim filter ke API
+      const response = await getEvents(currentPage, limit, typeFilter !== 'all' ? typeFilter : '')
+
+      if(response && response.status == false ) {
+        setEvents([])
+      }else {
+        if (reset || currentPage === 1) {
+          setEvents(response.events)
+        } else {
+          setEvents(prev => [...prev, ...response.events])
+        }
+        
+        setTotalEvents(response.total_data)
+        
+        const hasNextPage = currentPage < response.total_pages
+        setHasMore(hasNextPage)
+        
+        if (hasNextPage && !reset) {
+          setPage(prev => prev + 1)
+        } else if (reset && hasNextPage) {
+          setPage(2)
+        }
+      }
+        
+    } catch (err) {
+      console.error('Error loading events:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+
+  // Prevent rendering on server to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="space-y-8">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold">Events</h2>
+          <span className="text-sm text-muted-foreground">Loading...</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-100 bg-gray-200 dark:bg-gray-800 animate-pulse rounded-2xl" />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-8">
+      {/* Header with count */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-border">
+        <h2 className="text-xl font-semibold text-foreground">All Events</h2>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+          <span>{events.length} of {totalEvents} events</span>
+        </div>
+      </div>
+
+      {/* Events Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {events.map((event, index) => (
+          <div key={event.id_event} ref={index === events.length - 1 ? lastEventRef : null}>
+            <EventCard event={event} />
+          </div>
+        ))}
+      </div>
+
+      {/* Loading indicator */}
+      {loading && (
+        <div className="flex justify-center py-8">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      )}
+
+      {!hasMore && events.length > 0 && (
+        <div className="text-center py-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted text-muted-foreground text-sm">
+            <Ticket size={14} />
+            You've seen all {totalEvents} events 🎉
+          </div>
+        </div>
+      )}
+
+      {events.length === 0 && !loading && (
+        <div className="text-center py-16">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-4">
+            <CalendarDays size={32} className="text-muted-foreground" />
+          </div>
+          <h3 className="text-lg font-semibold text-foreground mb-2">No events found</h3>
+          <p className="text-muted-foreground">Try changing your filter or check back later for new events.</p>
+        </div>
+      )}
+    </div>
+  )
+}

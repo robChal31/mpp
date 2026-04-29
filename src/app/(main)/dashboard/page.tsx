@@ -1,238 +1,174 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { HelpSection } from '@/components/help-section'
 import {
   Gift,
-  Clock,
-  AlertCircle,
   Calendar,
-  TrendingUp,
   ArrowRight,
+  Sparkles,
+  Users,
+  Lightbulb,
+  Rocket
 } from 'lucide-react'
+import SimpleEventsScroll from '@/components/event/simple-events-scroll'
+import { HelpSection } from '@/components/help-section'
 
 export default function DashboardPage() {
-  // Mock data
-  const stats = {
-    activeBenefits: 8,
-    expiringsoon: 2,
-    pendingActions: 3,
-  }
-
-  const upcomingEvents = [
-    {
-      id: 1,
-      name: 'Math Competition 2025',
-      type: 'Competition',
-      startDate: 'Feb 15, 2025',
-      endDate: 'Feb 20, 2025',
-      description: 'National mathematics competition for secondary students',
-    },
-    {
-      id: 2,
-      name: 'Teacher Professional Development',
-      type: 'Training',
-      startDate: 'Mar 1, 2025',
-      endDate: 'Mar 5, 2025',
-      description: 'Online training for English and Science teachers',
-    },
-    {
-      id: 3,
-      name: 'Science Fair Exhibition',
-      type: 'Event',
-      startDate: 'Apr 10, 2025',
-      endDate: 'Apr 12, 2025',
-      description: 'Student science projects exhibition and showcase',
-    },
-  ]
-
-  const expiringBenefits = [
-    {
-      id: 1,
-      name: 'Digital Learning Pack',
-      expiryDate: 'Feb 28, 2025',
-      daysLeft: 40,
-    },
-    {
-      id: 2,
-      name: 'Library Access Premium',
-      expiryDate: 'Mar 15, 2025',
-      daysLeft: 55,
-    },
-  ]
-
   return (
-    <div className="space-y-8">
-      {/* Header */}
+    <div className="space-y-6 max-[640px]:space-y-6">
+      {/* Header - tanpa tombol */}
       <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome back! Here&apos;s an overview of your school account.
+        <h1 className="text-3xl max-[640px]:text-2xl font-bold text-foreground mb-2">Dashboard</h1>
+        <p className="text-muted-foreground max-[640px]:text-sm">
+          Welcome back! Manage your benefits and discover upcoming events.
         </p>
       </div>
-
-      {/* Quick Status Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-6 border border-border hover:shadow-md transition-shadow">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">
-                Active Benefits
-              </p>
-              <p className="text-3xl font-bold text-foreground">{stats.activeBenefits}</p>
-              <p className="text-xs text-muted-foreground mt-2">Currently available</p>
+      
+      {/* Hero Section */}
+      <div className="relative overflow-hidden rounded-2xl">
+        <div className="absolute inset-0">
+          <img 
+            src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=400&fit=crop"
+            alt="Hero background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-linear-to-r from-background via-background/80 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-background to-transparent" />
+        </div>
+        
+        <div className="relative p-8 max-[640px]:p-5 md:p-10">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 backdrop-blur-sm text-primary text-xs font-medium mb-4 border border-primary/30">
+              <Sparkles size={12} />
+              <span className="max-[640px]:text-[10px]">MPP Dashboard</span>
             </div>
-            <div className="p-3 bg-primary/10 rounded-lg">
-              <Gift className="text-primary" size={24} />
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-6 border border-border hover:shadow-md transition-shadow">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">
-                Expiring Soon
-              </p>
-              <p className="text-3xl font-bold text-foreground">{stats.expiringsoon}</p>
-              <p className="text-xs text-muted-foreground mt-2">Next 60 days</p>
-            </div>
-            <div className="p-3 bg-accent/10 rounded-lg">
-              <Clock className="text-accent" size={24} />
-            </div>
-          </div>
-        </Card>
-
-        <Card className="p-6 border border-border hover:shadow-md transition-shadow">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground mb-1">
-                Pending Actions
-              </p>
-              <p className="text-3xl font-bold text-foreground">{stats.pendingActions}</p>
-              <p className="text-xs text-muted-foreground mt-2">Require attention</p>
-            </div>
-            <div className="p-3 bg-destructive/10 rounded-lg">
-              <AlertCircle className="text-destructive" size={24} />
+            <h1 className="text-3xl max-[640px]:text-2xl md:text-4xl font-bold text-foreground mb-3">
+              Welcome Back!
+            </h1>
+            <p className="text-muted-foreground mb-6 max-w-md max-[640px]:text-sm max-[640px]:mb-4">
+              Manage your partnership benefits and discover upcoming events in one place.
+            </p>
+            <div className="flex flex-wrap gap-3 max-[640px]:flex-col max-[640px]:w-full">
+              <Button 
+                className="gap-2 shadow-lg shadow-primary/20 max-[640px]:w-full"
+                onClick={() => window.location.href = '/benefits'}
+              >
+                <Gift size={16} />
+                View Benefits
+              </Button>
+              <Button 
+                variant="outline" 
+                className="gap-2 bg-background/50 backdrop-blur-sm max-[640px]:w-full"
+                onClick={() => window.location.href = '/events'}
+              >
+                <Calendar size={16} />
+                Browse Events
+              </Button>
             </div>
           </div>
-        </Card>
+        </div>
       </div>
 
-      {/* Alerts */}
-      <Alert className="border-l-4 border-l-accent bg-accent/5">
-        <AlertCircle className="h-4 w-4 text-accent" />
-        <AlertDescription className="text-foreground">
-          <strong>2 benefits expiring soon:</strong> Digital Learning Pack expires on Feb 28, 2025.
-          Review your benefits to claim or renew before expiry.
-        </AlertDescription>
-      </Alert>
-
-      {/* Upcoming Events */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-            <Calendar className="text-primary" size={28} />
-            Active Events & Competitions
-          </h2>
+      {/* Featured Events */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-2">
+          <div>
+            <h2 className="text-xl max-[640px]:text-lg font-semibold text-foreground flex items-center gap-2">
+              <Sparkles className="text-primary" size={20} />
+              Featured Events
+            </h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Events you might be interested in
+            </p>
+          </div>
           <Button
-            variant="outline"
-            className="gap-2 bg-transparent"
-            onClick={() => (window.location.href = '/events')}
+            variant="ghost"
+            size="sm"
+            className="gap-1 text-primary max-[640px]:text-xs"
+            onClick={() => window.location.href = '/events'}
           >
-            View All <ArrowRight size={16} />
+            View All Events
+            <ArrowRight size={14} />
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {upcomingEvents.map((event) => (
-            <Card
-              key={event.id}
-              className="p-6 border border-border hover:shadow-lg hover:border-primary/50 transition-all cursor-pointer group"
-            >
-              <div className="mb-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10">
-                <span className="text-xs font-semibold text-primary">{event.type}</span>
-              </div>
-              <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                {event.name}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4">{event.description}</p>
-              <div className="space-y-2 text-sm">
-                <p className="text-muted-foreground">
-                  <span className="font-medium text-foreground">{event.startDate}</span> -{' '}
-                  {event.endDate}
-                </p>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full mt-4 gap-2 bg-transparent"
-                onClick={() => (window.location.href = '/events')}
-              >
-                View Details <ArrowRight size={14} />
-              </Button>
-            </Card>
-          ))}
-        </div>
+        <SimpleEventsScroll limit={6} />
       </div>
 
       {/* Quick Actions */}
-      <div>
-        <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-          <TrendingUp className="text-primary" size={28} />
-          Quick Actions
-        </h2>
+      <div className="space-y-4">
+        <div>
+          <h2 className="text-xl max-[640px]:text-lg font-semibold text-foreground flex items-center gap-2">
+            <Rocket className="text-primary" size={20} />
+            Quick Actions
+          </h2>
+          <p className="text-xs text-muted-foreground mt-0.5">
+            Shortcuts to help you get things done
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <button
+            onClick={() => window.location.href = '/benefits'}
+            className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group max-[640px]:p-3"
+          >
+            <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+              <Gift size={18} className="text-primary" />
+            </div>
+            <div className="flex-1 text-left">
+              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">Claim Benefits</p>
+              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">Check available benefits</p>
+            </div>
+            <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+          </button>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card className="p-6 border border-border hover:border-primary/50 transition-colors">
-            <h3 className="text-lg font-bold text-foreground mb-2">Claim Benefits</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Start claiming your available benefits and unlock value for your school.
-            </p>
-            <Button
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-              onClick={() => (window.location.href = '/benefits')}
-            >
-              Go to Benefits
-            </Button>
-          </Card>
+          <button
+            onClick={() => window.location.href = '/events'}
+            className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group max-[640px]:p-3"
+          >
+            <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+              <Calendar size={18} className="text-primary" />
+            </div>
+            <div className="flex-1 text-left">
+              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">Browse Events</p>
+              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">Find eligible events</p>
+            </div>
+            <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+          </button>
 
-          <Card className="p-6 border border-border hover:border-primary/50 transition-colors">
-            <h3 className="text-lg font-bold text-foreground mb-2">Request Training</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Submit a training request for teachers and staff professional development.
-            </p>
-            <Button
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-              onClick={() => (window.location.href = '/training')}
-            >
-              Request Training
-            </Button>
-          </Card>
+          <button
+            onClick={() => window.location.href = '/settings'}
+            className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group max-[640px]:p-3"
+          >
+            <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+              <Users size={18} className="text-primary" />
+            </div>
+            <div className="flex-1 text-left">
+              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">Account Settings</p>
+              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">Manage your profile</p>
+            </div>
+            <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+          </button>
         </div>
       </div>
 
       {/* Help Section */}
-      <div className="mt-16 pt-8 border-t border-border">
+      <div className="pt-4 border-t border-border">
         <HelpSection
-          title="Quick Help & FAQ"
+          title="Need Help?"
+          description="Get the most out of your partnership benefits"
           faqItems={[
             {
-              question: 'How do I get started with my benefits?',
-              answer:
-                'Log in to your account, navigate to the Benefits section to view all available benefits for your school. Click on any benefit to see details, validity periods, and claim options.',
+              question: 'How do I claim my benefits?',
+              answer: 'Go to the Benefits section, find an active benefit, and click "Claim". You can then select an eligible event to use your benefit.',
             },
             {
-              question: 'What is the difference between claiming and redeeming?',
-              answer:
-                'Claiming a benefit registers your interest and initiates verification. Redeeming allows you to actually use or receive the benefit after it has been approved.',
+              question: 'What happens when a benefit expires?',
+              answer: 'Expired benefits cannot be claimed. Make sure to claim your benefits before the expiry date shown on each benefit card.',
             },
             {
-              question: 'How do I track my submitted requests?',
-              answer:
-                'All your requests (training, benefits, etc.) are tracked in their respective sections. You can view the current status, submission date, and any updates from our team.',
+              question: 'How do I know which events are eligible?',
+              answer: 'When viewing a benefit detail, check the "Events" tab to see all eligible events you can use this benefit for.',
             },
           ]}
         />

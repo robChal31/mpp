@@ -1,316 +1,320 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
   Settings,
-  Bell,
   Lock,
   LogOut,
   CheckCircle,
   AlertCircle,
+  Eye,
+  EyeOff,
+  Key,
+  User,
+  Mail,
+  Loader2,
+  Shield,
+  Info
 } from 'lucide-react'
 
+import {toast} from 'sonner'
+
+interface UserData {
+  name: string
+  email: string
+}
+
 export default function SettingsPage() {
-  const [schoolInfo, setSchoolInfo] = useState({
-    name: 'Sekolah Example',
-    contactPerson: 'Ibu Siti Nurhaliza',
-    email: 'siti@sekolahexample.edu.id',
-    phone: '+62 21 1234 5678',
-    address: 'Jl. Pendidikan No. 123, Jakarta',
+  const [user, setUser] = useState<UserData | null>(null)
+  const [loadingUser, setLoadingUser] = useState(true)
+  const [activeTab, setActiveTab] = useState<'account' | 'security'>('account')
+  const [passwords, setPasswords] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
   })
-
-  const [notifications, setNotifications] = useState({
-    benefitUpdates: true,
-    eventReminders: true,
-    trainingNotifications: true,
-    expiryAlerts: true,
-    weeklyDigest: true,
+  
+  const [showPassword, setShowPassword] = useState({
+    current: false,
+    new: false,
+    confirm: false
   })
+  
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
-  const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
-  const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'security'>('profile')
+  // Fetch user data
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch('/api/auth/me')
+        const data = await res.json()
 
-  const handleSchoolInfoChange = (field: string, value: string) => {
-    setSchoolInfo((prev) => ({ ...prev, [field]: value }))
+        if (data && data.user) {
+          setUser(data.user)
+        }
+      } catch (error) {
+        toast.error('Failed to fetch user data')
+      } finally {
+        setLoadingUser(false)
+      }
+    }
+    fetchUser()
+  }, [])
+
+  const handlePasswordChange = async () => {
+    if (!passwords.currentPassword) {
+      setMessage({ type: 'error', text: 'Current password is required' })
+      return
+    }
+    
+    if (!passwords.newPassword) {
+      setMessage({ type: 'error', text: 'New password is required' })
+      return
+    }
+    
+    if (passwords.newPassword !== passwords.confirmPassword) {
+      setMessage({ type: 'error', text: 'New passwords do not match with confirm password' })
+      return
+    }
+    
+    if (passwords.newPassword.length < 6) {
+      setMessage({ type: 'error', text: 'Password must be at least 6 characters' })
+      return
+    }
+    
+    setLoading(true)
+    setMessage(null)
+    
+    try {
+      const res = await fetch('/api/auth/reset_password', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentPassword: passwords.currentPassword,
+          newPassword: passwords.newPassword
+        })
+      })
+      
+      const data = await res.json()
+      
+      if (data.status === 'success') {
+        setMessage({ type: 'success', text: 'Password changed successfully!' })
+        setPasswords({ currentPassword: '', newPassword: '', confirmPassword: '' })
+        setTimeout(() => setMessage(null), 3000)
+      } else {
+        setMessage({ type: 'error', text: data.message || 'Failed to change password' })
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Something went wrong' })
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const handleNotificationChange = (field: string) => {
-    // setNotifications((prev) => ({ ...prev, [field]: !prev[field] }))
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+    })
+
+    window.location.href = "/login"
   }
 
-  const handleSaveProfile = () => {
-    setSaveMessage({ type: 'success', text: 'School information updated successfully!' })
-    setTimeout(() => setSaveMessage(null), 3000)
+  const toggleShowPassword = (field: 'current' | 'new' | 'confirm') => {
+    setShowPassword(prev => ({ ...prev, [field]: !prev[field] }))
   }
 
-  const handleSaveNotifications = () => {
-    setSaveMessage({ type: 'success', text: 'Notification preferences updated!' })
-    setTimeout(() => setSaveMessage(null), 3000)
-  }
-
-  const handleLogout = () => {
-    localStorage.removeItem('mpp_session')
-    window.location.href = '/'
+  if (loadingUser) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-8 flex justify-center items-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    )
   }
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-3">
-          <Settings className="text-primary" size={32} />
-          Account Settings
-        </h1>
-        <p className="text-muted-foreground">
-          Manage your school account, preferences, and security settings.
-        </p>
+      <div className="flex items-center gap-3">
+        <div className="p-2 rounded-xl bg-primary/10">
+          <Settings className="text-primary" size={24} />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">Settings</h1>
+          <p className="text-sm text-muted-foreground">Manage your account settings</p>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-border gap-2 overflow-x-auto">
-        {['profile', 'notifications', 'security'].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab as 'profile' | 'notifications' | 'security')}
-            className={`px-4 py-3 font-medium border-b-2 transition-colors ${
-              activeTab === tab
-                ? 'border-primary text-primary'
-                : 'border-transparent text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
+      <div className="flex gap-1 border-b border-border">
+        <button
+          onClick={() => setActiveTab('account')}
+          className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all ${
+            activeTab === 'account'
+              ? 'border-b-2 border-primary text-primary'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <User size={16} />
+          Account
+        </button>
+        <button
+          onClick={() => setActiveTab('security')}
+          className={`flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all ${
+            activeTab === 'security'
+              ? 'border-b-2 border-primary text-primary'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <Shield size={16} />
+          Security
+        </button>
       </div>
 
       {/* Messages */}
-      {saveMessage && (
-        <Alert className={saveMessage.type === 'success' ? 'border-l-4 border-l-green-500 bg-green-50' : 'border-l-4 border-l-red-500 bg-red-50'}>
-          {saveMessage.type === 'success' ? (
+      {message && (
+        <Alert className={message.type === 'success' ? 'border-green-500 bg-green-50 dark:bg-green-950/20' : 'border-red-500 bg-red-50 dark:bg-red-950/20'}>
+          {message.type === 'success' ? (
             <CheckCircle className="h-4 w-4 text-green-600" />
           ) : (
             <AlertCircle className="h-4 w-4 text-red-600" />
           )}
-          <AlertDescription>{saveMessage.text}</AlertDescription>
+          <AlertDescription className="text-sm">{message.text}</AlertDescription>
         </Alert>
       )}
 
-      {/* Profile Tab */}
-      {activeTab === 'profile' && (
-        <div className="space-y-6">
-          <Card className="p-8 border border-border">
-            <h2 className="text-2xl font-bold text-foreground mb-6">School Information</h2>
-
-            <div className="space-y-5">
-              {/* School Name */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-foreground">
-                  School Name
-                </label>
-                <Input
-                  type="text"
-                  value={schoolInfo.name}
-                  onChange={(e) => handleSchoolInfoChange('name', e.target.value)}
-                  className="w-full"
-                />
+      {/* Account Tab */}
+      {activeTab === 'account' && (
+        <Card className="p-6 border-border">
+          <div className="flex items-center gap-2 mb-5 pb-3 border-b border-border/50">
+            <Info size={18} className="text-primary" />
+            <h2 className="font-semibold text-foreground">Profile Information</h2>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="flex items-center gap-4 p-3 rounded-lg bg-muted/20">
+              <div className="p-2 rounded-full bg-primary/10">
+                <User size={18} className="text-primary" />
               </div>
-
-              {/* Contact Person */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-foreground">
-                  Primary Contact Person
-                </label>
-                <Input
-                  type="text"
-                  value={schoolInfo.contactPerson}
-                  onChange={(e) => handleSchoolInfoChange('contactPerson', e.target.value)}
-                  className="w-full"
-                />
+              <div>
+                <p className="text-xs text-muted-foreground">Full Name</p>
+                <p className="text-base font-medium text-foreground">{user?.name || '-'}</p>
               </div>
-
-              {/* Email */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-foreground">
-                  Email Address
-                </label>
-                <Input
-                  type="email"
-                  value={schoolInfo.email}
-                  onChange={(e) => handleSchoolInfoChange('email', e.target.value)}
-                  className="w-full"
-                />
+            </div>
+            
+            <div className="flex items-center gap-4 p-3 rounded-lg bg-muted/20">
+              <div className="p-2 rounded-full bg-primary/10">
+                <Mail size={18} className="text-primary" />
               </div>
-
-              {/* Phone */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-foreground">
-                  Phone Number
-                </label>
-                <Input
-                  type="tel"
-                  value={schoolInfo.phone}
-                  onChange={(e) => handleSchoolInfoChange('phone', e.target.value)}
-                  className="w-full"
-                />
+              <div>
+                <p className="text-xs text-muted-foreground">Email Address</p>
+                <p className="text-base font-medium text-foreground">{user?.email || '-'}</p>
               </div>
+            </div>
 
-              {/* Address */}
-              <div className="space-y-2">
-                <label className="block text-sm font-medium text-foreground">
-                  School Address
-                </label>
-                <textarea
-                  value={schoolInfo.address}
-                  onChange={(e) => handleSchoolInfoChange('address', e.target.value)}
-                  className="w-full px-4 py-2 border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                  rows={3}
-                />
-              </div>
-
+            <div className="mt-4 pt-3 border-t border-border/50">
               <Button
-                className="bg-primary text-primary-foreground hover:bg-primary/90 mt-6"
-                onClick={handleSaveProfile}
+                variant="outline"
+                onClick={handleLogout}
+                className="gap-2 text-red-500 border-red-300 hover:text-red-600 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-950/30 w-full sm:w-auto"
               >
-                Save Changes
+                <LogOut size={16} />
+                Log Out
               </Button>
             </div>
-          </Card>
-        </div>
-      )}
-
-      {/* Notifications Tab */}
-      {activeTab === 'notifications' && (
-        <div className="space-y-6">
-          <Card className="p-8 border border-border">
-            <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
-              <Bell size={28} />
-              Notification Preferences
-            </h2>
-
-            <div className="space-y-4">
-              {[
-                {
-                  key: 'benefitUpdates',
-                  label: 'Benefit Updates',
-                  description: 'Get notified when new benefits become available or when existing benefits change',
-                },
-                {
-                  key: 'eventReminders',
-                  label: 'Event Reminders',
-                  description:
-                    'Receive reminders about upcoming events, competitions, and registrations',
-                },
-                {
-                  key: 'trainingNotifications',
-                  label: 'Training Notifications',
-                  description:
-                    'Updates about your training requests and professional development opportunities',
-                },
-                {
-                  key: 'expiryAlerts',
-                  label: 'Benefit Expiry Alerts',
-                  description:
-                    'Be reminded when your benefits are about to expire so you can claim them in time',
-                },
-                {
-                  key: 'weeklyDigest',
-                  label: 'Weekly Digest',
-                  description: 'Receive a weekly summary of your account activity and upcoming events',
-                },
-              ].map((pref) => (
-                <div
-                  key={pref.key}
-                  className="flex items-start justify-between p-4 rounded-lg border border-border hover:bg-secondary/30 transition-colors"
-                >
-                  <div className="flex-1">
-                    <p className="font-medium text-foreground">{pref.label}</p>
-                    <p className="text-sm text-muted-foreground mt-1">{pref.description}</p>
-                  </div>
-                  <label className="ml-4 flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={notifications[pref.key as keyof typeof notifications]}
-                      onChange={() => handleNotificationChange(pref.key)}
-                      className="w-5 h-5 accent-primary cursor-pointer"
-                    />
-                  </label>
-                </div>
-              ))}
-
-              <Button
-                className="bg-primary text-primary-foreground hover:bg-primary/90 mt-6"
-                onClick={handleSaveNotifications}
-              >
-                Save Preferences
-              </Button>
-            </div>
-          </Card>
-        </div>
+          </div>
+        </Card>
       )}
 
       {/* Security Tab */}
       {activeTab === 'security' && (
-        <div className="space-y-6">
-          <Card className="p-8 border border-border">
-            <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center gap-2">
-              <Lock size={28} />
-              Security Settings
-            </h2>
-
-            <div className="space-y-5">
-              <div className="p-4 rounded-lg bg-secondary/30 border border-border">
-                <p className="font-medium text-foreground mb-2">Current Password</p>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Change your password to keep your account secure
-                </p>
-                <Button variant="outline">Change Password</Button>
-              </div>
-
-              <div className="p-4 rounded-lg bg-secondary/30 border border-border">
-                <p className="font-medium text-foreground mb-2">Two-Factor Authentication</p>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Add an extra layer of security to your account
-                </p>
-                <Button variant="outline">Enable 2FA</Button>
-              </div>
-
-              <div className="p-4 rounded-lg bg-secondary/30 border border-border">
-                <p className="font-medium text-foreground mb-2">Active Sessions</p>
-                <p className="text-sm text-muted-foreground mb-3">
-                  You are currently logged in on 1 device. Log out of all other devices to improve security.
-                </p>
-                <Button variant="outline">Log Out All Other Devices</Button>
-              </div>
-
-              <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/30">
-                <p className="font-medium text-destructive mb-2">Danger Zone</p>
-                <p className="text-sm text-muted-foreground mb-3">
-                  Deactivating your account cannot be undone. All your data will be permanently deleted.
-                </p>
-                <Button variant="outline" className="text-destructive hover:bg-destructive/10 bg-transparent">
-                  Deactivate Account
-                </Button>
-              </div>
-
-              <div className="border-t border-border pt-6 mt-6">
-                <p className="text-sm font-medium text-foreground mb-3">
-                  Want to log out? You can always log back in later.
-                </p>
-                <Button
-                  onClick={handleLogout}
-                  className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
+        <Card className="p-6 border-border">
+          <div className="flex items-center gap-2 mb-5 pb-3 border-b border-border/50">
+            <Lock size={18} className="text-primary" />
+            <h2 className="font-semibold text-foreground">Change Password</h2>
+          </div>
+          
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="block text-sm font-medium text-foreground">
+                Current Password
+              </label>
+              <div className="relative">
+                <Input
+                  type={showPassword.current ? 'text' : 'password'}
+                  value={passwords.currentPassword}
+                  onChange={(e) => setPasswords(prev => ({ ...prev, currentPassword: e.target.value }))}
+                  className="w-full pr-10"
+                  placeholder="Enter current password"
+                />
+                <button
+                  type="button"
+                  onClick={() => toggleShowPassword('current')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
-                  <LogOut size={18} />
-                  Log Out
-                </Button>
+                  {showPassword.current ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
               </div>
             </div>
-          </Card>
-        </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-sm font-medium text-foreground">
+                New Password
+              </label>
+              <div className="relative">
+                <Input
+                  type={showPassword.new ? 'text' : 'password'}
+                  value={passwords.newPassword}
+                  onChange={(e) => setPasswords(prev => ({ ...prev, newPassword: e.target.value }))}
+                  className="w-full pr-10"
+                  placeholder="Min. 6 characters"
+                />
+                <button
+                  type="button"
+                  onClick={() => toggleShowPassword('new')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword.new ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="block text-sm font-medium text-foreground">
+                Confirm New Password
+              </label>
+              <div className="relative">
+                <Input
+                  type={showPassword.confirm ? 'text' : 'password'}
+                  value={passwords.confirmPassword}
+                  onChange={(e) => setPasswords(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                  className="w-full pr-10"
+                  placeholder="Confirm new password"
+                />
+                <button
+                  type="button"
+                  onClick={() => toggleShowPassword('confirm')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword.confirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            </div>
+
+            <Button
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 mt-4"
+              onClick={handlePasswordChange}
+              disabled={loading}
+            >
+              {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+              {loading ? 'Changing...' : 'Change Password'}
+            </Button>
+          </div>
+        </Card>
       )}
     </div>
   )
