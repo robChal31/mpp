@@ -18,7 +18,7 @@ export default async function BenefitDetailPage({ params }: BenefitDetailPagePro
     const resolvedParams = await params;
     const user = await getCurrentUser()
     const benefit = user?.email ? await getBenefitById(resolvedParams.id, user.email) : null
-
+    
     if (!benefit) {
       return (
         <NotFoundPage />

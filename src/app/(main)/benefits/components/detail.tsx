@@ -188,8 +188,9 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
       try {
         const group = benefit.subbenefit_group
         const subject = benefit.subject_benefit
-      
-        const res = await fetch(`/api/hy/event?type=${encodeURIComponent(group)}&subject=${encodeURIComponent(subject)}`)
+        const event_group_code = benefit.event_group_code
+
+        const res = await fetch(`/api/hy/event?type=${encodeURIComponent(group)}&subject=${encodeURIComponent(subject)}&event_group=${encodeURIComponent(event_group_code)}`)
         const data = await res.json()
         
         if (data.status === 'success' && data.data) {

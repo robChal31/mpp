@@ -7,9 +7,9 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const group = searchParams.get('type') ?? ''
     const subject = searchParams.get('subject') ?? ''
-    
+    const event_group = searchParams.get('event_group') ?? ''
     // Panggil service
-    const events = await getEvent(group, subject)
+    const events = await getEvent(group, subject, event_group)
     
     return NextResponse.json({
       status: 'success',

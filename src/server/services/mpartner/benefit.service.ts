@@ -95,7 +95,7 @@ export async function getBenefitByEventGroup(benefitType: string, subject: strin
   try {
     const phpUrl = `${process.env.NEXT_PUBLIC_MBS_API_URL}/check_benefit_by_event_group.php`
     const apiToken = process.env.NEXT_PUBLIC_MBS_API_TOKEN
-
+    console.log(['phpUrl', phpUrl, 'apiToken', apiToken, 'benefitType', benefitType, 'subject', subject, 'email', email])
     const response = await fetch(phpUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

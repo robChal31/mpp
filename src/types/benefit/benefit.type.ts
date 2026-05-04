@@ -152,6 +152,7 @@ export interface BenefitDetailI {
   subject_benefit: string;
   quota: BenefitQuota;
   active_quota: ActiveQuota;
+  event_group_code: string
 }
 
 export interface PKData {
