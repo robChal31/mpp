@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { Eye, EyeOff, Sparkles, ArrowRight, Building, Shield, GraduationCap } from 'lucide-react'
 import { toast } from 'sonner'
+import Image from 'next/image'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -112,8 +113,16 @@ export default function LoginPage() {
                 </div>
 
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-3">
-                    <Sparkles className="text-primary" size={24} />
+                  <div className="inline-flex items-center justify-center w-32 h-32 rounded-full bg-primary/5 mb-3">
+                    <div className="relative w-32 h-32">
+                      <Image
+                        src="/compro2.png"
+                        alt="Mentari Partner Logo"
+                        fill
+                        className="object-contain"
+                        priority
+                      />
+                    </div>
                   </div>
                   <h2 className="text-2xl font-bold text-slate-900">Sign In</h2>
                   <p className="text-slate-500 text-sm mt-1">

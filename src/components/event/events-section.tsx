@@ -1,16 +1,24 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import { Loader2, Ticket, CalendarDays } from 'lucide-react';
 import { EventI } from '@/types/event/event.types'
 import { EventCard } from './event-card'
 import { getEvents } from '@/server/services/hy/event.service';
 
 interface EventsSectionProps {
-  typeFilter?: string // Tambahin filter type
+  typeFilter?: string
+  subjectFilter?: string,
+  cityFilter?: string,
+  sortBy?: string
 }
 
-export default function EventsSection({ typeFilter = 'all' }: EventsSectionProps) {
+export default function EventsSection({ 
+  typeFilter = 'all', 
+  subjectFilter = 'all', 
+  cityFilter = 'all',
+  sortBy = 'date_asc'
+}: EventsSectionProps) {
   const [events, setEvents] = useState<EventI[]>([])
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
@@ -21,13 +29,30 @@ export default function EventsSection({ typeFilter = 'all' }: EventsSectionProps
   const lastEventRef = useRef<HTMLDivElement>(null);
   const limit: number = 9
 
+  // 🔥 Sort events di client berdasarkan date_start
+  const sortedEvents = useMemo(() => {
+    if (!events.length) return []
+    
+    const sorted = [...events]
+    return sorted.sort((a, b) => {
+      const dateA = new Date(a.date_start).getTime()
+      const dateB = new Date(b.date_start).getTime()
+      
+      if (sortBy === 'date_asc') {
+        return dateA - dateB // Terdekat dulu
+      } else {
+        return dateB - dateA // Terjauh dulu
+      }
+    })
+  }, [events, sortBy])
+
   useEffect(() => {
     setMounted(true)
     setPage(1)
     setEvents([])
     setHasMore(true)
     loadMore(true)
-  }, [typeFilter])
+  }, [typeFilter, subjectFilter, cityFilter]) // Hapus sortBy dari dependency
 
   useEffect(() => {
     if (loading || !mounted) return
@@ -55,9 +80,14 @@ export default function EventsSection({ typeFilter = 'all' }: EventsSectionProps
     setLoading(true)
     try {
       const currentPage = reset ? 1 : page
-      // Kirim filter ke API
-      const response = await getEvents(currentPage, limit, typeFilter !== 'all' ? typeFilter : '')
-
+      
+      const typeParam = typeFilter !== 'all' ? typeFilter : ''
+      const subjectParam = subjectFilter !== 'all' ? subjectFilter : ''
+      const cityParam = cityFilter !== 'all' ? cityFilter : ''
+      
+      // 🔥 Kirim sortBy = '' biar ga ngefek di backend
+      const response = await getEvents(currentPage, limit, typeParam, subjectParam, cityParam)
+      
       if(response && response.status == false ) {
         setEvents([])
       }else {
@@ -86,7 +116,6 @@ export default function EventsSection({ typeFilter = 'all' }: EventsSectionProps
     }
   }
 
-
   // Prevent rendering on server to avoid hydration mismatch
   if (!mounted) {
     return (
@@ -106,25 +135,25 @@ export default function EventsSection({ typeFilter = 'all' }: EventsSectionProps
 
   return (
     <div className="space-y-8">
-      {/* Header with count */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-border">
         <h2 className="text-xl font-semibold text-foreground">All Events</h2>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
           <span>{events.length} of {totalEvents} events</span>
+          <span className="text-xs text-muted-foreground ml-2">
+            (Sorted: {sortBy === 'date_asc' ? 'Earliest first' : 'Latest first'})
+          </span>
         </div>
       </div>
 
-      {/* Events Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {events.map((event, index) => (
-          <div key={event.id_event} ref={index === events.length - 1 ? lastEventRef : null}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        {sortedEvents.map((event, index) => (
+          <div key={event.id_event} ref={index === sortedEvents.length - 1 ? lastEventRef : null}>
             <EventCard event={event} />
           </div>
         ))}
       </div>
 
-      {/* Loading indicator */}
       {loading && (
         <div className="flex justify-center py-8">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />

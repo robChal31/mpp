@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useMemo } from 'react'
 import { 
   Loader2,
   CalendarDays,
@@ -13,9 +13,17 @@ import { getEvents } from '@/server/services/hy/event.service'
 
 interface EventsSectionListProps {
   typeFilter?: string
+  subjectFilter?: string
+  cityFilter?: string
+  sortBy?: string
 }
 
-export default function EventsSectionList({ typeFilter = 'all' }: EventsSectionListProps) {
+export default function EventsSectionList({ 
+  typeFilter = 'all', 
+  subjectFilter = 'all', 
+  cityFilter = 'all',
+  sortBy = 'date_asc'
+}: EventsSectionListProps) {
   // State
   const [events, setEvents] = useState<EventI[]>([])
   const [loading, setLoading] = useState(false)
@@ -30,16 +38,40 @@ export default function EventsSectionList({ typeFilter = 'all' }: EventsSectionL
   
   const LIMIT = 9
 
+  // 🔥 Sort events di client berdasarkan date_start
+  const sortedEvents = useMemo(() => {
+    if (!events.length) return []
+    
+    const sorted = [...events]
+    return sorted.sort((a, b) => {
+      const dateA = new Date(a.date_start).getTime()
+      const dateB = new Date(b.date_start).getTime()
+      
+      if (sortBy === 'date_asc') {
+        return dateA - dateB // Terdekat dulu
+      } else {
+        return dateB - dateA // Terjauh dulu
+      }
+    })
+  }, [events, sortBy])
+
   const loadMore = async (reset = false) => {
     if (loading || (!hasMore && !reset)) return
 
     setLoading(true)
     try {
       const currentPage = reset ? 1 : page
+      
+      const typeParam = typeFilter !== 'all' ? typeFilter : ''
+      const subjectParam = subjectFilter !== 'all' ? subjectFilter : ''
+      const cityParam = cityFilter !== 'all' ? cityFilter : ''
+      
       const response = await getEvents(
         currentPage, 
         LIMIT, 
-        typeFilter !== 'all' ? typeFilter : ''
+        typeParam,
+        subjectParam,
+        cityParam,
       )
       
       if(response && response.status == false ) {
@@ -76,7 +108,7 @@ export default function EventsSectionList({ typeFilter = 'all' }: EventsSectionL
     setEvents([])
     setHasMore(true)
     loadMore(true)
-  }, [typeFilter])
+  }, [typeFilter, subjectFilter, cityFilter]) // Hapus sortBy dari dependency
 
   useEffect(() => {
     if (loading || !mounted) return
@@ -122,12 +154,15 @@ export default function EventsSectionList({ typeFilter = 'all' }: EventsSectionL
         <div className="flex items-center gap-2 text-sm max-[640px]:text-xs text-muted-foreground">
           <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
           <span>{events.length} of {totalEvents} events</span>
+          <span className="text-xs text-muted-foreground ml-2">
+            (Sorted: {sortBy === 'date_asc' ? 'Earliest first' : 'Latest first'})
+          </span>
         </div>
       </div>
 
-      {/* Events List */}
+      {/* Events List - menggunakan sortedEvents */}
       <div className="space-y-4 max-[640px]:space-y-3">
-        {events.map((event, index) => {
+        {sortedEvents.map((event, index) => {
           const EventTypeIcon = getEventTypeIcon(event.category as EventCategory)
           const typeConfig = getEventTypeConfig(event.category as EventCategory)
           
@@ -137,9 +172,9 @@ export default function EventsSectionList({ typeFilter = 'all' }: EventsSectionL
               event={event as EventI}
               typeConfig={typeConfig as EventTypeConfig}
               EventTypeIcon={EventTypeIcon}
-              eventsLength={events.length}
+              eventsLength={sortedEvents.length}
               index={index}
-              lastEventRef={index === events.length - 1 ? lastEventRef : null}
+              lastEventRef={index === sortedEvents.length - 1 ? lastEventRef : null}
             />
           )
         })}

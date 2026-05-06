@@ -9,11 +9,15 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String
-  password  String
-  role      String   @default("school")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                       Int      @id @default(autoincrement())
+  email                    String   @unique
+  name                     String?
+  password                 String   // Hashed password
+  resetPasswordToken       String?  @unique
+  resetPasswordExpires     DateTime?
+  hasResetPasswordToken    Boolean  @default(false)
+  role                     String   @default("school")
+  isActive                 Boolean  @default(false)  // Belum aktif sampai set password
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
 }

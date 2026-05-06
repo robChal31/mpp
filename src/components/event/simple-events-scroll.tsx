@@ -17,7 +17,6 @@ export default function SimpleEventsScroll({ limit = 9 }: { limit?: number }) {
     async function loadEvents() {
       try {
         const response = await getEvents(1, limit)
-        console.log('response', response)
         setEvents(response.events)
       } catch (error) {
         console.error('Error loading events:', error)

@@ -470,11 +470,11 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                               No participants used yet. {qtyUsed} slot{qtyUsed !== 1 ? 's are' : ' is'} still available.
                             </div>
                           )}
-                          {history.description && (
+                          {/* {history.description && (
                             <div className="mt-2 pt-2 text-xs text-muted-foreground border-t border-border/50 max-[640px]:text-[10px]">
                               <span className="font-medium">📝 Note:</span> {history.description}
                             </div>
-                          )}
+                          )} */}
                         </div>
                       )}
                     </div>

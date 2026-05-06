@@ -4,7 +4,6 @@ import { EventI } from "@/types/event/event.types"
 export async function getEvent(group: string, subject: string, event_group: string): Promise<EventI[]> {
   try {
     const url = `${process.env.NEXT_PUBLIC_HADIRYUK_URL}/EventBenefit?type=${encodeURIComponent(group)}&subject=${encodeURIComponent(subject)}&event_group=${encodeURIComponent(event_group)}`
-    console.log('url', url)
     const response = await fetch(url, {
       next: { revalidate: 60 },
       headers: {
@@ -27,9 +26,8 @@ export async function getEvent(group: string, subject: string, event_group: stri
   }
 }
 
-export async function getEvents(page: number = 1, limit: number = 10, category: string = '') {
-  console.log(`${process.env.NEXT_PUBLIC_HADIRYUK_URL}/EventBenefit?limit=${limit}&page=${page}&category=${category}`)
-  const res = await fetch(`${process.env.NEXT_PUBLIC_HADIRYUK_URL}/EventBenefit?limit=${limit}&page=${page}&category=${category}`, {
+export async function getEvents(page: number = 1, limit: number = 10, category: string = '', subject: string = '', city: string = '') {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_HADIRYUK_URL}/EventBenefit?limit=${limit}&page=${page}&category=${category}&subject=${subject}&city=${city}`, {
     cache: "no-store",
   })
 

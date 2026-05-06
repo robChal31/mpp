@@ -61,7 +61,6 @@ export async function POST(request: NextRequest) {
     })
 
     if (result && result.status === 'error') {
-      console.log('result:', result)
       return NextResponse.json(
         { status: 'error', message: result.message || 'Failed to move benefit' },
         { status: 500 }

@@ -17,6 +17,7 @@ import {
   ChevronDown,
   User,
 } from 'lucide-react'
+import Image from 'next/image'
 
 const navigationItems = [
   { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -62,18 +63,16 @@ export function NavbarClient({ user }: NavbarClientProps) {
           {/* Logo and Brand */}
           <div className="flex items-center gap-8">
             <Link href="/dashboard" className="flex items-center gap-2 group">
-              <div className="relative">
-                <div className="absolute inset-0 bg-primary/20 rounded-lg blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative w-8 h-8 bg-linear-to-br from-primary to-primary/60 rounded-lg flex items-center justify-center">
-                  <Sparkles size={16} className="text-white" />
-                </div>
+              <div className="relative w-28 h-28">
+                <Image
+                  src="/compro2.png"
+                  alt="Mentari Partner Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
-              <div>
-                <h1 className="text-xl font-bold text-foreground">MPP</h1>
-                <p className="text-[10px] text-muted-foreground leading-tight hidden sm:block">
-                  Mentari Premium Partner
-                </p>
-              </div>
+              {/* Teks MPP & tagline dihapus */}
             </Link>
 
             {/* Desktop Navigation */}
@@ -127,7 +126,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
               onClick={handleLogout}
               variant="ghost"
               size="sm"
-              className="gap-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200"
+              className="gap-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200 cursor-pointer"
               title="Logout"
             >
               <LogOut size={18} />

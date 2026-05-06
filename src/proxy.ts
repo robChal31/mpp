@@ -10,8 +10,17 @@ const REFRESH_THRESHOLD = 60 * 60 * 1 // Refresh jika sisa 1 jam atau kurang
 const publicApiRoutes = [
   '/api/auth/login',
   '/api/auth/register',
+  '/api/mpartner/create',
   '/api/auth/forgot-password',
   '/api/auth/reset-password',
+  '/api/auth/setup-password',
+  '/api/auth/validate-token'
+]
+
+// ✅ TAMBAHKAN: Daftar halaman web yang public (ga perlu login)
+const publicPages = [
+  '/login',
+  '/setup-password'  // ← TAMBAHKAN INI
 ]
 
 export async function proxy(req: NextRequest) {
@@ -19,6 +28,7 @@ export async function proxy(req: NextRequest) {
   const token = req.cookies.get("mpp_session")?.value
 
   const isLoginPage = pathname === "/login"
+  const isSetupPasswordPage = pathname === "/setup-password"  // ← TAMBAHKAN
   const isApiRoute = pathname.startsWith("/api")
   const isStaticFile = pathname.startsWith("/_next") || 
                        pathname.startsWith("/favicon.ico") ||
@@ -26,6 +36,9 @@ export async function proxy(req: NextRequest) {
 
   // Cek apakah API route public
   const isPublicApiRoute = publicApiRoutes.some(route => pathname === route || pathname.startsWith(route))
+  
+  // ✅ CEK APAKAH HALAMAN PUBLIC
+  const isPublicPage = publicPages.includes(pathname)
 
   // Bypass untuk static files
   if (isStaticFile) {
@@ -59,7 +72,24 @@ export async function proxy(req: NextRequest) {
     }
   }
 
-  // Handle non-API routes (halaman web)
+  // ✅ JIKA HALAMAN PUBLIC (setup-password atau login), LANGSUNG NEXT
+  if (isPublicPage) {
+    // Jika user sudah login dan akses halaman login, redirect ke dashboard
+    if (token && isLoginPage) {
+      try {
+        await jwtVerify(token, secret)
+        return NextResponse.redirect(new URL("/dashboard", req.url))
+      } catch (error) {
+        // Token invalid, lanjutkan ke halaman login
+        return NextResponse.next()
+      }
+    }
+    
+    // Untuk halaman public lainnya (setup-password), izinkan akses
+    return NextResponse.next()
+  }
+
+  // Handle non-API routes (halaman web yang butuh login)
   const redirectToLogin = () => {
     const loginUrl = new URL("/login", req.url)
     if (pathname !== "/login") {
@@ -70,13 +100,12 @@ export async function proxy(req: NextRequest) {
     return response
   }
 
-  // Jika tidak ada token
+  // Jika tidak ada token untuk halaman yang butuh login
   if (!token) {
-    if (isLoginPage) return NextResponse.next()
     return redirectToLogin()
   }
 
-  // Verifikasi token untuk halaman web
+  // Verifikasi token untuk halaman web yang butuh login
   try {
     const { payload } = await jwtVerify(token, secret)
     

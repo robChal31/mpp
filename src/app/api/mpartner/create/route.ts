@@ -1,12 +1,11 @@
-import { createService } from '@/server/services/mpartner/create.service';
+import { prisma } from '@/server/db/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, name } = body;
+    const { email, name, resetToken, resetExpires } = body;
 
-    // Validate input
     if (!email || !name) {
       return NextResponse.json(
         { status: 'error', message: 'Email and name are required' },
@@ -14,34 +13,55 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validasi email format
-    if (!email.includes('@')) {
+    if (!resetToken || !resetExpires) {
       return NextResponse.json(
-        { status: 'error', message: 'Invalid email format' },
+        { status: 'error', message: 'Reset token and expiry are required' },
         { status: 400 }
       );
     }
 
-    const result = await createService({ email, name });
+    const expiresAt = new Date(resetExpires);
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    });
 
-    return NextResponse.json(result, { status: 200 });
+    if (existingUser) {
+      // Update existing user (misal untuk resend email)
+      await prisma.user.update({
+        where: { email },
+        data: {
+          name: name,
+          resetPasswordToken: resetToken,
+          resetPasswordExpires: expiresAt,
+          hasResetPasswordToken: true
+          // isActive tetap true (tidak diubah)
+        }
+      });
+    } else {
+      // Create new user - LANGSUNG AKTIF
+      await prisma.user.create({
+        data: {
+          email,
+          name,
+          resetPasswordToken: resetToken,
+          resetPasswordExpires: expiresAt,
+          hasResetPasswordToken: true,
+          isActive: true,  // ← LANGSUNG AKTIF
+          password: '',    // Password kosong dulu
+          role: 'mp_user'
+        }
+      });
+    }
+
+    return NextResponse.json({
+      status: 'success',
+      message: 'User created/updated successfully'
+    });
 
   } catch (error) {
     console.error('Error creating user:', error);
-    
-    // Handle error dari service
-    if (error instanceof Error && error.message.includes('already exists')) {
-      return NextResponse.json(
-        { status: 'error', message: error.message },
-        { status: 409 } // Conflict
-      );
-    }
-    
     return NextResponse.json(
-      { 
-        status: 'error', 
-        message: error instanceof Error ? error.message : 'Internal server error' 
-      },
+      { status: 'error', message: 'Internal server error' },
       { status: 500 }
     );
   }
