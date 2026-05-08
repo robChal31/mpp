@@ -36,7 +36,7 @@ export async function fetchBenefits(email: string): Promise<BenefitGroupV2[]> {
   }
   
   const result = await response.json()
-  
+  console.log('Result:', result)
   if (result.status === 'error') {
     throw new Error(result.message)
   }
