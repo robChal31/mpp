@@ -21,7 +21,11 @@ export class APIError extends Error {
 export async function fetchBenefits(email: string): Promise<BenefitGroupV2[]> {
   const phpUrl = `${process.env.NEXT_PUBLIC_MBS_API_URL}/get_benefits.php`
   const apiToken = process.env.NEXT_PUBLIC_MBS_API_TOKEN
-  
+    // Tambahkan ini untuk debug
+  console.log('=== DEBUG SERVER SIDE ===')
+  console.log('URL:', phpUrl)
+  console.log('Token exists:', !!apiToken)
+  console.log('Token length:', apiToken?.length)
   const response = await fetch(phpUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -30,7 +34,8 @@ export async function fetchBenefits(email: string): Promise<BenefitGroupV2[]> {
       email: email
     })
   })
-  
+    console.log('Response status:', response.status)
+  console.log('Response ok:', response.ok)
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`)
   }
