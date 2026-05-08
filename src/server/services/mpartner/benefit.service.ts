@@ -34,7 +34,7 @@ export async function fetchBenefits(email: string): Promise<BenefitGroupV2[]> {
       email: email
     })
   })
-    console.log('Response status:', response.status)
+  console.log('Response status:', response.status)
   console.log('Response ok:', response.ok)
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`)
