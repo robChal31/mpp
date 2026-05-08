@@ -82,7 +82,7 @@ export function ClaimStatus({ benefitId, benefitName }: ClaimStatusProps) {
                   </div>
                 </div>
               </div>
-              <Button variant="outline" size="sm" className="gap-2 flex-shrink-0 bg-transparent">
+              <Button variant="outline" size="sm" className="gap-2 shrink-0 bg-transparent">
                 <Download size={16} />
                 Certificate
               </Button>

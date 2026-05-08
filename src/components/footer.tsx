@@ -1,8 +1,9 @@
-// components/footer.tsx (Client Component)
+// components/footer.tsx
 'use client'
 
 import Link from "next/link"
 import { useState } from "react"
+import { useTranslations } from 'next-intl'
 import { 
   Facebook, 
   Twitter, 
@@ -17,6 +18,7 @@ import {
 import { Button } from '@/components/ui/button'
 
 const Footer = () => {
+  const t = useTranslations('Footer')
   const currentYear = new Date().getFullYear()
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
@@ -43,7 +45,7 @@ const Footer = () => {
               <span className="font-semibold text-foreground">Mentari Premium Partner</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Empowering schools with premium partnership benefits, training, and educational resources.
+              {t('brandDescription')}
             </p>
             <div className="flex gap-3">
               <a 
@@ -83,26 +85,26 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Quick Links</h3>
+            <h3 className="font-semibold text-foreground">{t('quickLinks')}</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/dashboard" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Dashboard
+                  {t('dashboard')}
                 </Link>
               </li>
               <li>
                 <Link href="/benefits" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Benefits
+                  {t('benefits')}
                 </Link>
               </li>
               <li>
                 <Link href="/events" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Events
+                  {t('events')}
                 </Link>
               </li>
               <li>
                 <Link href="/settings" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Settings
+                  {t('settings')}
                 </Link>
               </li>
             </ul>
@@ -110,7 +112,7 @@ const Footer = () => {
 
           {/* Support */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Support</h3>
+            <h3 className="font-semibold text-foreground">{t('support')}</h3>
             <ul className="space-y-2">
               <li>
                 <a href="mailto:support@mentarigroups.com" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center gap-2">
@@ -135,9 +137,9 @@ const Footer = () => {
 
           {/* Newsletter / Info */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-foreground">Stay Updated</h3>
+            <h3 className="font-semibold text-foreground">{t('stayUpdated')}</h3>
             <p className="text-sm text-muted-foreground">
-              Get the latest updates about new benefits and events.
+              {t('stayUpdatedDesc')}
             </p>
             <div className="flex flex-col gap-2">
               <div className="flex gap-2">
@@ -145,18 +147,18 @@ const Footer = () => {
                   type="email" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email" 
+                  placeholder={t('yourEmail')} 
                   className="flex-1 px-3 py-2 text-sm rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <Button size="sm" className="shrink-0" onClick={handleSubscribe}>
-                  Subscribe
+                  {t('subscribe')}
                 </Button>
               </div>
               {subscribed && (
-                <p className="text-xs text-green-600">Subscribed successfully!</p>
+                <p className="text-xs text-green-600">{t('subscribedSuccess')}</p>
               )}
               <p className="text-[10px] text-muted-foreground">
-                By subscribing, you agree to our Privacy Policy.
+                {t('privacyAgreement')}
               </p>
             </div>
           </div>
@@ -165,24 +167,24 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-10 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
-            © {currentYear} Mentari Premium Partner. All rights reserved.
+            © {currentYear} Mentari Premium Partner. {t('allRightsReserved')}
           </p>
           <div className="flex gap-6 text-xs text-muted-foreground">
             <Link href="/privacy" className="hover:text-primary transition-colors">
-              Privacy Policy
+              {t('privacyPolicy')}
             </Link>
             <Link href="/terms" className="hover:text-primary transition-colors">
-              Terms of Service
+              {t('termsOfService')}
             </Link>
             <Link href="/contact" className="hover:text-primary transition-colors">
-              Contact Us
+              {t('contactUs')}
             </Link>
           </div>
           <button 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
           >
-            Back to top
+            {t('backToTop')}
             <ArrowUp size={12} />
           </button>
         </div>
@@ -190,7 +192,7 @@ const Footer = () => {
         {/* Made with love */}
         <div className="mt-6 text-center">
           <p className="text-[10px] text-muted-foreground flex items-center justify-center gap-1">
-            Made with <Heart size={10} className="text-red-500 fill-red-500" /> for Indonesian educators
+            {t('madeWith')} <Heart size={10} className="text-red-500 fill-red-500" /> {t('forEducators')}
           </p>
         </div>
       </div>

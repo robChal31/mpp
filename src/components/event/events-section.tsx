@@ -1,10 +1,11 @@
 'use client'
 
 import { useEffect, useState, useRef, useMemo } from 'react'
-import { Loader2, Ticket, CalendarDays } from 'lucide-react';
+import { Loader2, Ticket, CalendarDays } from 'lucide-react'
 import { EventI } from '@/types/event/event.types'
 import { EventCard } from './event-card'
-import { getEvents } from '@/server/services/hy/event.service';
+import { getEvents } from '@/server/services/hy/event.service'
+import { useTranslations } from 'next-intl'
 
 interface EventsSectionProps {
   typeFilter?: string
@@ -19,6 +20,7 @@ export default function EventsSection({
   cityFilter = 'all',
   sortBy = 'date_asc'
 }: EventsSectionProps) {
+  const t = useTranslations('EventsSection')
   const [events, setEvents] = useState<EventI[]>([])
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
@@ -29,7 +31,7 @@ export default function EventsSection({
   const lastEventRef = useRef<HTMLDivElement>(null);
   const limit: number = 9
 
-  // 🔥 Sort events di client berdasarkan date_start
+  // Sort events di client berdasarkan date_start
   const sortedEvents = useMemo(() => {
     if (!events.length) return []
     
@@ -39,9 +41,9 @@ export default function EventsSection({
       const dateB = new Date(b.date_start).getTime()
       
       if (sortBy === 'date_asc') {
-        return dateA - dateB // Terdekat dulu
+        return dateA - dateB
       } else {
-        return dateB - dateA // Terjauh dulu
+        return dateB - dateA
       }
     })
   }, [events, sortBy])
@@ -52,7 +54,7 @@ export default function EventsSection({
     setEvents([])
     setHasMore(true)
     loadMore(true)
-  }, [typeFilter, subjectFilter, cityFilter]) // Hapus sortBy dari dependency
+  }, [typeFilter, subjectFilter, cityFilter])
 
   useEffect(() => {
     if (loading || !mounted) return
@@ -65,7 +67,7 @@ export default function EventsSection({
       if (entries[0].isIntersecting && hasMore && !loading) {
         loadMore()
       }
-    }, {threshold: 0.1, rootMargin: '100px'})
+    }, { threshold: 0.1, rootMargin: '100px' })
 
     if (lastEventRef.current) {
       observerRef.current.observe(lastEventRef.current)
@@ -85,12 +87,11 @@ export default function EventsSection({
       const subjectParam = subjectFilter !== 'all' ? subjectFilter : ''
       const cityParam = cityFilter !== 'all' ? cityFilter : ''
       
-      // 🔥 Kirim sortBy = '' biar ga ngefek di backend
       const response = await getEvents(currentPage, limit, typeParam, subjectParam, cityParam)
       
-      if(response && response.status == false ) {
+      if (response && response.status == false) {
         setEvents([])
-      }else {
+      } else {
         if (reset || currentPage === 1) {
           setEvents(response.events)
         } else {
@@ -121,8 +122,8 @@ export default function EventsSection({
     return (
       <div className="space-y-8">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold">Events</h2>
-          <span className="text-sm text-muted-foreground">Loading...</span>
+          <h2 className="text-2xl font-bold">{t('events')}</h2>
+          <span className="text-sm text-muted-foreground">{t('loading')}</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
@@ -136,12 +137,12 @@ export default function EventsSection({
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-border">
-        <h2 className="text-xl font-semibold text-foreground">All Events</h2>
+        <h2 className="text-xl font-semibold text-foreground">{t('allEvents')}</h2>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-          <span>{events.length} of {totalEvents} events</span>
+          <span>{t('eventsCount', { count: events.length, total: totalEvents })}</span>
           <span className="text-xs text-muted-foreground ml-2">
-            (Sorted: {sortBy === 'date_asc' ? 'Earliest first' : 'Latest first'})
+            ({t('sortedBy', { sort: sortBy === 'date_asc' ? t('earliestFirst') : t('latestFirst') })})
           </span>
         </div>
       </div>
@@ -164,7 +165,7 @@ export default function EventsSection({
         <div className="text-center py-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted text-muted-foreground text-sm">
             <Ticket size={14} />
-            You've seen all {totalEvents} events 🎉
+            {t('seenAllEvents', { total: totalEvents })}
           </div>
         </div>
       )}
@@ -174,8 +175,8 @@ export default function EventsSection({
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-4">
             <CalendarDays size={32} className="text-muted-foreground" />
           </div>
-          <h3 className="text-lg font-semibold text-foreground mb-2">No events found</h3>
-          <p className="text-muted-foreground">Try changing your filter or check back later for new events.</p>
+          <h3 className="text-lg font-semibold text-foreground mb-2">{t('noEventsFound')}</h3>
+          <p className="text-muted-foreground">{t('tryChangingFilter')}</p>
         </div>
       )}
     </div>

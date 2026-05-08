@@ -1,3 +1,4 @@
+// app/benefits/page.tsx
 'use client'
 
 import { useState, useEffect, JSX } from 'react'
@@ -25,6 +26,7 @@ import {
 import { formatDate } from '@/lib/utils/date'
 import { BenefitGroupV2, FlattenedBenefit, PK } from '@/types/benefit/benefit.type'
 import { toast } from 'sonner'
+import { useTranslations } from 'next-intl'
 
 const getBenefitIcon = (type: string, size: number = 20) => {
   const icons: Record<string, JSX.Element> = {
@@ -67,6 +69,7 @@ interface BenefitGroupByPK {
 
 // ============ MAIN COMPONENT ============
 export default function BenefitsPage() {
+  const t = useTranslations('Benefits')
   const [benefitGroups, setBenefitGroups] = useState<BenefitGroupByPK[]>([])
   const [filteredGroups, setFilteredGroups] = useState<BenefitGroupByPK[]>([])
   const [loading, setLoading] = useState(true)
@@ -84,7 +87,7 @@ export default function BenefitsPage() {
         const data = await res.json()
 
         if (data.status === 'error') {
-          toast.error(data.message || 'Failed to load benefits')
+          toast.error(data.message || t('failedToLoad'))
           setBenefitGroups([])
         } else {
           // Group by PK (benefit_id)
@@ -149,7 +152,7 @@ export default function BenefitsPage() {
       }
     }
     loadBenefits()
-  }, [])
+  }, [t])
 
   // Apply filters
   useEffect(() => {
@@ -216,9 +219,9 @@ export default function BenefitsPage() {
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold">All Benefits</h1>
+        <h1 className="text-2xl font-bold">{t('title')}</h1>
         <p className="text-muted-foreground text-sm">
-          Available benefits from your partnership packages. Click on any claimable benefit to view details.
+          {t('description')}
         </p>
       </div>
 
@@ -228,7 +231,7 @@ export default function BenefitsPage() {
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
           <div className="flex flex-wrap items-center gap-2">
             <Filter size={16} className="text-muted-foreground" />
-            <span className="text-sm font-medium text-foreground">Filter by PK:</span>
+            <span className="text-sm font-medium text-foreground">{t('filterByPK')}</span>
             <div className="flex flex-wrap gap-2">
               <Button
                 variant={selectedPK === 'all' ? 'default' : 'outline'}
@@ -236,7 +239,7 @@ export default function BenefitsPage() {
                 onClick={() => setSelectedPK('all')}
                 className="h-7 px-3 text-xs"
               >
-                All PKs
+                {t('allPKs')}
               </Button>
               {uniquePKs.map((group) => (
                 <Button
@@ -256,7 +259,7 @@ export default function BenefitsPage() {
             {/* Search Input */}
             <input
               type="text"
-              placeholder="Search benefits..."
+              placeholder={t('searchBenefits')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="px-3 py-1.5 text-sm rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-48"
@@ -269,7 +272,7 @@ export default function BenefitsPage() {
                 size="sm"
                 onClick={expandAll}
                 className="h-8 px-2 text-xs"
-                title="Expand all"
+                title={t('expandAll')}
               >
                 <ChevronDown size={14} />
               </Button>
@@ -278,7 +281,7 @@ export default function BenefitsPage() {
                 size="sm"
                 onClick={collapseAll}
                 className="h-8 px-2 text-xs"
-                title="Collapse all"
+                title={t('collapseAll')}
               >
                 <ChevronUp size={14} />
               </Button>
@@ -293,7 +296,7 @@ export default function BenefitsPage() {
                 className="h-8 px-2 text-xs gap-1 text-red-500 hover:text-red-600"
               >
                 <X size={14} />
-                Clear
+                {t('clear')}
               </Button>
             )}
           </div>
@@ -302,7 +305,7 @@ export default function BenefitsPage() {
         {/* Active Filters Display */}
         {(selectedPK !== 'all' || searchQuery) && (
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            <span className="text-xs text-muted-foreground">Active filters:</span>
+            <span className="text-xs text-muted-foreground">{t('activeFilters')}</span>
             {selectedPK !== 'all' && (
               <Badge variant="secondary" className="text-xs gap-1">
                 PK: {uniquePKs.find(g => g.pk.id === selectedPK)?.pk.no_pk.replace(/&#39;/, "'").slice(0, 15)}...
@@ -315,7 +318,7 @@ export default function BenefitsPage() {
             )}
             {searchQuery && (
               <Badge variant="secondary" className="text-xs gap-1">
-                Search: {searchQuery}
+                {t('search')}: {searchQuery}
                 <X 
                   size={10} 
                   className="cursor-pointer hover:text-red-500" 
@@ -328,7 +331,10 @@ export default function BenefitsPage() {
         
         {/* Results Count */}
         <div className="text-xs text-muted-foreground">
-          Showing {filteredGroups.reduce((acc, g) => acc + g.benefits.length, 0)} benefits from {filteredGroups.length} PK(s)
+          {t('showingBenefits', { 
+            count: filteredGroups.reduce((acc, g) => acc + g.benefits.length, 0),
+            pkCount: filteredGroups.length 
+          })}
         </div>
       </div>
 
@@ -342,8 +348,8 @@ export default function BenefitsPage() {
             <Card key={group.pk.id} className="overflow-hidden border-border">
               {/* PK Header */}
               <div 
-                className={`p-4 bg-muted/30 border-b border-border cursor-pointer hover:bg-muted/50 transition-colors ${
-                  !hasActiveBenefits ? 'opacity-60' : ''
+                className={`p-4 border-b border-border cursor-pointer hover:bg-muted/50 transition-colors ${
+                  !hasActiveBenefits ? 'opacity-80' : ''
                 }`}
                 onClick={() => toggleGroup(group.pk.id)}
               >
@@ -358,21 +364,21 @@ export default function BenefitsPage() {
                           PK: {group.pk.no_pk.replace(/&#39;/, "'")}
                         </h3>
                         {group.isExpired ? (
-                          <Badge variant="destructive" className="text-[10px]">Expired</Badge>
+                          <Badge variant="destructive" className="text-[10px]">{t('expired')}</Badge>
                         ) : (
                           <Badge variant="default" className="text-[10px] bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                            Active
+                            {t('active')}
                           </Badge>
                         )}
                       </div>
                       <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
                         <span className="flex items-center gap-1">
                           <Calendar size={10} />
-                          Valid: {formatDate(group.pk.start_at)} - {formatDate(group.pk.expired_at)}
+                          {t('valid')}: {formatDate(group.pk.start_at)} - {formatDate(group.pk.expired_at)}
                         </span>
                         <span className="flex items-center gap-1">
                           <Users size={10} />
-                          {group.benefits.length} benefit{group.benefits.length !== 1 ? 's' : ''}
+                          {group.benefits.length} {group.benefits.length !== 1 ? t('benefitsPlural') : t('benefitsSingular')}
                         </span>
                       </div>
                     </div>
@@ -381,7 +387,7 @@ export default function BenefitsPage() {
                     {!group.isExpired && (
                       <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 gap-1 text-[10px]">
                         <CheckCircle size={10} />
-                        {group.benefits.filter(b => b.redeemable === '1').length} claimable
+                        {group.benefits.filter(b => b.redeemable === '1').length} {t('claimable')}
                       </Badge>
                     )}
                     {isGroupExpanded ? (
@@ -430,14 +436,18 @@ export default function BenefitsPage() {
                                 </span>
                               )}
                             </div>
-                            {benefit.subject_benefit && <p className='text-[11px] text-gray-500 mb-1'>Subject: <span className='font-bold'>{benefit.subject_benefit}</span></p>}
+                            {benefit.subject_benefit && (
+                              <p className='text-[11px] text-gray-500 mb-1'>
+                                {t('subject')}: <span className='font-bold'>{benefit.subject_benefit}</span>
+                              </p>
+                            )}
                             <p className="text-sm text-muted-foreground line-clamp-2">
                               {benefit.description}
                             </p>
                             
                             <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mt-2">
                               <span className="flex items-center gap-1">
-                                <Users size={12} /> {benefit.qty} slots
+                                <Users size={12} /> {benefit.qty} {t('slots')}
                               </span>
                               <span className="flex items-center gap-1">
                                 <Calendar size={12} /> {benefit.pelaksanaan}
@@ -447,13 +457,12 @@ export default function BenefitsPage() {
                           
                           <div className="shrink-0">
                             {expired ? (
-                              <Badge variant="destructive">Expired</Badge>
+                              <Badge variant="destructive">{t('expired')}</Badge>
                             ) : !isRedeemable ? (
-                              // <Badge variant="secondary"></Badge>
                               <></>
                             ) : (
                               <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 gap-1">
-                                <CheckCircle size={12} /> Dapat Diklaim
+                                <CheckCircle size={12} /> {t('claimable')}
                               </Badge>
                             )}
                           </div>
@@ -464,7 +473,7 @@ export default function BenefitsPage() {
                   
                   {group.benefits.length === 0 && (
                     <div className="text-center py-8 text-muted-foreground">
-                      No benefits found matching your search.
+                      {t('noBenefitsFound')}
                     </div>
                   )}
                 </div>
@@ -476,7 +485,7 @@ export default function BenefitsPage() {
 
       {filteredGroups.length === 0 && (
         <Card className="p-12 text-center text-muted-foreground">
-          No benefits available.
+          {t('noBenefitsAvailable')}
         </Card>
       )}
     </div>

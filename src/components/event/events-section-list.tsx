@@ -10,6 +10,7 @@ import { EventCategory, EventI, EventTypeConfig } from '@/types/event/event.type
 import { getEventTypeConfig, getEventTypeIcon } from '@/constants/event.constant'
 import EventCardListMode from './even-card-list-mode'
 import { getEvents } from '@/server/services/hy/event.service'
+import { useTranslations } from 'next-intl'
 
 interface EventsSectionListProps {
   typeFilter?: string
@@ -24,6 +25,8 @@ export default function EventsSectionList({
   cityFilter = 'all',
   sortBy = 'date_asc'
 }: EventsSectionListProps) {
+  const t = useTranslations('EventsSection')
+  
   // State
   const [events, setEvents] = useState<EventI[]>([])
   const [loading, setLoading] = useState(false)
@@ -38,7 +41,7 @@ export default function EventsSectionList({
   
   const LIMIT = 9
 
-  // 🔥 Sort events di client berdasarkan date_start
+  // Sort events di client berdasarkan date_start
   const sortedEvents = useMemo(() => {
     if (!events.length) return []
     
@@ -48,9 +51,9 @@ export default function EventsSectionList({
       const dateB = new Date(b.date_start).getTime()
       
       if (sortBy === 'date_asc') {
-        return dateA - dateB // Terdekat dulu
+        return dateA - dateB
       } else {
-        return dateB - dateA // Terjauh dulu
+        return dateB - dateA
       }
     })
   }, [events, sortBy])
@@ -108,7 +111,7 @@ export default function EventsSectionList({
     setEvents([])
     setHasMore(true)
     loadMore(true)
-  }, [typeFilter, subjectFilter, cityFilter]) // Hapus sortBy dari dependency
+  }, [typeFilter, subjectFilter, cityFilter])
 
   useEffect(() => {
     if (loading || !mounted) return
@@ -150,12 +153,12 @@ export default function EventsSectionList({
     <div className="space-y-6 max-[640px]:space-y-4">
       {/* Header with stats */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 max-[640px]:gap-2 pb-2 border-b border-border">
-        <h2 className="text-xl max-[640px]:text-base font-semibold text-foreground">All Events</h2>
+        <h2 className="text-xl max-[640px]:text-base font-semibold text-foreground">{t('allEvents')}</h2>
         <div className="flex items-center gap-2 text-sm max-[640px]:text-xs text-muted-foreground">
           <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-          <span>{events.length} of {totalEvents} events</span>
+          <span>{t('eventsCount', { count: events.length, total: totalEvents })}</span>
           <span className="text-xs text-muted-foreground ml-2">
-            (Sorted: {sortBy === 'date_asc' ? 'Earliest first' : 'Latest first'})
+            ({t('sortedBy', { sort: sortBy === 'date_asc' ? t('earliestFirst') : t('latestFirst') })})
           </span>
         </div>
       </div>
@@ -192,7 +195,7 @@ export default function EventsSectionList({
         <div className="text-center py-8 max-[640px]:py-4">
           <div className="inline-flex items-center gap-2 px-4 py-2 max-[640px]:px-3 max-[640px]:py-1.5 rounded-full bg-muted text-muted-foreground text-sm max-[640px]:text-xs">
             <Ticket size={14} className="max-[640px]:size-3" />
-            You've seen all {totalEvents} events 🎉
+            {t('seenAllEvents', { total: totalEvents })}
           </div>
         </div>
       )}
@@ -203,8 +206,8 @@ export default function EventsSectionList({
           <div className="inline-flex items-center justify-center w-20 h-20 max-[640px]:w-16 max-[640px]:h-16 rounded-full bg-muted mb-4 max-[640px]:mb-2">
             <CalendarDays size={32} className="text-muted-foreground max-[640px]:size-6" />
           </div>
-          <h3 className="text-lg max-[640px]:text-base font-semibold text-foreground mb-2">No events found</h3>
-          <p className="text-muted-foreground max-[640px]:text-sm">Try changing your filter or check back later for new events.</p>
+          <h3 className="text-lg max-[640px]:text-base font-semibold text-foreground mb-2">{t('noEventsFound')}</h3>
+          <p className="text-muted-foreground max-[640px]:text-sm">{t('tryChangingFilter')}</p>
         </div>
       )}
     </div>

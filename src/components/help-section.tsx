@@ -13,6 +13,7 @@ import {
   ExternalLink,
   FileText
 } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 interface FAQItem {
   question: string
@@ -27,11 +28,12 @@ interface HelpSectionProps {
 }
 
 export function HelpSection({ 
-  title = "Need Help?",
-  description = "Find answers to common questions or contact our support team",
+  title,
+  description,
   faqItems = [],
   showContact = true
 }: HelpSectionProps) {
+  const t = useTranslations('Help')
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   const toggleFAQ = (index: number) => {
@@ -40,24 +42,26 @@ export function HelpSection({
 
   const defaultFAQs: FAQItem[] = [
     {
-      question: "How do I claim my benefits?",
-      answer: "Go to the Benefits section, find an active benefit, and click 'Claim'. You can then select an eligible event to use your benefit."
+      question: t('faq1.question'),
+      answer: t('faq1.answer'),
     },
     {
-      question: "What happens when a benefit expires?",
-      answer: "Expired benefits cannot be claimed. Make sure to claim your benefits before the expiry date shown on each benefit card."
+      question: t('faq2.question'),
+      answer: t('faq2.answer'),
     },
     {
-      question: "How do I know which events are eligible?",
-      answer: "When viewing a benefit detail, check the 'Events' tab to see all eligible events you can use this benefit for."
+      question: t('faq3.question'),
+      answer: t('faq3.answer'),
     },
     {
-      question: "Can I transfer my benefits to another school?",
-      answer: "Benefits are tied to your institution and cannot be transferred. Please contact support if you have special circumstances."
-    }
+      question: t('faq4.question'),
+      answer: t('faq4.answer'),
+    },
   ]
 
   const items = faqItems.length > 0 ? faqItems : defaultFAQs
+  const finalTitle = title || t('title')
+  const finalDescription = description || t('description')
 
   return (
     <div className="space-y-6 max-[640px]:space-y-4">
@@ -66,15 +70,15 @@ export function HelpSection({
         <div className="inline-flex items-center justify-center w-12 h-12 max-[640px]:w-10 max-[640px]:h-10 rounded-full bg-primary/10 mb-3 max-[640px]:mb-2">
           <HelpCircle className="text-primary size-6 max-[640px]:size-5" />
         </div>
-        <h2 className="text-xl max-[640px]:text-lg font-semibold text-foreground">{title}</h2>
-        <p className="text-sm max-[640px]:text-xs text-muted-foreground mt-1">{description}</p>
+        <h2 className="text-xl max-[640px]:text-lg font-semibold text-foreground">{finalTitle}</h2>
+        <p className="text-sm max-[640px]:text-xs text-muted-foreground mt-1">{finalDescription}</p>
       </div>
 
       {/* FAQ Section */}
       <div className="space-y-3 max-[640px]:space-y-2">
         <h3 className="text-sm max-[640px]:text-xs font-medium text-foreground flex items-center gap-2">
           <FileText size={16} className="text-primary max-[640px]:size-3.5" />
-          Frequently Asked Questions
+          {t('faqTitle')}
         </h3>
         
         <div className="space-y-2">
@@ -118,21 +122,21 @@ export function HelpSection({
                 <MessageCircle size={18} className="text-primary max-[640px]:size-4" />
               </div>
               <div>
-                <p className="text-sm max-[640px]:text-xs font-medium text-foreground">Still have questions?</p>
-                <p className="text-xs max-[640px]:text-[10px] text-muted-foreground">Our support team is ready to help you</p>
+                <p className="text-sm max-[640px]:text-xs font-medium text-foreground">{t('contactTitle')}</p>
+                <p className="text-xs max-[640px]:text-[10px] text-muted-foreground">{t('contactDescription')}</p>
               </div>
             </div>
             <div className="flex gap-2 max-[640px]:w-full max-[640px]:flex-col">
               <Button variant="outline" size="sm" className="gap-2 max-[640px:w-full max-[640px]:text-xs max-[640px]:h-8" asChild>
                 <a href="mailto:support@mentarigroups.com">
                   <Mail size={14} className="max-[640px]:size-3" />
-                  <span className="max-[640px]:text-xs">Email Support</span>
+                  <span className="max-[640px]:text-xs">{t('emailSupport')}</span>
                 </a>
               </Button>
               <Button variant="outline" size="sm" className="gap-2 max-[640px:w-full max-[640px]:text-xs max-[640px]:h-8" asChild>
                 <a href="https://wa.me/628558881948" target="_blank" rel="noopener noreferrer">
                   <MessageCircle size={14} className="max-[640px]:size-3" />
-                  <span className="max-[640px]:text-xs">WhatsApp</span>
+                  <span className="max-[640px]:text-xs">{t('whatsappSupport')}</span>
                 </a>
               </Button>
             </div>

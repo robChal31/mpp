@@ -31,6 +31,7 @@ import { getEventTypeConfig, getEventTypeIcon } from '@/constants/event.constant
 import he from 'he'
 import { CheckBenefitByEventGroupResult } from '@/types/benefit/benefit.type'
 import { toast } from 'sonner'
+import { useTranslations } from 'next-intl'
 
 interface EventDetailClientProps {
   event: EventI
@@ -48,7 +49,7 @@ interface ClaimModalData {
 }
 
 export default function EventDetailClient({ event, hasBenefit }: EventDetailClientProps) {
-    
+  const t = useTranslations('EventDetail')
   const router = useRouter()
   const [isSharing, setIsSharing] = useState(false)
   const [isClaiming, setIsClaiming] = useState(false)
@@ -80,15 +81,18 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
   let status = 'upcoming'
   let statusColor = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400'
   let statusIcon = <Clock size={14} />
+  let statusText = t('upcoming')
 
   if (now > endDate) {
     status = 'ended'
     statusColor = 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
     statusIcon = <AlertCircle size={14} />
+    statusText = t('ended')
   } else if (now >= startDate && now <= endDate) {
     status = 'ongoing'
     statusColor = 'bg-primary/10 text-primary'
     statusIcon = <CheckCircle size={14} />
+    statusText = t('ongoing')
   }
 
   const handleShare = async () => {
@@ -102,7 +106,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
         })
       } else {
         await navigator.clipboard.writeText(window.location.href)
-        alert('Link copied to clipboard!')
+        alert(t('linkCopied'))
       }
     } catch (error) {
       console.error('Error sharing:', error)
@@ -130,7 +134,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
 
   const handleClaimSubmit = async () => {
     if (claimQty < 1 || claimQty > claimModal.availableQuota) {
-      toast.error(`Please enter a quantity between 1 and ${claimModal.availableQuota}`, {
+      toast.error(t('invalidQuantity', { max: claimModal.availableQuota }), {
         duration: 3000,
         position: 'top-center',
       })
@@ -150,7 +154,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
           event_title: event.title,
           qty: claimQty,
           year: claimModal.activeYear,
-          description: claimDescription || `Claim for event: ${event.title}`
+          description: claimDescription || `${t('claimForEvent')} ${event.title}`
         })
       })
 
@@ -159,9 +163,9 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
       if (data.status === 'success') {
         toast.success(
           <div>
-            <div className="font-semibold">Benefit Successfully Claimed! 🎉</div>
-            <div className="text-xs mt-1 font-mono">Redeem Code: {data.data.redeem_code}</div>
-            <div className="text-xs mt-1">Qty: {claimQty} slot{claimQty !== 1 ? 's' : ''}</div>
+            <div className="font-semibold">{t('claimSuccess')} 🎉</div>
+            <div className="text-xs mt-1 font-mono">{t('redeemCode')}: {data.data.redeem_code}</div>
+            <div className="text-xs mt-1">{t('quantity')}: {claimQty} {claimQty !== 1 ? t('slots') : t('slot')}</div>
           </div>,
           {
             duration: 5000,
@@ -172,14 +176,14 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
         setClaimModal({ ...claimModal, isOpen: false })
         router.refresh()
       } else {
-        toast.error(data.message || 'Failed to claim benefit', {
+        toast.error(data.message || t('claimFailed'), {
           duration: 3000,
           position: 'top-center',
         })
       }
     } catch (error) {
       console.error('Error claiming benefit:', error)
-      toast.error('Error claiming benefit. Please try again.', {
+      toast.error(t('claimError'), {
         duration: 3000,
         position: 'top-center',
       })
@@ -206,7 +210,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
             <div className="flex items-center justify-between p-5 border-b border-border">
               <div className="flex items-center gap-2">
                 <Ticket size={20} className="text-primary" />
-                <h2 className="text-lg font-semibold text-foreground">Claim Benefit</h2>
+                <h2 className="text-lg font-semibold text-foreground">{t('claimBenefit')}</h2>
               </div>
               <button
                 onClick={() => setClaimModal({ ...claimModal, isOpen: false })}
@@ -218,30 +222,15 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
 
             {/* Modal Body */}
             <div className="p-5 space-y-4">
-              {/* Benefit Info */}
               <div className="p-3 rounded-lg bg-primary/5 border border-primary/20">
-                <p className="text-xs text-muted-foreground">Benefit</p>
+                <p className="text-xs text-muted-foreground">{t('benefit')}</p>
                 <p className="font-medium text-foreground">{claimModal.benefitName}</p>
               </div>
-
-              {/* Description Input - Manual dari user */}
-              {/* <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">
-                  Description <span className="text-xs text-muted-foreground">(optional)</span>
-                </label>
-                <textarea
-                  value={claimDescription}
-                  onChange={(e) => setClaimDescription(e.target.value)}
-                  placeholder="Add notes"
-                  className="w-full p-3 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                  rows={3}
-                />
-              </div> */}
 
               {/* Quantity Input */}
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground">
-                  Quantity to Claim
+                  {t('quantityToClaim')}
                 </label>
                 <div className="flex items-center gap-3">
                   <Button
@@ -276,19 +265,16 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                     +
                   </Button>
                   <span className="text-sm text-muted-foreground">
-                    Available: {claimModal.availableQuota} slots
+                    {t('available')}: {claimModal.availableQuota} {claimModal.availableQuota !== 1 ? t('slots') : t('slot')}
                   </span>
                 </div>
               </div>
 
-              {/* Hidden Active Year - tidak ditampilkan */}
               <input type="hidden" name="activeYear" value={claimModal.activeYear} />
 
-              {/* Info Note */}
               <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
                 <p className="text-xs text-amber-700 dark:text-amber-400">
-                  ⚠️ This claim will use {claimQty} slot{claimQty !== 1 ? 's' : ''} from your benefit quota.
-                  This action cannot be undone.
+                  { claimQty > 1 ? t('warningNoteSingular', { qty: claimQty }) : t('warningNotePlural', { qty: claimQty }) }
                 </p>
               </div>
             </div>
@@ -300,7 +286,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                 className="flex-1"
                 onClick={() => setClaimModal({ ...claimModal, isOpen: false })}
               >
-                Cancel
+                {t('cancel')}
               </Button>
               <Button
                 className="flex-1 gap-2 bg-linear-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600"
@@ -308,7 +294,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                 disabled={isClaiming || claimQty < 1 || claimQty > claimModal.availableQuota}
               >
                 {isClaiming ? <Loader2 size={16} className="animate-spin" /> : <CheckCircle size={16} />}
-                {isClaiming ? 'Processing...' : `Claim ${claimQty} Slot${claimQty !== 1 ? 's' : ''}`}
+                {isClaiming ? t('processing') : (claimQty > 1 ? t('claimButtonPlural', { qty: claimQty }) : t('claimButtonSingular', { qty: claimQty }))}
               </Button>
             </div>
           </div>
@@ -324,7 +310,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
         <div className="absolute top-6 left-6 right-6 z-20 flex justify-between max-[640px]:top-3 max-[640px]:left-3 max-[640px]:right-3">
           <Button variant="outline" size="sm" onClick={() => router.back()} className="gap-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-none shadow-lg md:text-xs text-[10px] max-[640px]:text-[8px] max-[640px]:h-7 max-[640px]:px-2">
             <ArrowLeft size={16} className="max-[640px]:size-3" />
-            <span className="max-[640px]:hidden">Back</span>
+            <span className="max-[640px]:hidden">{t('back')}</span>
           </Button>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={handleShare} disabled={isSharing} className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-none shadow-lg max-[640px]:h-7 max-[640px]:w-7 max-[640px]:p-0">
@@ -345,11 +331,11 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
               </Badge>
               <Badge className={`bg-primary/10 text-primary border-0 px-3 py-1.5 md:text-xs text-[8px] max-[640px]:px-2 max-[640px]:py-0.5 max-[640px]:text-[6px]`}>
                 <MapPin size={14} className="mr-1 max-[640px]:size-2 max-[640px]:mr-0.5" />
-                {event.city ? event.city : (event.province ? event.province : (event.location_place ? event.location_place : 'Online Event'))}
+                {event.city ? event.city : (event.province ? event.province : (event.location_place ? event.location_place : t('onlineEvent')))}
               </Badge>
               <Badge className={`${statusColor} border-0 px-3 py-1.5 md:text-xs text-[8px] gap-1.5 max-[640px]:px-2 max-[640px]:py-0.5 max-[640px]:text-[6px]`}>
                 {statusIcon}
-                {status}
+                {statusText}
               </Badge>
             </div>
           </div>
@@ -364,7 +350,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                 <CalendarDays size={18} className="text-primary max-[640px]:size-3.5" />
               </div>
               <div>
-                <p className="md:text-xs text-[10px] text-muted-foreground max-[640px]:text-[8px]">Date</p>
+                <p className="md:text-xs text-[10px] text-muted-foreground max-[640px]:text-[8px]">{t('date')}</p>
                 <p className="md:text-sm text-[12px] font-medium text-foreground max-[640px]:text-[9px]">
                   {event.date_start_formatted || formatDate(event.date_start)}
                   {event.date_start !== event.date_end && ` - ${event.date_end_formatted || formatDate(event.date_end)}`}
@@ -377,9 +363,9 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                 <Timer size={18} className="text-primary max-[640px]:size-3.5" />
               </div>
               <div>
-                <p className="md:text-xs text-[10px] text-muted-foreground max-[640px]:text-[8px]">Time</p>
+                <p className="md:text-xs text-[10px] text-muted-foreground max-[640px]:text-[8px]">{t('time')}</p>
                 <p className="md:text-sm text-[12px] font-medium text-foreground max-[640px]:text-[9px]">
-                  {event.time_start === '00:00:00' && event.time_end === '00:00:00' ? 'As Scheduled' : `${(event.time_start)} - ${(event.time_end)}`}
+                  {event.time_start === '00:00:00' && event.time_end === '00:00:00' ? t('asScheduled') : `${(event.time_start)} - ${(event.time_end)}`}
                 </p>
                 {event.time_start !== '00:00:00' && event.time_end !== '00:00:00' &&
                   <p className="md:text-xs text-[10px] text-muted-foreground/70 max-[640px]:text-[7px]">{event.timezone}</p>
@@ -392,9 +378,9 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                 <Building size={18} className="text-primary max-[640px]:size-3.5" />
               </div>
               <div>
-                <p className="md:text-xs text-[10px] text-muted-foreground max-[640px]:text-[8px]">Location</p>
+                <p className="md:text-xs text-[10px] text-muted-foreground max-[640px]:text-[8px]">{t('location')}</p>
                 <p className="md:text-sm text-[12px] font-medium text-foreground max-[640px]:text-[9px]">
-                  {event.location_place || 'Online Event'}
+                  {event.location_place || t('onlineEvent')}
                 </p>
                 {event.location_address && (
                   <p className="md:text-xs text-[10px] text-muted-foreground/70 truncate max-w-50 max-[640px]:text-[7px] max-[640px]:max-w-28">
@@ -427,13 +413,13 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-3 max-[640px]:w-12 max-[640px]:h-12 max-[640px]:mb-2">
                   <Ticket size={28} className="text-primary max-[640px]:size-5" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground max-[640px]:text-base">Ready to Join?</h3>
+                <h3 className="text-lg font-semibold text-foreground max-[640px]:text-base">{t('readyToJoin')}</h3>
                 <p className="text-sm text-muted-foreground mt-1 max-[640px]:text-xs">
-                  {hasBenefit?.hasBenefit ? 'Use your benefit to get voucher code' : 'Secure your spot for this event'}
+                  {hasBenefit?.hasBenefit ? t('useBenefit') : t('secureSpot')}
                 </p>
               </div>
 
-              {/* Price - Sembunyikan jika ada benefit */}
+              {/* Price */}
               {!hasBenefit?.hasBenefit && (
                 <div className="text-center mb-6 max-[640px]:mb-4">
                   {!isFree ? (
@@ -441,7 +427,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                       <span className="text-3xl font-bold text-foreground max-[640px]:text-2xl">
                         {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)}
                       </span>
-                      <span className="text-muted-foreground max-[640px]:text-xs"> / person</span>
+                      <span className="text-muted-foreground max-[640px]:text-xs"> / {t('person')}</span>
                     </>
                   ) : (
                     <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 max-[640px]:text-xl">-</span>
@@ -455,18 +441,18 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                   <div className="flex items-center gap-2 mb-2 max-[640px]:gap-1 max-[640px]:mb-1">
                     <CheckCircle size={16} className="text-green-600 dark:text-green-400 max-[640px]:size-3.5" />
                     <span className="text-sm font-semibold text-green-700 dark:text-green-400 max-[640px]:text-xs">
-                      You have benefit available!
+                      {t('benefitAvailable')}
                     </span>
                   </div>
                   <p className="text-xs text-green-600 dark:text-green-400 mb-2 max-[640px]:text-[10px]">
-                    Use your benefit to claim voucher code
+                    {t('useBenefitToClaim')}
                   </p>
                   {hasBenefit.benefits.map((b, idx) => {
                     const remainingQuota = b.benefit.active_quota.available ?? 0
                     return (
                       <div key={idx} className="text-xs text-green-600 dark:text-green-400 max-[640px]:text-[10px]">
                         <span className="font-medium">✨ {b.benefit.name}</span>
-                        <span className="ml-2">({remainingQuota} slots left)</span>
+                        <span className="ml-2">({remainingQuota} {remainingQuota !== 1 ? t('slotsLeft') : t('slotLeft')})</span>
                       </div>
                     )
                   })}
@@ -485,7 +471,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                   <MapPin size={16} className="text-primary shrink-0 max-[640px]:size-3.5" />
                   <div>
                     <span className="text-muted-foreground truncate block">
-                      {event.location_place || 'Online Event'}
+                      {event.location_place || t('onlineEvent')}
                     </span>
                     {event.location_address && (
                       <p className="text-xs text-muted-foreground/70 truncate max-w-50 max-[640px]:text-[9px] max-[640px]:max-w-32">
@@ -504,12 +490,12 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                     value={selectedBenefitId}
                     onChange={(e) => setSelectedBenefitId(e.target.value)}
                   >
-                    <option value="">Select benefit to use...</option>
+                    <option value="">{t('selectBenefit')}</option>
                     {hasBenefit.benefits.map((b, idx) => {
                       const remainingQuota = b.benefit.active_quota.available ?? 0
                       return (
                         <option key={idx} value={b.benefit.id}>
-                          {b.benefit.name} ({remainingQuota} slots left)
+                          {b.benefit.name} ({remainingQuota} {remainingQuota !== 1 ? t('slotsLeft') : t('slotLeft')})
                         </option>
                       )
                     })}
@@ -521,12 +507,12 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                     onClick={handleOpenClaimModal}
                   >
                     <CheckCircle size={16} className="max-[640px]:size-3.5" />
-                    Claim with Benefit
+                    {t('claimWithBenefit')}
                     <ChevronRight size={16} className="max-[640px]:size-3.5" />
                   </Button>
                   {selectedBenefitId && maxQty === 0 && (
                     <p className="text-center text-xs text-red-500 max-[640px]:text-[10px]">
-                      No slots available for this benefit
+                      {t('noSlotsAvailable')}
                     </p>
                   )}
                 </div>
@@ -542,10 +528,10 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                   }}
                 >
                   {status === 'ended'
-                    ? 'Event Ended'
+                    ? t('eventEnded')
                     : event.sales_active !== 'active'
-                      ? 'Registration Closed'
-                      : 'Register Now'
+                      ? t('registrationClosed')
+                      : t('registerNow')
                   }
                   <ChevronRight size={16} className="max-[640px]:size-3.5" />
                 </Button>
@@ -554,7 +540,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
               {/* Contact Info */}
               <div className="mt-4 pt-4 border-t border-border max-[640px]:mt-3 max-[640px]:pt-3">
                 <p className="text-center text-xs text-muted-foreground mb-3 max-[640px]:text-[10px] max-[640px]:mb-2">
-                  Have questions? Contact us
+                  {t('haveQuestions')}
                 </p>
                 <div className="flex flex-col gap-2 max-[640px]:gap-1.5">
                   <a href="mailto:contact@mentarigroups.com"

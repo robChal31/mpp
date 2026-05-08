@@ -22,8 +22,9 @@ import EventsSection from '@/components/event/events-section'
 import EventsSectionList from '@/components/event/events-section-list'
 import { EVENT_TYPES } from '@/constants/event.constant'
 import { EventCategory } from '@/types/event/event.types'
+import { useTranslations } from 'next-intl'
 
-// Subject options
+// Subject options - akan diganti dengan translation nanti
 const SUBJECTS = [
   { value: 'english', label: 'English' },
   { value: 'mathematics', label: 'Mathematics' },
@@ -46,13 +47,15 @@ const CITIES = [
   'Yogyakarta',
 ]
 
-// Sort options
+// Sort options - akan diganti dengan translation nanti
 const SORT_OPTIONS = [
-  { value: 'date_asc', label: 'Date (Earliest First)', icon: CalendarDays },
-  { value: 'date_desc', label: 'Date (Latest First)', icon: CalendarDays },
+  { value: 'date_asc', icon: CalendarDays },
+  { value: 'date_desc', icon: CalendarDays },
 ]
 
 export default function EventsPage() {
+  const t = useTranslations('Events')
+  const tSubjects = useTranslations('Subjects')
   const [typeFilter, setTypeFilter] = useState<EventCategory | 'all'>('all')
   const [subjectFilter, setSubjectFilter] = useState<string>('all')
   const [cityFilter, setCityFilter] = useState<string>('all')
@@ -73,22 +76,23 @@ export default function EventsPage() {
   }
 
   const getSelectedTypeLabel = () => {
-    if (typeFilter === 'all') return 'All Categories'
-    return EVENT_TYPES.find(t => t.type === typeFilter)?.label || 'All Categories'
+    if (typeFilter === 'all') return t('allCategories')
+    return EVENT_TYPES.find(t => t.type === typeFilter)?.label || t('allCategories')
   }
 
   const getSelectedSubjectLabel = () => {
-    if (subjectFilter === 'all') return 'All Subjects'
-    return SUBJECTS.find(s => s.value === subjectFilter)?.label || 'All Subjects'
+    if (subjectFilter === 'all') return t('allSubjects')
+    return SUBJECTS.find(s => s.value === subjectFilter)?.label || t('allSubjects')
   }
 
   const getSelectedCityLabel = () => {
-    if (cityFilter === 'all') return 'All Cities'
+    if (cityFilter === 'all') return t('allCities')
     return cityFilter
   }
 
   const getSelectedSortLabel = () => {
-    return SORT_OPTIONS.find(s => s.value === sortBy)?.label || 'Sort'
+    if (sortBy === 'date_asc') return t('sortDateAsc')
+    return t('sortDateDesc')
   }
 
   // Filter component yang reusable dengan toggle
@@ -102,7 +106,7 @@ export default function EventsPage() {
         >
           <span className="flex items-center gap-2">
             <Grid3X3 size={14} />
-            Category
+            {t('category')}
           </span>
           <ChevronDown size={16} className={`transition-transform ${openSections.category ? 'rotate-180' : ''}`} />
         </button>
@@ -116,7 +120,7 @@ export default function EventsPage() {
                   : 'text-foreground hover:bg-muted/50'
               }`}
             >
-              <span>All Categories</span>
+              <span>{t('allCategories')}</span>
               {typeFilter === 'all' && <ChevronRight size={16} />}
             </button>
             {EVENT_TYPES.map((item) => (
@@ -148,7 +152,7 @@ export default function EventsPage() {
         >
           <span className="flex items-center gap-2">
             <BookOpen size={14} />
-            Subject
+            {t('subject')}
           </span>
           <ChevronDown size={16} className={`transition-transform ${openSections.subject ? 'rotate-180' : ''}`} />
         </button>
@@ -162,7 +166,7 @@ export default function EventsPage() {
                   : 'text-foreground hover:bg-muted/50'
               }`}
             >
-              <span>All Subjects</span>
+              <span>{t('allSubjects')}</span>
               {subjectFilter === 'all' && <ChevronRight size={16} />}
             </button>
             {SUBJECTS.map((subject) => (
@@ -175,7 +179,7 @@ export default function EventsPage() {
                     : 'text-foreground hover:bg-muted/50'
                 }`}
               >
-                <span>{subject.label}</span>
+                <span>{tSubjects(subject.value)}</span>
                 {subjectFilter === subject.value && <ChevronRight size={16} />}
               </button>
             ))}
@@ -191,7 +195,7 @@ export default function EventsPage() {
         >
           <span className="flex items-center gap-2">
             <MapPin size={14} />
-            City
+            {t('city')}
           </span>
           <ChevronDown size={16} className={`transition-transform ${openSections.city ? 'rotate-180' : ''}`} />
         </button>
@@ -205,7 +209,7 @@ export default function EventsPage() {
                   : 'text-foreground hover:bg-muted/50'
               }`}
             >
-              <span>All Cities</span>
+              <span>{t('allCities')}</span>
               {cityFilter === 'all' && <ChevronRight size={16} />}
             </button>
             <div className="grid grid-cols-2 gap-1">
@@ -238,7 +242,7 @@ export default function EventsPage() {
           }}
           className="w-full text-center text-xs text-primary hover:underline py-2 mt-2"
         >
-          Reset all filters
+          {t('resetAll')}
         </button>
       )}
     </div>
@@ -251,13 +255,13 @@ export default function EventsPage() {
         <div className="text-center mb-8 max-[640px]:mb-6">
           <div className="inline-flex items-center gap-2 px-4 max-[640px]:px-3 py-2 rounded-full bg-primary/10 text-primary mb-4 max-[640px]:mb-3">
             <Calendar size={18} className="max-[640px]:size-4" />
-            <span className="text-sm max-[640px]:text-xs font-medium">Upcoming Events</span>
+            <span className="text-sm max-[640px]:text-xs font-medium">{t('upcomingBadge')}</span>
           </div>
           <h1 className="text-4xl max-[640px]:text-2xl md:text-5xl font-bold text-foreground mb-4 max-[640px]:mb-2">
-            Events & Competitions
+            {t('pageTitle')}
           </h1>
           <p className="text-lg max-[640px]:text-sm text-muted-foreground max-w-2xl mx-auto">
-            Explore and register for upcoming events, competitions, and training programs
+            {t('pageDescription')}
           </p>
         </div>
 
@@ -268,7 +272,7 @@ export default function EventsPage() {
             <div className="sticky top-24 bg-card rounded-xl border border-border p-4">
               <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
                 <Filter size={16} className="text-primary" />
-                <h3 className="font-semibold text-foreground">Filters</h3>
+                <h3 className="font-semibold text-foreground">{t('filters')}</h3>
               </div>
               <FilterContent />
             </div>
@@ -285,7 +289,7 @@ export default function EventsPage() {
                   className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-background text-sm lg:hidden"
                 >
                   <SlidersHorizontal size={14} />
-                  Filter
+                  {t('filter')}
                   {(typeFilter !== 'all' || subjectFilter !== 'all' || cityFilter !== 'all') && (
                     <span className="w-2 h-2 rounded-full bg-primary" />
                   )}
@@ -320,15 +324,13 @@ export default function EventsPage() {
                             }`}
                           >
                             <option.icon size={14} />
-                            {option.label}
+                            {option.value === 'date_asc' ? t('sortDateAsc') : t('sortDateDesc')}
                           </button>
                         ))}
                       </div>
                     </>
                   )}
                 </div>
-
-
               </div>
 
               {/* View Toggle */}
@@ -342,8 +344,8 @@ export default function EventsPage() {
                   }`}
                 >
                   <Grid3x3 size={14} className="max-[640px]:size-3.5" />
-                  <span className="hidden sm:inline">Grid View</span>
-                  <span className="sm:hidden">Grid</span>
+                  <span className="hidden sm:inline">{t('gridView')}</span>
+                  <span className="sm:hidden">{t('grid')}</span>
                 </Button>
                 <Button
                   variant={viewMode === 'list' ? 'default' : 'ghost'}
@@ -354,8 +356,8 @@ export default function EventsPage() {
                   }`}
                 >
                   <List size={14} className="max-[640px]:size-3.5" />
-                  <span className="hidden sm:inline">List View</span>
-                  <span className="sm:hidden">List</span>
+                  <span className="hidden sm:inline">{t('listView')}</span>
+                  <span className="sm:hidden">{t('list')}</span>
                 </Button>
               </div>
             </div>
@@ -363,7 +365,7 @@ export default function EventsPage() {
             {/* Active filter chips */}
             {(typeFilter !== 'all' || subjectFilter !== 'all' || cityFilter !== 'all') && (
               <div className="flex flex-wrap items-center gap-1.5 mb-4">
-                <span className="text-[10px] text-muted-foreground">Active:</span>
+                <span className="text-[10px] text-muted-foreground">{t('active')}</span>
                 {typeFilter !== 'all' && (
                   <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs bg-primary/10 text-primary">
                     {getSelectedTypeLabel()}
@@ -390,12 +392,12 @@ export default function EventsPage() {
                   }}
                   className="text-[10px] text-muted-foreground hover:text-primary transition-colors ml-1 cursor-pointer"
                 >
-                  Clear all
+                  {t('clearAll')}
                 </button>
               </div>
             )}
 
-            {/* Events Content - passing sortBy */}
+            {/* Events Content */}
             {viewMode === 'grid' ? (
               <EventsSection 
                 typeFilter={typeFilter} 
@@ -427,7 +429,7 @@ export default function EventsPage() {
             <div className="flex items-center justify-between p-4 border-b border-border">
               <div className="flex items-center gap-2">
                 <Filter size={18} className="text-primary" />
-                <h2 className="font-semibold text-foreground">Filters</h2>
+                <h2 className="font-semibold text-foreground">{t('filters')}</h2>
               </div>
               <button
                 onClick={() => setIsFilterOpen(false)}
@@ -446,7 +448,7 @@ export default function EventsPage() {
                 className="w-full"
                 onClick={() => setIsFilterOpen(false)}
               >
-                Apply Filters
+                {t('applyFilters')}
               </Button>
             </div>
           </div>

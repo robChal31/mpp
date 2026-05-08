@@ -20,8 +20,8 @@ import {
   Shield,
   Info
 } from 'lucide-react'
-
-import {toast} from 'sonner'
+import { toast } from 'sonner'
+import { useTranslations } from 'next-intl'
 
 interface UserData {
   name: string
@@ -29,6 +29,7 @@ interface UserData {
 }
 
 export default function SettingsPage() {
+  const t = useTranslations('Settings')
   const [user, setUser] = useState<UserData | null>(null)
   const [loadingUser, setLoadingUser] = useState(true)
   const [activeTab, setActiveTab] = useState<'account' | 'security'>('account')
@@ -58,32 +59,32 @@ export default function SettingsPage() {
           setUser(data.user)
         }
       } catch (error) {
-        toast.error('Failed to fetch user data')
+        toast.error(t('failedToFetchUser'))
       } finally {
         setLoadingUser(false)
       }
     }
     fetchUser()
-  }, [])
+  }, [t])
 
   const handlePasswordChange = async () => {
     if (!passwords.currentPassword) {
-      setMessage({ type: 'error', text: 'Current password is required' })
+      setMessage({ type: 'error', text: t('currentPasswordRequired') })
       return
     }
     
     if (!passwords.newPassword) {
-      setMessage({ type: 'error', text: 'New password is required' })
+      setMessage({ type: 'error', text: t('newPasswordRequired') })
       return
     }
     
     if (passwords.newPassword !== passwords.confirmPassword) {
-      setMessage({ type: 'error', text: 'New passwords do not match with confirm password' })
+      setMessage({ type: 'error', text: t('passwordsDoNotMatch') })
       return
     }
     
     if (passwords.newPassword.length < 6) {
-      setMessage({ type: 'error', text: 'Password must be at least 6 characters' })
+      setMessage({ type: 'error', text: t('passwordMinLength') })
       return
     }
     
@@ -103,14 +104,14 @@ export default function SettingsPage() {
       const data = await res.json()
       
       if (data.status === 'success') {
-        setMessage({ type: 'success', text: 'Password changed successfully!' })
+        setMessage({ type: 'success', text: t('passwordChangedSuccess') })
         setPasswords({ currentPassword: '', newPassword: '', confirmPassword: '' })
         setTimeout(() => setMessage(null), 3000)
       } else {
-        setMessage({ type: 'error', text: data.message || 'Failed to change password' })
+        setMessage({ type: 'error', text: data.message || t('failedToChangePassword') })
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Something went wrong' })
+      setMessage({ type: 'error', text: t('somethingWentWrong') })
     } finally {
       setLoading(false)
     }
@@ -144,8 +145,8 @@ export default function SettingsPage() {
           <Settings className="text-primary" size={24} />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Settings</h1>
-          <p className="text-sm text-muted-foreground">Manage your account settings</p>
+          <h1 className="text-2xl font-bold text-foreground">{t('title')}</h1>
+          <p className="text-sm text-muted-foreground">{t('description')}</p>
         </div>
       </div>
 
@@ -160,7 +161,7 @@ export default function SettingsPage() {
           }`}
         >
           <User size={16} />
-          Account
+          {t('accountTab')}
         </button>
         <button
           onClick={() => setActiveTab('security')}
@@ -171,7 +172,7 @@ export default function SettingsPage() {
           }`}
         >
           <Shield size={16} />
-          Security
+          {t('securityTab')}
         </button>
       </div>
 
@@ -192,7 +193,7 @@ export default function SettingsPage() {
         <Card className="p-6 border-border">
           <div className="flex items-center gap-2 mb-5 pb-3 border-b border-border/50">
             <Info size={18} className="text-primary" />
-            <h2 className="font-semibold text-foreground">Profile Information</h2>
+            <h2 className="font-semibold text-foreground">{t('profileInfo')}</h2>
           </div>
           
           <div className="space-y-4">
@@ -201,7 +202,7 @@ export default function SettingsPage() {
                 <User size={18} className="text-primary" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Full Name</p>
+                <p className="text-xs text-muted-foreground">{t('fullName')}</p>
                 <p className="text-base font-medium text-foreground">{user?.name || '-'}</p>
               </div>
             </div>
@@ -211,7 +212,7 @@ export default function SettingsPage() {
                 <Mail size={18} className="text-primary" />
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Email Address</p>
+                <p className="text-xs text-muted-foreground">{t('emailAddress')}</p>
                 <p className="text-base font-medium text-foreground">{user?.email || '-'}</p>
               </div>
             </div>
@@ -223,7 +224,7 @@ export default function SettingsPage() {
                 className="gap-2 text-red-500 border-red-300 hover:text-red-600 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-950/30 w-full sm:w-auto"
               >
                 <LogOut size={16} />
-                Log Out
+                {t('logOut')}
               </Button>
             </div>
           </div>
@@ -235,13 +236,13 @@ export default function SettingsPage() {
         <Card className="p-6 border-border">
           <div className="flex items-center gap-2 mb-5 pb-3 border-b border-border/50">
             <Lock size={18} className="text-primary" />
-            <h2 className="font-semibold text-foreground">Change Password</h2>
+            <h2 className="font-semibold text-foreground">{t('changePassword')}</h2>
           </div>
           
           <div className="space-y-4">
             <div className="space-y-1.5">
               <label className="block text-sm font-medium text-foreground">
-                Current Password
+                {t('currentPassword')}
               </label>
               <div className="relative">
                 <Input
@@ -249,7 +250,7 @@ export default function SettingsPage() {
                   value={passwords.currentPassword}
                   onChange={(e) => setPasswords(prev => ({ ...prev, currentPassword: e.target.value }))}
                   className="w-full pr-10"
-                  placeholder="Enter current password"
+                  placeholder={t('enterCurrentPassword')}
                 />
                 <button
                   type="button"
@@ -263,7 +264,7 @@ export default function SettingsPage() {
 
             <div className="space-y-1.5">
               <label className="block text-sm font-medium text-foreground">
-                New Password
+                {t('newPassword')}
               </label>
               <div className="relative">
                 <Input
@@ -271,7 +272,7 @@ export default function SettingsPage() {
                   value={passwords.newPassword}
                   onChange={(e) => setPasswords(prev => ({ ...prev, newPassword: e.target.value }))}
                   className="w-full pr-10"
-                  placeholder="Min. 6 characters"
+                  placeholder={t('min6Characters')}
                 />
                 <button
                   type="button"
@@ -285,7 +286,7 @@ export default function SettingsPage() {
 
             <div className="space-y-1.5">
               <label className="block text-sm font-medium text-foreground">
-                Confirm New Password
+                {t('confirmPassword')}
               </label>
               <div className="relative">
                 <Input
@@ -293,7 +294,7 @@ export default function SettingsPage() {
                   value={passwords.confirmPassword}
                   onChange={(e) => setPasswords(prev => ({ ...prev, confirmPassword: e.target.value }))}
                   className="w-full pr-10"
-                  placeholder="Confirm new password"
+                  placeholder={t('confirmNewPassword')}
                 />
                 <button
                   type="button"
@@ -311,7 +312,7 @@ export default function SettingsPage() {
               disabled={loading}
             >
               {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-              {loading ? 'Changing...' : 'Change Password'}
+              {loading ? t('changing') : t('changePassword')}
             </Button>
           </div>
         </Card>

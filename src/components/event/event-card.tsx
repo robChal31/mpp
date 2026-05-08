@@ -6,6 +6,7 @@ import { formatDate, formatEventDate } from '@/lib/utils/date'
 import { Button } from '../ui/button'
 import { Calendar, MapPin, Sparkles, ArrowRight } from 'lucide-react'
 import { getEventTypeConfig, getEventTypeIcon } from '@/constants/event.constant'
+import { useTranslations } from 'next-intl'
 
 interface EventCardProps {
   event: EventI
@@ -14,6 +15,7 @@ interface EventCardProps {
 }
 
 export function EventCard({ event, variant = 'default', onClick }: EventCardProps) {
+    const t = useTranslations('Event')
     const EventTypeIcon = getEventTypeIcon(event.category as EventCategory)
     const typeConfig = getEventTypeConfig(event.category as EventCategory)
     
@@ -54,7 +56,7 @@ export function EventCard({ event, variant = 'default', onClick }: EventCardProp
                 {/* Date Circle */}
                 <div className="absolute -bottom-6 -right-6 w-24 h-24 max-[640px]:w-20 max-[640px]:h-20 bg-primary rounded-full opacity-90 group-hover:scale-150 transition-transform duration-700" />
                 <div className="absolute bottom-4 right-4 text-white text-right z-10 max-[640px]:bottom-2 max-[640px]:right-2">
-                    <p className="text-xs font-light max-[640px]:text-[8px]">Starts</p>
+                    <p className="text-xs font-light max-[640px]:text-[8px]">{t('starts')}</p>
                     <p className="text-xl font-bold leading-5 max-[640px]:text-sm max-[640px]:leading-4">
                         {formatDate(event.date_start).split(' ')[0]}
                     </p>
@@ -77,7 +79,7 @@ export function EventCard({ event, variant = 'default', onClick }: EventCardProp
                             <Calendar size={14} className="text-primary max-[640px]:size-3" />
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-[10px] text-muted-foreground/70 max-[640px]:text-[8px]">End at</span>
+                            <span className="text-[10px] text-muted-foreground/70 max-[640px]:text-[8px]">{t('endsAt')}</span>
                             <span className="text-xs font-medium text-foreground max-[640px]:text-[10px]">{formatEventDate(event.date_end)}</span>
                         </div>
                     </div>
@@ -87,8 +89,8 @@ export function EventCard({ event, variant = 'default', onClick }: EventCardProp
                             <MapPin size={14} className="text-primary max-[640px]:size-3" />
                         </div>
                         <div className="flex flex-col flex-1 min-w-0">
-                            <span className="text-[10px] text-muted-foreground/70 max-[640px]:text-[8px]">Location</span>
-                            <span className="text-xs font-medium text-foreground truncate max-[640px]:text-[10px]">{event.location_place || 'Online Event'}</span>
+                            <span className="text-[10px] text-muted-foreground/70 max-[640px]:text-[8px]">{t('location')}</span>
+                            <span className="text-xs font-medium text-foreground truncate max-[640px]:text-[10px]">{event.location_place || t('onlineEvent')}</span>
                         </div>
                     </div>
                 </div>
@@ -102,7 +104,7 @@ export function EventCard({ event, variant = 'default', onClick }: EventCardProp
                         window.location.href = `/events/${event.title_url}`
                     }}
                 >
-                    <span>View Details</span>
+                    <span>{t('viewDetails')}</span>
                     <ArrowRight size={16} className="transition-transform duration-300 group-hover/btn:translate-x-1 max-[640px]:size-3" />
                 </Button>
             </div>

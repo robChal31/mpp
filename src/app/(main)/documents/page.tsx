@@ -1,316 +1,265 @@
+// src/app/(main)/programs/page.tsx
 'use client'
 
-import { Button } from '@/components/ui/button'
+import { useEffect, useState } from 'react'
 import { Card } from '@/components/ui/card'
-import { FileText, Download, Filter, Search, Eye } from 'lucide-react'
-import { useState } from 'react'
-import { Input } from '@/components/ui/input'
-import { useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
-import Loading from './loading'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Calendar,
+  CheckCircle,
+  ChevronDown,
+  ChevronUp,
+  Phone,
+  Mail,
+  FileText,
+  UserCircle,
+  Folder,
+  Loader2
+} from 'lucide-react'
+import { formatDate } from '@/lib/utils/date'
+import { useTranslations } from 'next-intl'
+import { toast } from 'sonner'
 
-interface Document {
-  id: number
-  title: string
-  type: 'contract' | 'policy' | 'guideline' | 'report'
-  year: number
-  uploadDate: string
-  size: string
-  description: string
+// Tipe data sesuai API
+interface PKDocument {
+  id: string
+  name: string
+  pk: {
+    no_pk: string
+    id_draft?: string
+    start_at: string
+    expired_at: string
+    status: 'active' | 'expired'
+  }
+  pic: {
+    name: string
+    position: string
+    email: string
+    phone: string
+  }
 }
 
-const mockDocuments: Document[] = [
-  {
-    id: 1,
-    title: 'Partnership Agreement - 2025',
-    type: 'contract',
-    year: 2025,
-    uploadDate: 'Jan 5, 2025',
-    size: '2.4 MB',
-    description: 'Annual partnership contract outlining terms, benefits, and obligations for 2025.',
-  },
-  {
-    id: 2,
-    title: 'Benefit Usage Policy',
-    type: 'policy',
-    year: 2025,
-    uploadDate: 'Dec 15, 2024',
-    size: '1.8 MB',
-    description: 'Comprehensive policy document defining benefit usage rules and compliance requirements.',
-  },
-  {
-    id: 3,
-    title: 'Digital Learning Platform Guidelines',
-    type: 'guideline',
-    year: 2025,
-    uploadDate: 'Jan 1, 2025',
-    size: '3.2 MB',
-    description: 'Step-by-step guidelines for implementing and utilizing the digital learning platform.',
-  },
-  {
-    id: 4,
-    title: 'Annual Impact Report - 2024',
-    type: 'report',
-    year: 2024,
-    uploadDate: 'Jan 10, 2025',
-    size: '5.6 MB',
-    description: 'Comprehensive report showcasing the impact of partnerships and benefits in 2024.',
-  },
-  {
-    id: 5,
-    title: 'Partnership Agreement - 2024',
-    type: 'contract',
-    year: 2024,
-    uploadDate: 'Jan 15, 2024',
-    size: '2.1 MB',
-    description: 'Previous year partnership contract for reference and historical records.',
-  },
-  {
-    id: 6,
-    title: 'Teacher Training Manual',
-    type: 'guideline',
-    year: 2024,
-    uploadDate: 'Oct 1, 2024',
-    size: '4.2 MB',
-    description: 'Complete manual for training teachers on new educational programs and tools.',
-  },
-  {
-    id: 7,
-    title: 'Program Implementation Best Practices',
-    type: 'guideline',
-    year: 2025,
-    uploadDate: 'Dec 28, 2024',
-    size: '2.9 MB',
-    description: 'Best practices document for effectively implementing MBS programs in schools.',
-  },
-  {
-    id: 8,
-    title: 'Annual Impact Report - 2023',
-    type: 'report',
-    year: 2023,
-    uploadDate: 'Jan 20, 2024',
-    size: '6.1 MB',
-    description: 'Previous year impact report demonstrating long-term benefits and growth.',
-  },
-]
-
-export default function DocumentsPage() {
-  const searchParams = useSearchParams()
-  const [searchQuery, setSearchQuery] = useState('')
-  const [typeFilter, setTypeFilter] = useState<'all' | Document['type']>('all')
-  const [yearFilter, setYearFilter] = useState<'all' | number>('all')
-
-  const filteredDocuments = mockDocuments.filter((doc) => {
-    const matchesSearch =
-      doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      doc.description.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesType = typeFilter === 'all' || doc.type === typeFilter
-    const matchesYear = yearFilter === 'all' || doc.year === yearFilter
-
-    return matchesSearch && matchesType && matchesYear
-  })
-
-  const getTypeColor = (type: Document['type']) => {
-    switch (type) {
-      case 'contract':
-        return 'bg-blue-100 text-blue-800 border-blue-300'
-      case 'policy':
-        return 'bg-purple-100 text-purple-800 border-purple-300'
-      case 'guideline':
-        return 'bg-green-100 text-green-800 border-green-300'
-      case 'report':
-        return 'bg-orange-100 text-orange-800 border-orange-300'
+interface ApiResponse {
+  status: string
+  message: string
+  data: {
+    user: {
+      id: string
+      name: string
+      email: string
+      institution_id: string
     }
+    pk_documents: PKDocument[]
+  }
+}
+
+export default function DocumentPage() {
+  const t = useTranslations('Programs')
+  const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [pkDocuments, setPkDocuments] = useState<PKDocument[]>([])
+  const [loading, setLoading] = useState(true)
+
+  const toggleExpand = (id: string) => {
+    setExpandedId(expandedId === id ? null : id)
   }
 
-  const getTypeLabel = (type: Document['type']) => {
-    switch (type) {
-      case 'contract':
-        return 'Contract'
-      case 'policy':
-        return 'Policy'
-      case 'guideline':
-        return 'Guideline'
-      case 'report':
-        return 'Report'
+  useEffect(() => {
+    const loadPKDocuments = async () => {
+      setLoading(true)
+      try {
+        const res = await fetch('/api/mpartner/benefits/document', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        const data = await res.json()
+        
+        if (data.status === 'error') {
+          toast.error(data.message || t('failedToLoad'))
+          setPkDocuments([])
+        } else {
+          // Perbaiki pengambilan data - sesuai dengan struktur response
+          const documents = data.data?.documents?.pk_documents || []
+          if (documents.length > 0) {
+            setPkDocuments(documents)
+            // Expand card pertama
+            setExpandedId(documents[0].id)
+          } else {
+            setPkDocuments([])
+          }
+        }
+      } catch (err) {
+        console.error(err)
+        toast.error(t('failedToLoad'))
+        setPkDocuments([])
+      } finally {
+        setLoading(false)
+      }
     }
+    loadPKDocuments()
+  }, [t])
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-100">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    )
   }
 
-  const years = [...new Set(mockDocuments.map((d) => d.year))].sort((a, b) => b - a)
+  if (pkDocuments.length === 0) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-10">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="p-2 rounded-xl bg-primary/10">
+            <Folder className="text-primary" size={24} />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">{t('title')}</h1>
+            <p className="text-sm text-muted-foreground">{t('description')}</p>
+          </div>
+        </div>
+        <div className="text-center py-16">
+          <Folder size={48} className="mx-auto text-muted-foreground mb-4 opacity-30" />
+          <p className="text-muted-foreground">{t('noData')}</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <Suspense fallback={<Loading />}>
-      <div className="space-y-8">
-        {/* Header */}
+    <div className="max-w-3xl mx-auto px-4 py-10">
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-8">
+        <div className="p-2 rounded-xl bg-primary/10">
+          <Folder className="text-primary" size={24} />
+        </div>
         <div>
-          <h1 className="text-3xl font-bold text-foreground mb-2 flex items-center gap-3">
-            <FileText className="text-primary" size={32} />
-            Document Archive
-          </h1>
-          <p className="text-muted-foreground">
-            Access partnership contracts, policies, guidelines, and reports.
-          </p>
+          <h1 className="text-2xl font-bold text-foreground">{t('title')}</h1>
+          <p className="text-sm text-muted-foreground">{t('description')}</p>
         </div>
-
-        {/* Search and Filters */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Search size={20} className="text-muted-foreground" />
-            <Input
-              type="text"
-              placeholder="Search documents by title or description..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1"
-            />
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            <Filter size={20} className="text-muted-foreground mt-2" />
-            <div className="flex flex-wrap gap-2 flex-1">
-              {/* Type Filter */}
-              <Button
-                variant={typeFilter === 'all' ? 'default' : 'outline'}
-                onClick={() => setTypeFilter('all')}
-                className={typeFilter === 'all' ? 'bg-primary text-primary-foreground' : ''}
-                size="sm"
-              >
-                All Types
-              </Button>
-              {['contract', 'policy', 'guideline', 'report'].map((type) => (
-                <Button
-                  key={type}
-                  variant={typeFilter === type as Document['type'] ? 'default' : 'outline'}
-                  onClick={() => setTypeFilter(type as Document['type'])}
-                  className={
-                    typeFilter === type ? 'bg-primary text-primary-foreground' : ''
-                  }
-                  size="sm"
-                >
-                  {type.charAt(0).toUpperCase() + type.slice(1)}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            <Button
-              variant={yearFilter === 'all' ? 'default' : 'outline'}
-              onClick={() => setYearFilter('all')}
-              className={yearFilter === 'all' ? 'bg-primary text-primary-foreground' : ''}
-              size="sm"
-            >
-              All Years
-            </Button>
-            {years.map((year) => (
-              <Button
-                key={year}
-                variant={yearFilter === year ? 'default' : 'outline'}
-                onClick={() => setYearFilter(year)}
-                className={yearFilter === year ? 'bg-primary text-primary-foreground' : ''}
-                size="sm"
-              >
-                {year}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        {/* Documents List */}
-        <div className="space-y-3">
-          {filteredDocuments.length > 0 ? (
-            filteredDocuments.map((doc) => (
-              <Card
-                key={doc.id}
-                className="p-5 border border-border hover:shadow-md hover:border-primary/50 transition-all"
-              >
-                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                  <div className="flex gap-4 flex-1">
-                    <div className="p-3 bg-primary/10 rounded-lg h-fit">
-                      <FileText className="text-primary" size={24} />
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start gap-2 flex-wrap mb-2">
-                        <h3 className="text-lg font-bold text-foreground">
-                          {doc.title}
-                        </h3>
-                        <span className={`px-2 py-1 rounded text-xs font-semibold border whitespace-nowrap ${getTypeColor(doc.type)}`}>
-                          {getTypeLabel(doc.type)}
-                        </span>
-                        <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded">
-                          {doc.year}
-                        </span>
-                      </div>
-
-                      <p className="text-sm text-muted-foreground mb-2 line-clamp-2">
-                        {doc.description}
-                      </p>
-
-                      <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
-                        <span>Uploaded: {doc.uploadDate}</span>
-                        <span>Size: {doc.size}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-2 flex-shrink-0">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="gap-2 bg-transparent"
-                    >
-                      <Eye size={16} />
-                      Preview
-                    </Button>
-                    <Button
-                      className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
-                      size="sm"
-                    >
-                      <Download size={16} />
-                      Download
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))
-          ) : (
-            <Card className="p-8 border border-border text-center">
-              <FileText className="mx-auto text-muted-foreground mb-3" size={32} />
-              <p className="text-muted-foreground">No documents found matching your criteria.</p>
-            </Card>
-          )}
-        </div>
-
-        {/* Stats */}
-        <Card className="p-6 border border-border bg-secondary/50">
-          <h3 className="text-lg font-bold text-foreground mb-4">Archive Statistics</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">Total Documents</p>
-              <p className="text-2xl font-bold text-foreground">
-                {mockDocuments.length}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">Contracts</p>
-              <p className="text-2xl font-bold text-foreground">
-                {mockDocuments.filter((d) => d.type === 'contract').length}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">Policies</p>
-              <p className="text-2xl font-bold text-foreground">
-                {mockDocuments.filter((d) => d.type === 'policy').length}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground mb-1">Years Covered</p>
-              <p className="text-2xl font-bold text-foreground">{years.length}</p>
-            </div>
-          </div>
-        </Card>
       </div>
-    </Suspense>
+
+      {/* Program Cards */}
+      <div className="space-y-4">
+        {pkDocuments.map((program) => {
+          const isExpanded = expandedId === program.id
+          const isActive = program.pk.status === 'active'
+          // Bersihkan no_pk dari karakter aneh seperti &#39;
+          const cleanNoPk = program.pk.no_pk?.replace(/&#39;/, "'") || program.pk.no_pk
+
+          return (
+            <Card 
+              key={program.id} 
+              className={`overflow-hidden transition-all duration-200 ${
+                isActive ? 'hover:border-primary/40' : 'opacity-70'
+              }`}
+            >
+              <div className="p-5 pt-2">
+                {/* PK Number + Status */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <FileText size={12} className="text-muted-foreground" />
+                    <span className="text-xs font-mono text-muted-foreground">
+                      {cleanNoPk}
+                    </span>
+                  </div>
+                  {isActive ? (
+                    <Badge variant="outline" className="text-[10px] text-green-600 border-green-200 bg-green-50">
+                      <CheckCircle size={10} className="mr-1" />
+                      {t('active')}
+                    </Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-[10px] text-red-600 border-red-200 bg-red-50">
+                      {t('expired')}
+                    </Badge>
+                  )}
+                </div>
+
+                {/* Title */}
+                <h3 className="text-lg font-semibold text-foreground mb-1">
+                  {program.name}
+                </h3>
+
+                {/* Validity Period */}
+                <div className="flex items-center gap-3 text-xs text-muted-foreground mb-4 pb-3 border-b border-border/30">
+                  <span className="flex items-center gap-1">
+                    <Calendar size={12} />
+                    {formatDate(program.pk.start_at)} — {formatDate(program.pk.expired_at)}
+                  </span>
+                </div>
+
+                {/* PIC Section */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <UserCircle size={16} className="text-primary" />
+                    <span className="text-sm text-muted-foreground">{t('pic')}:</span>
+                    <span className="text-sm font-medium text-foreground">
+                      {program.pic?.name && program.pic.name !== '-' ? program.pic.name : t('noPIC')}
+                    </span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => toggleExpand(program.id)}
+                    className="gap-1 text-xs h-8"
+                  >
+                    {isExpanded ? t('hide') : t('details')}
+                    {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                  </Button>
+                </div>
+
+                {/* Expanded: PIC Details */}
+                {isExpanded && program.pic?.name && program.pic.name !== '-' && (
+                  <div className="mt-4 pt-3 border-t border-border/30">
+                    <div className="space-y-2">
+                      {program.pic.position && program.pic.position !== '-' && (
+                        <p className="text-sm">
+                          <span className="text-muted-foreground">{t('position')}:</span>{' '}
+                          <span className="text-foreground">{program.pic.position}</span>
+                        </p>
+                      )}
+                      <div className="flex gap-4 flex-wrap">
+                        {program.pic.email && program.pic.email !== '-' && (
+                          <a
+                            href={`mailto:${program.pic.email}`}
+                            className="text-sm text-primary hover:underline flex items-center gap-1"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Mail size={14} />
+                            {program.pic.email}
+                          </a>
+                        )}
+                        {program.pic.phone && program.pic.phone !== '-' && program.pic.phone !== '0' && (
+                          <a
+                            href={`tel:${program.pic.phone}`}
+                            className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Phone size={14} />
+                            {program.pic.phone}
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Tampilkan pesan kalau tidak ada detail PIC */}
+                {isExpanded && (!program.pic?.name || program.pic.name === '-') && (
+                  <div className="mt-4 pt-3 border-t border-border/30">
+                    <p className="text-sm text-muted-foreground text-center">
+                      {t('noPICDetail')}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </Card>
+          )
+        })}
+      </div>
+    </div>
   )
 }

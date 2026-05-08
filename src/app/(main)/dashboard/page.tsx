@@ -1,3 +1,4 @@
+// app/dashboard/page.tsx
 'use client'
 
 import { Button } from '@/components/ui/button'
@@ -12,16 +13,18 @@ import {
 } from 'lucide-react'
 import SimpleEventsScroll from '@/components/event/simple-events-scroll'
 import { HelpSection } from '@/components/help-section'
+import { useTranslations } from 'next-intl'
 
 export default function DashboardPage() {
+  const t = useTranslations('Dashboard')
+  
   return (
     <div className="space-y-6 max-[640px]:space-y-6">
-      {/* Header - tanpa tombol */}
+      {/* Header */}
       <div>
-        <h1 className="text-3xl max-[640px]:text-2xl font-bold text-foreground mb-2">Dashboard</h1>
-        <p className="text-muted-foreground max-[640px]:text-sm">
-          Welcome back! Manage your benefits and discover upcoming events.
-        </p>
+        <h1 className="text-3xl max-[640px]:text-2xl font-bold text-foreground mb-2">{t('title')}</h1>
+        <p className="text-muted-foreground max-[640px]:text-sm">{t('welcome')}</p>
+        <p className="text-muted-foreground max-[640px]:text-sm mt-1">{t('description')}</p>
       </div>
       
       {/* Hero Section */}
@@ -40,13 +43,13 @@ export default function DashboardPage() {
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 backdrop-blur-sm text-primary text-xs font-medium mb-4 border border-primary/30">
               <Sparkles size={12} />
-              <span className="max-[640px]:text-[10px]">MPP Dashboard</span>
+              <span className="max-[640px]:text-[10px]">{t('heroBadge')}</span>
             </div>
             <h1 className="text-3xl max-[640px]:text-2xl md:text-4xl font-bold text-foreground mb-3">
-              Welcome Back!
+              {t('heroTitle')}
             </h1>
             <p className="text-muted-foreground mb-6 max-w-md max-[640px]:text-sm max-[640px]:mb-4">
-              Manage your partnership benefits and discover upcoming events in one place.
+              {t('heroDescription')}
             </p>
             <div className="flex flex-wrap gap-3 max-[640px]:flex-col max-[640px]:w-full">
               <Button 
@@ -54,7 +57,7 @@ export default function DashboardPage() {
                 onClick={() => window.location.href = '/benefits'}
               >
                 <Gift size={16} />
-                View Benefits
+                {t('viewBenefits')}
               </Button>
               <Button 
                 variant="outline" 
@@ -62,7 +65,7 @@ export default function DashboardPage() {
                 onClick={() => window.location.href = '/events'}
               >
                 <Calendar size={16} />
-                Browse Events
+                {t('browseEvents')}
               </Button>
             </div>
           </div>
@@ -75,10 +78,10 @@ export default function DashboardPage() {
           <div>
             <h2 className="text-xl max-[640px]:text-lg font-semibold text-foreground flex items-center gap-2">
               <Sparkles className="text-primary" size={20} />
-              Featured Events
+              {t('featuredEvents')}
             </h2>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Events you might be interested in
+              {t('featuredEventsDesc')}
             </p>
           </div>
           <Button
@@ -87,7 +90,7 @@ export default function DashboardPage() {
             className="gap-1 text-primary max-[640px]:text-xs"
             onClick={() => window.location.href = '/events'}
           >
-            View All Events
+            {t('viewAllEvents')}
             <ArrowRight size={14} />
           </Button>
         </div>
@@ -100,10 +103,10 @@ export default function DashboardPage() {
         <div>
           <h2 className="text-xl max-[640px]:text-lg font-semibold text-foreground flex items-center gap-2">
             <Rocket className="text-primary" size={20} />
-            Quick Actions
+            {t('quickActions')}
           </h2>
           <p className="text-xs text-muted-foreground mt-0.5">
-            Shortcuts to help you get things done
+            {t('quickActionsDesc')}
           </p>
         </div>
         
@@ -116,8 +119,8 @@ export default function DashboardPage() {
               <Gift size={18} className="text-primary" />
             </div>
             <div className="flex-1 text-left">
-              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">Claim Benefits</p>
-              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">Check available benefits</p>
+              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">{t('claimBenefits')}</p>
+              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">{t('claimBenefitsDesc')}</p>
             </div>
             <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
           </button>
@@ -130,8 +133,8 @@ export default function DashboardPage() {
               <Calendar size={18} className="text-primary" />
             </div>
             <div className="flex-1 text-left">
-              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">Browse Events</p>
-              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">Find eligible events</p>
+              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">{t('browseEventsShort')}</p>
+              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">{t('browseEventsDesc')}</p>
             </div>
             <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
           </button>
@@ -144,8 +147,8 @@ export default function DashboardPage() {
               <Users size={18} className="text-primary" />
             </div>
             <div className="flex-1 text-left">
-              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">Account Settings</p>
-              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">Manage your profile</p>
+              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">{t('accountSettings')}</p>
+              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">{t('accountSettingsDesc')}</p>
             </div>
             <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
           </button>
@@ -155,22 +158,8 @@ export default function DashboardPage() {
       {/* Help Section */}
       <div className="pt-4 border-t border-border">
         <HelpSection
-          title="Need Help?"
-          description="Get the most out of your partnership benefits"
-          faqItems={[
-            {
-              question: 'How do I claim my benefits?',
-              answer: 'Go to the Benefits section, find an active benefit, and click "Claim". You can then select an eligible event to use your benefit.',
-            },
-            {
-              question: 'What happens when a benefit expires?',
-              answer: 'Expired benefits cannot be claimed. Make sure to claim your benefits before the expiry date shown on each benefit card.',
-            },
-            {
-              question: 'How do I know which events are eligible?',
-              answer: 'When viewing a benefit detail, check the "Events" tab to see all eligible events you can use this benefit for.',
-            },
-          ]}
+          title={t('helpTitle')}
+          description={t('helpDescription')}
         />
       </div>
     </div>

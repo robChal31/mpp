@@ -3,6 +3,7 @@ import { EventI, EventTypeConfig } from '@/types/event/event.types'
 import { ArrowRight, Building, Calendar, Clock, Eye, MapPin } from 'lucide-react'
 import { Button } from '../ui/button'
 import { RefObject } from 'react'
+import { useTranslations } from 'next-intl'
 
 type EventCardListModeProps = {
   event: EventI;
@@ -21,6 +22,7 @@ const EventCardListMode: React.FC<EventCardListModeProps> = ({
   eventsLength,
   typeConfig
 }) => {
+  const t = useTranslations('EventCard')
     
   return (
     <div
@@ -68,13 +70,13 @@ const EventCardListMode: React.FC<EventCardListModeProps> = ({
                 </div>
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium capitalize bg-primary/60 text-white">
                   <MapPin size={12} />
-                  {event.city ? event.city : (event.province ? event.province : (event.location_place ? event.location_place : 'Online'))}
+                  {event.city ? event.city : (event.province ? event.province : (event.location_place ? event.location_place : t('online')))} 
                 </div>
                 <StatusBadge date_start={event.date_start} date_end={event.date_end} />
               </div>
               <span className="text-xs text-muted-foreground flex items-center gap-1">
                 <Clock size={12} />
-                Register by {formatEventDate(event.date_start)}
+                {t('registerBy')} {formatEventDate(event.date_start)}
               </span>
             </div>
 
@@ -98,7 +100,7 @@ const EventCardListMode: React.FC<EventCardListModeProps> = ({
               </div>
               <div className="flex items-center gap-1.5 max-[640px]:gap-1">
                 <Building size={14} className="text-primary max-[640px]:size-3" />
-                <span className="truncate max-w-50 max-[640px]:max-w-40 max-[640px]:text-[11px]">{event.location_place || 'Online Event'}</span>
+                <span className="truncate max-w-50 max-[640px]:max-w-40 max-[640px]:text-[11px]">{event.location_place || t('onlineEvent')}</span>
               </div>
             </div>
 
@@ -112,7 +114,7 @@ const EventCardListMode: React.FC<EventCardListModeProps> = ({
                 window.location.href = `/events/${event.id_event}`
               }}
             >
-              <span>View Details</span>
+              <span>{t('viewDetails')}</span>
               <ArrowRight size={14} className="transition-transform duration-300 group-hover/btn:translate-x-1 max-[640px]:size-3" />
             </Button>
           </div>
@@ -126,6 +128,7 @@ export default EventCardListMode
 
 // Status Badge Component
 const StatusBadge = ({ date_start, date_end }: { date_start: string; date_end: string }) => {
+  const t = useTranslations('EventCard')
   const now = new Date()
   const start = new Date(date_start)
   const end = new Date(date_end)
@@ -134,23 +137,23 @@ const StatusBadge = ({ date_start, date_end }: { date_start: string; date_end: s
     return (
       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400 max-[640px]:text-[10px] max-[640px]:px-1.5">
         <Clock size={10} className="max-[640px]:size-2.5" />
-        <span className="max-[640px]:hidden">Upcoming</span>
-        <span className="hidden max-[640px]:inline">Up</span>
+        <span className="max-[640px]:hidden">{t('upcoming')}</span>
+        <span className="hidden max-[640px]:inline">{t('upcomingShort')}</span>
       </span>
     )
   } else if (now > end) {
     return (
       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400 max-[640px]:text-[10px] max-[640px]:px-1.5">
-        <span className="max-[640px]:hidden">Ended</span>
-        <span className="hidden max-[640px]:inline">End</span>
+        <span className="max-[640px]:hidden">{t('ended')}</span>
+        <span className="hidden max-[640px]:inline">{t('endedShort')}</span>
       </span>
     )
   } else {
     return (
       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary max-[640px]:text-[10px] max-[640px]:px-1.5">
         <Eye size={10} className="max-[640px]:size-2.5" />
-        <span className="max-[640px]:hidden">Ongoing</span>
-        <span className="hidden max-[640px]:inline">Live</span>
+        <span className="max-[640px]:hidden">{t('ongoing')}</span>
+        <span className="hidden max-[640px]:inline">{t('ongoingShort')}</span>
       </span>
     )
   }

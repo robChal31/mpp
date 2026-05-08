@@ -227,3 +227,22 @@ export interface ReclaimBenefitResult {
   status: string
   data: any
 }
+
+// src/types/benefit/benefit.type.ts
+export interface PKDocument {
+  id: string
+  name: string
+  pk: {
+    no_pk: string
+    id_draft?: string
+    start_at: string
+    expired_at: string
+    status: 'active' | 'expired'
+  }
+  pic: {
+    name: string
+    position: string
+    email: string
+    phone: string
+  }
+}

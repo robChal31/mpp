@@ -37,6 +37,7 @@ import { formatDate, formatDateTime } from '@/lib/utils/date'
 import { getEventDetailByRedeemCode } from '@/server/services/hy/event.service'
 import { BenefitDetailI, EventByRedeemCodeI, PK, UsageHistory } from '@/types/benefit/benefit.type'
 import { toast } from 'sonner'
+import { useTranslations } from 'next-intl'
 
 interface BenefitDetailProps {
   data: {
@@ -89,6 +90,7 @@ const isExpired = (expiredAt: string) => {
 }
 
 export default function BenefitDetail({ data }: BenefitDetailProps) {
+  const t = useTranslations('BenefitDetail')
   const { benefit, pk, usages } = data;
   const [relatedEvents, setRelatedEvents] = useState<EventI[]>([])
   const [loadingEvents, setLoadingEvents] = useState(false)
@@ -139,11 +141,11 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
 
   const handleReclaimSubmit = async () => {
     if (!selectedNewEventId) {
-      toast.error('Please select a new event')
+      toast.error(t('selectNewEvent'))
       return
     }
     if (reclaimQty < 1 || reclaimQty > reclaimModal.maxMovable) {
-      toast.error(`Quantity must be between 1 and ${reclaimModal.maxMovable}`)
+      toast.error(t('invalidQuantity', { max: reclaimModal.maxMovable }))
       return
     }
     setIsReclaiming(true)
@@ -166,16 +168,15 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
       const data = await response.json()
 
       if (data.status === 'success') {
-        toast.success('Successfully moved to new event!')
+        toast.success(t('moveSuccess'))
         setReclaimModal({ ...reclaimModal, isOpen: false })
         window.location.reload()
-        // loadHistoryEvents()
       } else {
-        toast.error((data.message) || 'Failed to move benefit')
+        toast.error(data.message || t('moveFailed'))
       }
     } catch (error) {
       console.error('Error reclaiming benefit:', error)
-      toast.error('Error moving benefit')
+      toast.error(t('moveError'))
     } finally {
       setIsReclaiming(false)
     }
@@ -242,7 +243,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
       {/* Header with Back Button */}
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="sm" onClick={onBack} className="gap-2">
-          <ArrowLeft size={16} /> Back to Benefits
+          <ArrowLeft size={16} /> {t('backToBenefits')}
         </Button>
         <Button variant="ghost" size="sm" onClick={onBack}>
           <X size={16} />
@@ -270,7 +271,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
 
           <div className="flex flex-wrap items-center gap-2 mt-3">
             {benefit.subject_benefit && <Badge variant="default" className="text-[10px]">{benefit.subject_benefit}</Badge>}
-            {expired && <Badge variant="destructive">Expired</Badge>}
+            {expired && <Badge variant="destructive">{t('expired')}</Badge>}
             <Badge variant="outline" className="text-[10px] font-mono">
               {pk.no_pk}
             </Badge>
@@ -278,11 +279,11 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
 
           <div className="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-border/50">
             <div className="text-center">
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Available Slots</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t('availableSlots')}</p>
               <p className="md:text-2xl text-lg font-bold text-foreground">{totalQuota}</p>
             </div>
             <div className="text-center">
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Valid Until</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t('validUntil')}</p>
               <p className={`md:text-sm text-sm font-semibold ${expired ? 'text-red-500' : 'text-foreground'}`}>
                 {formatDate(pk.expired_at)}
               </p>
@@ -296,7 +297,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="events" className="gap-2 md:text-sm text-xs">
             <Ticket size={16} />
-            Events
+            {t('events')}
             {relatedEvents.length > 0 && (
               <Badge variant="secondary" className="ml-1 text-xs">
                 {relatedEvents.length}
@@ -305,9 +306,9 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
           </TabsTrigger>
           <TabsTrigger value="history" className="gap-2 md:text-sm text-xs">
             <History size={16} />
-            Usage History
+            {t('usageHistory')}
             {usages.length > 0 && (
-              <Badge variant="secondary" className="ml-1 text-xs">
+              <Badge variant="outline" className="ml-1 text-xs">
                 {usages.length}
               </Badge>
             )}
@@ -326,7 +327,6 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                 {relatedEvents.map((event) => (
                   <div key={event.id_event} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border border-border hover:bg-muted/30 transition-colors gap-3">
                     <div className="flex items-center gap-3 flex-1">
-                      {/* Image - responsive size */}
                       <div className="w-12 h-12 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center overflow-hidden shrink-0">
                         <img
                           src={event.photoevent}
@@ -336,7 +336,6 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                         />
                       </div>
                       
-                      {/* Content */}
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm sm:text-xs line-clamp-2">
                           {event.title}
@@ -346,13 +345,12 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                             <Calendar size={10} /> {formatDate(event.date_start)}
                           </span>
                           <span className="flex items-center gap-1 shrink-0">
-                            <MapPin size={10} /> {event.location_address || event.location_place || 'Online'}
+                            <MapPin size={10} /> {event.location_address || event.location_place || t('online')}
                           </span>
                         </div>
                       </div>
                     </div>
                     
-                    {/* Button */}
                     <Button 
                       variant="outline" 
                       size="sm" 
@@ -360,7 +358,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                       asChild
                     >
                       <Link href={`/events/${event.title_url}`}>
-                        View <ExternalLink size={12} />
+                        {t('view')} <ExternalLink size={12} />
                       </Link>
                     </Button>
                   </div>
@@ -369,8 +367,8 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
             ) : (
               <div className="text-center py-8 text-muted-foreground">
                 <Ticket size={32} className="mx-auto mb-2 opacity-30" />
-                <p>No events available for this benefit at the moment.</p>
-                <p className="text-xs mt-1">Check back later for new events</p>
+                <p>{t('noEventsAvailable')}</p>
+                <p className="text-xs mt-1">{t('checkBackLater')}</p>
               </div>
             )}
           </Card>
@@ -403,27 +401,27 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                               : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
                           }`}>
                             <CheckCircle size={14} />
-                          </div>
+          </div>
                           <div className="flex-1 min-w-0">
                             <p className="font-medium text-sm line-clamp-2">
-                              {Array.isArray(history.event) ? (history.event[0]?.event_name || benefit.benefit_name) : history.description?.split('\n')[0] || 'Benefit Used'}
+                              {Array.isArray(history.event) ? (history.event[0]?.event_name || benefit.benefit_name) : history.description?.split('\n')[0] || t('benefitUsed')}
                             </p>
-                            <p className="text-[11px] text-muted-foreground max-[640px]:text-[10px]">Voucher Code: <span className="font-semibold">{history.redeem_code}</span></p>
+                            <p className="text-[11px] text-muted-foreground max-[640px]:text-[10px]">{t('voucherCode')}: <span className="font-semibold">{history.redeem_code}</span></p>
                             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground max-[640px]:text-[10px]">
                               <span className="flex items-center gap-1">
                                 <Clock size={10} /> {formatDateTime(history.used_at)}
                               </span>
                               <span className="flex items-center gap-1">
-                                <Users size={10} /> {qtyUsed} slot{qtyUsed !== 1 ? 's' : ''}
+                                <Users size={10} /> {qtyUsed} {qtyUsed !== 1 ? t('slots') : t('slot')}
                               </span>
                               {hasParticipants && (
                                 <span className="flex items-center gap-1 text-green-600">
-                                  ✅ {participants.length} used
+                                  ✅ {participants.length} {t('used')}
                                 </span>
                               )}
                               {remainingUnused > 0 && (
                                 <span className="flex items-center gap-1 text-amber-600">
-                                  ⏳ {remainingUnused} unused
+                                  ⏳ {remainingUnused} {t('unused')}
                                 </span>
                               )}
                             </div>
@@ -434,12 +432,12 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="gap-1 text-xs h-8 border-amber-300 text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400"
+                              className="gap-1 text-xs h-8 border-amber-300 text-amber-700 hover:text-orange-400 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400"
                               onClick={() => handleOpenReclaimModal(history, remainingUnused)}
                             >
                               <RefreshCw size={12} />
-                              <span className="max-[640px]:hidden">Move {remainingUnused} Slot{remainingUnused !== 1 ? 's' : ''}</span>
-                              <span className="hidden max-[640px]:inline">Move {remainingUnused}</span>
+                              <span className="max-[640px]:hidden">{t('moveSlots', { count: remainingUnused })}</span>
+                              <span className="hidden max-[640px]:inline">{t('move', { count: remainingUnused })}</span>
                             </Button>
                           )}
                           <button
@@ -455,7 +453,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                       </div>
                       {isItemExpanded && (
                         <div className="border-t border-border p-3 space-y-2 bg-muted/10">
-                          <p className="text-xs font-medium text-foreground">📋 Participants List ({participants.length} used)</p>
+                          <p className="text-xs font-medium text-foreground">{t('participantsList', { count: participants.length })}</p>
                           {hasParticipants && participants.map((p: EventByRedeemCodeI, i) => (
                             <div key={i} className="text-sm py-1 border-b border-border/50 last:border-0">
                               <div className="font-medium max-[640px]:text-xs">{p.fullname}</div>
@@ -467,14 +465,9 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                           ))}
                           {!hasParticipants && (
                             <div className="text-sm text-muted-foreground max-[640px]:text-xs">
-                              No participants used yet. {qtyUsed} slot{qtyUsed !== 1 ? 's are' : ' is'} still available.
+                              {t('noParticipantsUsed')} {qtyUsed} {qtyUsed !== 1 ? t('slots') : t('slot')} {t('stillAvailable')}
                             </div>
                           )}
-                          {/* {history.description && (
-                            <div className="mt-2 pt-2 text-xs text-muted-foreground border-t border-border/50 max-[640px]:text-[10px]">
-                              <span className="font-medium">📝 Note:</span> {history.description}
-                            </div>
-                          )} */}
                         </div>
                       )}
                     </div>
@@ -484,8 +477,8 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
             ) : (
               <div className="text-center py-8 text-muted-foreground">
                 <History size={32} className="mx-auto mb-2 opacity-30" />
-                <p>No usage history available for this benefit.</p>
-                <p className="text-xs mt-1">History will appear once you use this benefit</p>
+                <p>{t('noUsageHistory')}</p>
+                <p className="text-xs mt-1">{t('historyWillAppear')}</p>
               </div>
             )}
           </Card>
@@ -493,191 +486,187 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
       </Tabs>
 
 
-{/* Modal Reclaim / Move Event */}
-{reclaimModal.isOpen && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-    <div className="bg-background rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden">
-      <div className="flex items-center justify-between p-5 border-b border-border">
-        <div className="flex items-center gap-2">
-          <RefreshCw size={20} className="text-primary" />
-          <h2 className="text-lg font-semibold text-foreground">Move to Another Event</h2>
-        </div>
-        <button
-          onClick={() => setReclaimModal({ ...reclaimModal, isOpen: false })}
-          className="p-1 rounded-lg hover:bg-muted transition-colors"
-        >
-          <X size={18} />
-        </button>
-      </div>
-
-      <div className="p-5 space-y-4">
-        {/* Original Event Info */}
-        <div className="p-3 rounded-lg bg-muted/30 border border-border">
-          <p className="text-xs text-muted-foreground">Original Event</p>
-          <p className="text-sm font-medium text-foreground">
-            {selectedEvent?.event_name || 'Unknown'}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1">
-            Unused slots: {reclaimModal.remainingUnused}
-          </p>
-        </div>
-
-        {/* Custom Event Selector */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium text-foreground">Select New Event</label>
-          
-          {selectedNewEventId ? (
-            // Tampilkan event yang sudah dipilih
-            <div className="relative">
-              <div className="flex items-center gap-3 p-3 rounded-lg border-2 border-primary bg-primary/5">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center overflow-hidden">
-                  {relatedEvents.find(e => e.id_event === selectedNewEventId)?.photoevent ? (
-                    <img 
-                      src={relatedEvents.find(e => e.id_event === selectedNewEventId)?.photoevent} 
-                      alt="" 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <Calendar size={20} className="text-primary" />
-                  )}
-                </div>
-                <div className="flex-1">
-                  <p className="font-medium text-sm text-foreground">
-                    {relatedEvents.find(e => e.id_event === selectedNewEventId)?.title}
-                  </p>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                    <span className="flex items-center gap-1">
-                      <Calendar size={10} />
-                      {formatDate(relatedEvents.find(e => e.id_event === selectedNewEventId)?.date_start || '')}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <MapPin size={10} />
-                      {relatedEvents.find(e => e.id_event === selectedNewEventId)?.location_place || 'Online'}
-                    </span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setSelectedNewEventId('')}
-                  className="p-1 rounded-full hover:bg-muted transition-colors"
-                >
-                  <X size={14} />
-                </button>
+      {/* Modal Reclaim / Move Event */}
+      {reclaimModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-background rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden">
+            <div className="flex items-center justify-between p-5 border-b border-border">
+              <div className="flex items-center gap-2">
+                <RefreshCw size={20} className="text-primary" />
+                <h2 className="text-lg font-semibold text-foreground">{t('moveToAnotherEvent')}</h2>
               </div>
+              <button
+                onClick={() => setReclaimModal({ ...reclaimModal, isOpen: false })}
+                className="p-1 rounded-lg hover:bg-muted transition-colors"
+              >
+                <X size={18} />
+              </button>
             </div>
-          ) : (
-            // Grid pilihan event
-            <div className="grid grid-cols-1 gap-2 max-h-64 overflow-y-auto">
-              {relatedEvents.map((event) => (
-                <button
-                  key={event.id_event}
-                  onClick={() => setSelectedNewEventId(event.id_event)}
-                  className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all text-left group"
-                >
-                  <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
-                    {event.photoevent ? (
-                      <img 
-                        src={event.photoevent} 
-                        alt={event.title} 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                    ) : (
-                      <Ticket size={20} className="text-muted-foreground" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-sm text-foreground line-clamp-1">{event.title}</p>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                      <span className="flex items-center gap-1">
-                        <Calendar size={10} />
-                        {formatDate(event.date_start)}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MapPin size={10} />
-                        {event.location_place || 'Online'}
-                      </span>
+
+            <div className="p-5 space-y-4">
+              <div className="p-3 rounded-lg bg-muted/30 border border-border">
+                <p className="text-xs text-muted-foreground">{t('originalEvent')}</p>
+                <p className="text-sm font-medium text-foreground">
+                  {selectedEvent?.event_name || t('unknown')}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {t('unusedSlots')}: {reclaimModal.remainingUnused}
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">{t('selectNewEvent')}</label>
+                
+                {selectedNewEventId ? (
+                  <div className="relative">
+                    <div className="flex items-center gap-3 p-3 rounded-lg border-2 border-primary bg-primary/5">
+                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center overflow-hidden">
+                        {relatedEvents.find(e => e.id_event === selectedNewEventId)?.photoevent ? (
+                          <img 
+                            src={relatedEvents.find(e => e.id_event === selectedNewEventId)?.photoevent} 
+                            alt="" 
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <Calendar size={20} className="text-primary" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium text-sm text-foreground">
+                          {relatedEvents.find(e => e.id_event === selectedNewEventId)?.title}
+                        </p>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                          <span className="flex items-center gap-1">
+                            <Calendar size={10} />
+                            {formatDate(relatedEvents.find(e => e.id_event === selectedNewEventId)?.date_start || '')}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <MapPin size={10} />
+                            {relatedEvents.find(e => e.id_event === selectedNewEventId)?.location_place || t('online')}
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setSelectedNewEventId('')}
+                        className="p-1 rounded-full hover:bg-muted transition-colors"
+                      >
+                        <X size={14} />
+                      </button>
                     </div>
                   </div>
-                  <ChevronRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-2 max-h-64 overflow-y-auto">
+                    {relatedEvents.map((event) => (
+                      <button
+                        key={event.id_event}
+                        onClick={() => setSelectedNewEventId(event.id_event)}
+                        className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all text-left group"
+                      >
+                        <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
+                          {event.photoevent ? (
+                            <img 
+                              src={event.photoevent} 
+                              alt={event.title} 
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                            />
+                          ) : (
+                            <Ticket size={20} className="text-muted-foreground" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-sm text-foreground line-clamp-1">{event.title}</p>
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                            <span className="flex items-center gap-1">
+                              <Calendar size={10} />
+                              {formatDate(event.date_start)}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <MapPin size={10} />
+                              {event.location_place || t('online')}
+                            </span>
+                          </div>
+                        </div>
+                        <ChevronRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-        {/* Quantity Input - only show if event selected */}
-        {selectedNewEventId && (
-          <div className="space-y-2 animate-in fade-in zoom-in-95 duration-200">
-            <label className="text-sm font-medium text-foreground">
-              Quantity to Move (max: {reclaimModal.maxMovable})
-            </label>
-            <div className="flex items-center gap-3">
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                className="h-10 w-10"
-                onClick={() => setReclaimQty(Math.max(1, reclaimQty - 1))}
-                disabled={reclaimQty <= 1}
-              >
-                -
-              </Button>
-              <input
-                type="number"
-                value={reclaimQty}
-                onChange={(e) => {
-                  const val = parseInt(e.target.value)
-                  if (!isNaN(val) && val >= 1 && val <= reclaimModal.maxMovable) {
-                    setReclaimQty(val)
+              {selectedNewEventId && (
+                <div className="space-y-2 animate-in fade-in zoom-in-95 duration-200">
+                  <label className="text-sm font-medium text-foreground">
+                    {t('quantityToMove', { max: reclaimModal.maxMovable })}
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="h-10 w-10"
+                      onClick={() => setReclaimQty(Math.max(1, reclaimQty - 1))}
+                      disabled={reclaimQty <= 1}
+                    >
+                      -
+                    </Button>
+                    <input
+                      type="number"
+                      value={reclaimQty}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value)
+                        if (!isNaN(val) && val >= 1 && val <= reclaimModal.maxMovable) {
+                          setReclaimQty(val)
+                        }
+                      }}
+                      className="w-20 h-10 text-center rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="h-10 w-10"
+                      onClick={() => setReclaimQty(Math.min(reclaimModal.maxMovable, reclaimQty + 1))}
+                      disabled={reclaimQty >= reclaimModal.maxMovable}
+                    >
+                      +
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      {t('available')}: {reclaimModal.maxMovable} {reclaimModal.maxMovable !== 1 ? t('slots') : t('slot')}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
+                <p className="text-xs text-amber-700 dark:text-amber-400">
+                  ⚠️ {reclaimQty === 1 
+                    ? t('warningMoveMessageSingular', { qty: reclaimQty }) 
+                    : t('warningMoveMessagePlural', { qty: reclaimQty })
                   }
-                }}
-                className="w-20 h-10 text-center rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-              />
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 p-5 border-t border-border">
               <Button
-                type="button"
                 variant="outline"
-                size="icon"
-                className="h-10 w-10"
-                onClick={() => setReclaimQty(Math.min(reclaimModal.maxMovable, reclaimQty + 1))}
-                disabled={reclaimQty >= reclaimModal.maxMovable}
+                className="flex-1"
+                onClick={() => setReclaimModal({ ...reclaimModal, isOpen: false })}
               >
-                +
+                {t('cancel')}
               </Button>
-              <span className="text-sm text-muted-foreground">
-                Available: {reclaimModal.maxMovable} slots
-              </span>
+              <Button
+                className="flex-1 gap-2 bg-linear-to-r from-primary to-primary/80"
+                onClick={handleReclaimSubmit}
+                disabled={isReclaiming || !selectedNewEventId || reclaimQty < 1}
+              >
+                {isReclaiming ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
+                {isReclaiming ? t('processing') : t('moveEvent')}
+              </Button>
             </div>
           </div>
-        )}
-
-        {/* Warning Note */}
-        <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
-          <p className="text-xs text-amber-700 dark:text-amber-400">
-            ⚠️ This will move {reclaimQty} slot{reclaimQty !== 1 ? 's' : ''} from the old event to the new event.
-            The original voucher will be adjusted accordingly.
-          </p>
         </div>
-      </div>
-
-      <div className="flex gap-3 p-5 border-t border-border">
-        <Button
-          variant="outline"
-          className="flex-1"
-          onClick={() => setReclaimModal({ ...reclaimModal, isOpen: false })}
-        >
-          Cancel
-        </Button>
-        <Button
-          className="flex-1 gap-2 bg-linear-to-r from-primary to-primary/80"
-          onClick={handleReclaimSubmit}
-          disabled={isReclaiming || !selectedNewEventId || reclaimQty < 1}
-        >
-          {isReclaiming ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
-          {isReclaiming ? 'Processing...' : 'Move Event'}
-        </Button>
-      </div>
-    </div>
-  </div>
-)}
+      )}
 
       {/* How to Claim Card */}
       <Card className="p-5 bg-linear-to-r from-blue-50/50 to-transparent dark:from-blue-950/20 border border-blue-100 dark:border-blue-900/30">
@@ -686,37 +675,35 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
             <Info size={16} className="text-blue-600 dark:text-blue-400" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold text-foreground">
-              How to Claim This Benefit
-            </p>
+            <p className="text-sm font-semibold text-foreground">{t('howToClaim')}</p>
             <div className="mt-2 space-y-2 text-xs text-muted-foreground">
               <div className="flex items-center gap-2">
                 <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 text-[10px] font-bold">1</span>
-                <span>Check <span className="font-medium text-foreground">Events</span> tab above</span>
+                <span>{t('step1')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 text-[10px] font-bold">2</span>
-                <span>Choose an <span className="font-medium text-foreground">upcoming event</span> you want to join</span>
+                <span>{t('step2')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 text-[10px] font-bold">3</span>
-                <span>Click <span className="font-medium text-foreground">"View"</span> on the event to see details</span>
+                <span>{t('step3')}</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 text-[10px] font-bold">4</span>
-                <span>Click <span className="font-medium text-foreground">"Claim"</span> on the event detail page to use your benefit</span>
+                <span>{t('step4')}</span>
               </div>
             </div>
             
             <div className="mt-3 pt-2 flex flex-wrap gap-3 text-xs">
               <div className="flex items-center gap-1">
                 <Layers size={12} className="text-primary" />
-                <span className="text-muted-foreground">{totalQuota} slot{totalQuota !== 1 ? 's' : ''} available</span>
+                <span className="text-muted-foreground">{totalQuota} {totalQuota !== 1 ? t('slots') : t('slot')} {t('available')}</span>
               </div>
               {relatedEvents.length > 0 && (
                 <div className="flex items-center gap-1">
                   <Ticket size={12} className="text-primary" />
-                  <span className="text-muted-foreground">{relatedEvents.length} eligible event{relatedEvents.length !== 1 ? 's' : ''}</span>
+                  <span className="text-muted-foreground">{relatedEvents.length} {relatedEvents.length !== 1 ? t('eligibleEvents') : t('eligibleEvent')}</span>
                 </div>
               )}
             </div>

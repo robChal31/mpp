@@ -1,4 +1,4 @@
-import { BenefitDetailI, BenefitGroupV2, CheckBenefitByEventGroupResult, ClaimBenefitParams, ClaimBenefitResult, FlattenedBenefit, GetBenefitByIdResponse, PK, ReclaimBenefitParams, ReclaimBenefitResult, UsageHistory } from "@/types/benefit/benefit.type"
+import { BenefitDetailI, BenefitGroupV2, CheckBenefitByEventGroupResult, ClaimBenefitParams, ClaimBenefitResult, FlattenedBenefit, GetBenefitByIdResponse, PK, PKDocument, ReclaimBenefitParams, ReclaimBenefitResult, UsageHistory } from "@/types/benefit/benefit.type"
 
 interface BenefitGroup {
   benefit_id: string
@@ -212,4 +212,29 @@ export async function reclaimBenefit(params: ReclaimBenefitParams): Promise<Recl
     console.error('Error reclaiming benefit:', error)
     return error
   }
+}
+
+export async function fetchPKDocuments(email: string): Promise<PKDocument[]> {
+  const phpUrl = `${process.env.NEXT_PUBLIC_MBS_API_URL}/get-pk-documents.php`
+  const apiToken = process.env.NEXT_PUBLIC_MBS_API_TOKEN
+  
+  const response = await fetch(phpUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      token: apiToken,
+      email: email
+    })
+  })
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+  }
+  
+  const result = await response.json()
+  if (result.status === 'error') {
+    throw new Error(result.message)
+  }
+  
+  return result.data
 }
