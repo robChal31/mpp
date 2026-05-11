@@ -174,6 +174,8 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
           }
         )
         setClaimModal({ ...claimModal, isOpen: false })
+        const ticketUrl = `https://hadiryuk.id/event/ticket/${event.title_url}?mppcode=${data.data.redeem_code}`
+        window.open(ticketUrl, '_blank')
         router.refresh()
       } else {
         toast.error(data.message || t('claimFailed'), {

@@ -4,6 +4,7 @@ import { EventI } from "@/types/event/event.types"
 export async function getEvent(group: string, subject: string, event_group: string): Promise<EventI[]> {
   try {
     const url = `${process.env.NEXT_PUBLIC_HADIRYUK_URL}/EventBenefit?type=${encodeURIComponent(group)}&subject=${encodeURIComponent(subject)}&event_group=${encodeURIComponent(event_group)}`
+    console.log('Fetching eventasdsad:', url)
     const response = await fetch(url, {
       next: { revalidate: 60 },
       headers: {

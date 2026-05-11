@@ -231,6 +231,7 @@
     "unknown": "Unknown",
     "unusedSlots": "Unused slots",
     "selectNewEvent": "Select New Event",
+    "noRelatedEvents": "No Event available for this benefit at the moment.",
     "quantityToMove": "Quantity to Move (max: {max})",
     "available": "Available",
     "warningMoveMessageSingular": "This will move {qty} slot from the old event to the new event. The original voucher will be adjusted accordingly.",

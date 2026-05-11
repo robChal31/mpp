@@ -115,10 +115,6 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
   const [isReclaiming, setIsReclaiming] = useState(false)
   const [reclaimQty, setReclaimQty] = useState<number>(1)
 
-  const onBack = () => {
-    window.history.back()
-  }
-
   const toggleExpand = (id: string) => {
     setExpandedItems(prev => ({ ...prev, [id]: !prev[id] }))
   }
@@ -242,11 +238,15 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
       {/* Header with Back Button */}
       <div className="flex items-center justify-between">
-        <Button variant="ghost" size="sm" onClick={onBack} className="gap-2">
-          <ArrowLeft size={16} /> {t('backToBenefits')}
+        <Button variant="ghost" size="sm">
+          <Link href="/benefits" className='flex items-center gap-2'>
+            <ArrowLeft size={16} /> {t('backToBenefits')}
+          </Link>
         </Button>
-        <Button variant="ghost" size="sm" onClick={onBack}>
-          <X size={16} />
+        <Button variant="ghost" size="sm">
+          <Link href="/benefits">
+            <X size={16} />
+          </Link>
         </Button>
       </div>
 
@@ -589,6 +589,12 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                         <ChevronRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
                       </button>
                     ))}
+                  </div>
+                )}
+
+                {relatedEvents.length === 0 && (
+                  <div className="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p className="text-sm text-muted-foreground">{t('noRelatedEvents')}</p>
                   </div>
                 )}
               </div>

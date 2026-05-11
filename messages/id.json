@@ -231,6 +231,7 @@
     "unknown": "Tidak Diketahui",
     "unusedSlots": "Slot yang belum digunakan",
     "selectNewEvent": "Pilih Acara Baru",
+    "noRelatedEvents": "Tidak ada acara yang tersedia untuk manfaat ini saat ini.",
     "quantityToMove": "Jumlah yang Dipindahkan (max: {max})",
     "available": "Tersedia",
     "warningMoveMessageSingular": "Tindakan ini akan memindahkan {qty} slot dari acara lama ke acara baru. Voucher asli akan disesuaikan.",
