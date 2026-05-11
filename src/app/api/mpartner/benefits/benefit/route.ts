@@ -5,8 +5,7 @@ import { getCurrentUser } from '@/lib/auth'
 export async function POST(request: NextRequest) {
   try {
     const user = await getCurrentUser()
-    const benefits = user?.email ? await fetchBenefits(user.email) : []
-    console.log('Benefits:', benefits)
+    const benefits = user?.email ? await fetchBenefits(user.email) : [];
     return NextResponse.json({
       status: 'success',
       data: { benefits }

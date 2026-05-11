@@ -85,7 +85,6 @@ export default function BenefitsPage() {
           method: 'POST',
         })
         const data = await res.json()
-        console.log('data', data)
         if (data.status === 'error') {
           toast.error(data.message || t('failedToLoad'))
           setBenefitGroups([])
