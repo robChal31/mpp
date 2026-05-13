@@ -42,7 +42,7 @@ export default function LocalSwitcher({ changeLocalAction }: LocalSwitcherProps)
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 disabled={isPending}
-                className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-muted/50 transition-all duration-200 text-sm font-medium"
+                className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-muted/50 transition-all duration-200 text-sm font-medium cursor-pointer"
             >
                 <CountryFlag countryCode={currentLang.countryCode} svg style={{ width: '1.2em', height: '1.2em' }} />
                 <span className="hidden sm:inline">{currentLang.label}</span>
@@ -59,7 +59,7 @@ export default function LocalSwitcher({ changeLocalAction }: LocalSwitcherProps)
                                     key={lang.code}
                                     onClick={() => handleChange(lang.code as Locale)}
                                     disabled={isPending}
-                                    className={`w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors ${
+                                    className={`w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors cursor-pointer ${
                                         currentLocale === lang.code
                                             ? 'bg-primary/10 text-primary font-medium'
                                             : 'hover:bg-muted/50 text-foreground'

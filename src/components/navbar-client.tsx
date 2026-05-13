@@ -16,8 +16,6 @@ import {
   ChevronDown,
   User,
   HelpCircle,
-  File,
-  Handshake,
   Folder,
 } from 'lucide-react'
 import Image from 'next/image'
@@ -25,10 +23,10 @@ import { Locale, useTranslations } from 'next-intl'
 import LocalSwitcher from './local-switcher'
 
 const navigationItems = [
-  { labelKey: 'nav.dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { labelKey: 'nav.benefits', href: '/benefits', icon: Gift },
-  { labelKey: 'nav.events', href: '/events', icon: Calendar },
-  { labelKey: 'nav.documents', href: '/documents', icon: Folder },
+  { labelKey: 'nav.dashboard', href: '/dashboard', icon: LayoutDashboard, id: 'nav_dashboard' },
+  { labelKey: 'nav.benefits', href: '/benefits', icon: Gift, id: 'nav_benefits' },
+  { labelKey: 'nav.events', href: '/events', icon: Calendar, id: 'nav_events' },
+  { labelKey: 'nav.documents', href: '/documents', icon: Folder, id: 'nav_documents' },
 ]
 
 interface NavbarClientProps {
@@ -78,7 +76,7 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
           : 'bg-background border-b border-border'
       }`}
     >
-      <div className="max-w-full px-4 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo and Brand */}
           <div className="flex items-center gap-8">
@@ -95,12 +93,12 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1">
+            <div id="navbar-section" className="hidden md:flex items-center gap-1">
               {navigationItems.map((item) => {
                 const Icon = item.icon
                 const active = isActive(item.href)
                 return (
-                  <Link key={item.href} href={item.href}>
+                  <Link key={item.href} href={item.href} id={item.id}>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -230,7 +228,7 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
                   <Link key={item.href} href={item.href}>
                     <Button
                       variant="ghost"
-                      className={`w-full justify-start gap-3 ${
+                      className={`w-full justify-start gap-3 cursor-pointer ${
                         active
                           ? 'bg-primary/10 text-primary'
                           : 'text-foreground hover:bg-muted/50'
@@ -251,7 +249,7 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
               <Link href="/settings" onClick={() => setIsOpen(false)}>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start gap-3 text-foreground hover:bg-muted/50"
+                  className="w-full justify-start gap-3 text-foreground hover:bg-muted/50 cursor-pointer"
                 >
                   <Settings size={18} />
                   {t('nav.settings')}
@@ -261,7 +259,7 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
               <Link href="/help" onClick={() => setIsOpen(false)}>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start gap-3 text-foreground hover:bg-muted/50"
+                  className="w-full justify-start gap-3 text-foreground hover:bg-muted/50 cursor-pointer"
                 >
                   <HelpCircle size={18} />
                   Help Center
@@ -285,7 +283,7 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
               {/* Logout Mobile */}
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors"
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors cursor-pointer"
               >
                 <LogOut size={18} />
                 {t('common.logout')}

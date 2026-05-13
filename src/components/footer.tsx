@@ -33,16 +33,16 @@ const Footer = () => {
 
   return (
     <footer className="border-t border-border bg-muted/20 mt-12">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
+      <div className="max-w-6xl mx-auto px-4 lg:px-8 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Column */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-linear-to-br from-primary to-primary/60 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">MPP</span>
+                <span className="text-white font-bold text-sm">MP</span>
               </div>
-              <span className="font-semibold text-foreground">Mentari Premium Partner</span>
+              <span className="font-semibold text-foreground">Mentari Partner</span>
             </div>
             <p className="text-sm text-muted-foreground">
               {t('brandDescription')}
@@ -182,7 +182,7 @@ const Footer = () => {
           </div>
           <button 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+            className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors cursor-pointer"
           >
             {t('backToTop')}
             <ArrowUp size={12} />

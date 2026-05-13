@@ -14,67 +14,112 @@ import {
 import SimpleEventsScroll from '@/components/event/simple-events-scroll'
 import { HelpSection } from '@/components/help-section'
 import { useTranslations } from 'next-intl'
+import OnboardingTour from '@/components/OnboardingTour'
+import Link from 'next/link'
+import { useMemo } from 'react'
 
 export default function DashboardPage() {
   const t = useTranslations('Dashboard')
+  const steps = useMemo(() => [
+    {
+      target: "main",
+      title: t('tour.welcome.title'),
+      content: t('tour.welcome.content'),
+      disableBeacon: false,
+      placement: "center",
+      spotlightPadding: 20,
+    },
+    {
+      target: "#navbar-section",
+      title: t('tour.navigation.title'),
+      content: t('tour.navigation.content'),
+      placement: "bottom",
+    },
+    {
+      target: "#dashboard-featured-header",
+      title: t('tour.featuredEventsHeader.title'),
+      content: t('tour.featuredEventsHeader.content'),
+      placement: "bottom",
+    },
+    {
+      target: "#simple-events-scroll",
+      title: t('tour.featuredEvents.title'),
+      content: t('tour.featuredEvents.content'),
+      placement: "top",
+    },
+    {
+      target: "#dashboard-quick-actions",
+      title: t('tour.quickActions.title'),
+      content: t('tour.quickActions.content'),
+      placement: "top",
+    },
+    {
+      target: "#dashboard-help-section",
+      title: t('tour.helpSection.title'),
+      content: t('tour.helpSection.content'),
+      placement: "top",
+    },
+  ], [t])
   
   return (
     <div className="space-y-6 max-[640px]:space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl max-[640px]:text-2xl font-bold text-foreground mb-2">{t('title')}</h1>
-        <p className="text-muted-foreground max-[640px]:text-sm">{t('welcome')}</p>
-        <p className="text-muted-foreground max-[640px]:text-sm mt-1">{t('description')}</p>
-      </div>
-      
-      {/* Hero Section */}
-      <div className="relative overflow-hidden rounded-2xl">
-        <div className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200&h=400&fit=crop"
-            alt="Hero background"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-linear-to-r from-background via-background/80 to-transparent" />
-          <div className="absolute inset-0 bg-linear-to-t from-background to-transparent" />
-        </div>
+      <OnboardingTour pageName='dashboard' steps={steps}  />
+      <div className="my-6"></div>
+      <div id="dashboard-hero" className="relative overflow-hidden rounded-2xl py-4">
+        <div className="absolute inset-0 bg-linear-to-br from-primary/20 via-background to-background" />
         
         <div className="relative p-8 max-[640px]:p-5 md:p-10">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 backdrop-blur-sm text-primary text-xs font-medium mb-4 border border-primary/30">
-              <Sparkles size={12} />
-              <span className="max-[640px]:text-[10px]">{t('heroBadge')}</span>
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-8">
+            {/* Left Content */}
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-medium mb-4">
+                <Sparkles size={12} />
+                <span>{t('heroBadge')}</span>
+              </div>
+              <h1 className="text-3xl max-[640px]:text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+                {t('heroTitle')}
+              </h1>
+              <p className="text-muted-foreground mb-6 text-base max-w-lg">
+                {t('heroDescription')}
+              </p>
+              
+              {/* Trust Badges */}
+              <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <div className="flex -space-x-2">
+                    {[1,2,3].map(i => (
+                      <div key={i} className="w-6 h-6 rounded-full bg-primary/20 border-2 border-background" />
+                    ))}
+                  </div>
+                  <span>10.000+ pengguna aktif</span>
+                </div>
+                <div>⭐ 4.9/5 dari 500+ ulasan</div>
+              </div>
             </div>
-            <h1 className="text-3xl max-[640px]:text-2xl md:text-4xl font-bold text-foreground mb-3">
-              {t('heroTitle')}
-            </h1>
-            <p className="text-muted-foreground mb-6 max-w-md max-[640px]:text-sm max-[640px]:mb-4">
-              {t('heroDescription')}
-            </p>
-            <div className="flex flex-wrap gap-3 max-[640px]:flex-col max-[640px]:w-full">
-              <Button 
-                className="gap-2 shadow-lg shadow-primary/20 max-[640px]:w-full"
-                onClick={() => window.location.href = '/benefits'}
-              >
-                <Gift size={16} />
-                {t('viewBenefits')}
-              </Button>
-              <Button 
-                variant="outline" 
-                className="gap-2 bg-background/50 backdrop-blur-sm max-[640px]:w-full"
-                onClick={() => window.location.href = '/events'}
-              >
-                <Calendar size={16} />
-                {t('browseEvents')}
-              </Button>
+            
+            {/* Right Content - Testimonial Card */}
+            <div className="bg-card/50 backdrop-blur-sm rounded-xl p-4 border border-border max-w-sm">
+              <div className="flex gap-3">
+                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Users size={18} className="text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm italic text-muted-foreground">
+                    "Platform yang sangat membantu saya menemukan benefit dan event terbaik!"
+                  </p>
+                  <p className="text-xs font-medium mt-2">— Sarah, Guru SD</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+      <hr className='my-6 py-6'/>
+      
       {/* Featured Events */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-2">
+      <div id="dashboard-featured-events" className="space-y-4 my-6">
+        <div id="dashboard-featured-header" className="flex items-center justify-between max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-2">
           <div>
             <h2 className="text-xl max-[640px]:text-lg font-semibold text-foreground flex items-center gap-2">
               <Sparkles className="text-primary" size={20} />
@@ -84,22 +129,21 @@ export default function DashboardPage() {
               {t('featuredEventsDesc')}
             </p>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="gap-1 text-primary max-[640px]:text-xs"
-            onClick={() => window.location.href = '/events'}
-          >
-            {t('viewAllEvents')}
-            <ArrowRight size={14} />
-          </Button>
+          <Link href="/events">
+            <Button variant="ghost" size="sm" className="gap-1 text-primary max-[640px]:text-xs cursor-pointer">
+              {t('viewAllEvents')}
+              <ArrowRight size={14} />
+            </Button>
+          </Link>
         </div>
 
-        <SimpleEventsScroll limit={6} />
+        <div id="simple-events-scroll">
+          <SimpleEventsScroll limit={6} />
+        </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="space-y-4">
+      <div id="dashboard-quick-actions" className="space-y-4 my-12 py-4 border-b border-border">
         <div>
           <h2 className="text-xl max-[640px]:text-lg font-semibold text-foreground flex items-center gap-2">
             <Rocket className="text-primary" size={20} />
@@ -109,54 +153,51 @@ export default function DashboardPage() {
             {t('quickActionsDesc')}
           </p>
         </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <button
-            onClick={() => window.location.href = '/benefits'}
-            className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group max-[640px]:p-3"
-          >
-            <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-              <Gift size={18} className="text-primary" />
-            </div>
-            <div className="flex-1 text-left">
-              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">{t('claimBenefits')}</p>
-              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">{t('claimBenefitsDesc')}</p>
-            </div>
-            <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-          </button>
 
-          <button
-            onClick={() => window.location.href = '/events'}
-            className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group max-[640px]:p-3"
-          >
-            <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-              <Calendar size={18} className="text-primary" />
+        <div id="dashboard-quick-actions-grid" className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <Link href="/benefits" className="block">
+            <div className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group max-[640px]:p-3">
+              <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                <Gift size={18} className="text-primary" />
+              </div>
+              <div className="flex-1 text-left">
+                <p className="font-medium text-foreground text-sm max-[640px]:text-xs">{t('claimBenefits')}</p>
+                <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">{t('claimBenefitsDesc')}</p>
+              </div>
+              <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
             </div>
-            <div className="flex-1 text-left">
-              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">{t('browseEventsShort')}</p>
-              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">{t('browseEventsDesc')}</p>
-            </div>
-            <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-          </button>
+          </Link>
 
-          <button
-            onClick={() => window.location.href = '/settings'}
-            className="flex items-center gap-3 p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group max-[640px]:p-3"
-          >
-            <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-              <Users size={18} className="text-primary" />
+          <Link href="/events" className="block">
+            <div className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group max-[640px]:p-3">
+              <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                <Calendar size={18} className="text-primary" />
+              </div>
+              <div className="flex-1 text-left">
+                <p className="font-medium text-foreground text-sm max-[640px]:text-xs">{t('browseEventsShort')}</p>
+                <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">{t('browseEventsDesc')}</p>
+              </div>
+              <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
             </div>
-            <div className="flex-1 text-left">
-              <p className="font-medium text-foreground text-sm max-[640px]:text-xs">{t('accountSettings')}</p>
-              <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">{t('accountSettingsDesc')}</p>
+          </Link>
+
+          <Link href="/settings" className="block">
+            <div className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-border hover:border-primary/50 hover:bg-primary/5 transition-all group max-[640px]:p-3">
+              <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                <Users size={18} className="text-primary" />
+              </div>
+              <div className="flex-1 text-left">
+                <p className="font-medium text-foreground text-sm max-[640px]:text-xs">{t('accountSettings')}</p>
+                <p className="text-xs text-muted-foreground max-[640px]:text-[10px]">{t('accountSettingsDesc')}</p>
+              </div>
+              <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
             </div>
-            <ArrowRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-          </button>
+          </Link>
         </div>
       </div>
 
       {/* Help Section */}
-      <div className="pt-4 border-t border-border">
+      <div id="dashboard-help-section" className="pt-4">
         <HelpSection
           title={t('helpTitle')}
           description={t('helpDescription')}

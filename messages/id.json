@@ -6,7 +6,7 @@
     "title": "Dasbor",
     "welcome": "Selamat datang kembali!",
     "description": "Kelola manfaat Anda dan temukan acara mendatang.",
-    "heroBadge": "Dasbor MPP",
+    "heroBadge": "Dasbor MP",
     "heroTitle": "Selamat Datang Kembali!",
     "heroDescription": "Kelola manfaat kemitraan Anda dan temukan acara mendatang dalam satu tempat.",
     "viewBenefits": "Lihat Manfaat",
@@ -23,7 +23,53 @@
     "accountSettings": "Pengaturan Akun",
     "accountSettingsDesc": "Kelola profil Anda",
     "helpTitle": "Butuh Bantuan?",
-    "helpDescription": "Manfaatkan maksimal manfaat kemitraan Anda"
+    "helpDescription": "Manfaatkan maksimal manfaat kemitraan Anda",
+    "tour": {
+      "welcome": {
+        "title": "🌟 Selamat Datang di Mentari Partner!",
+        "content": "Platform manajemen manfaat kemitraan untuk sekolah. Yuk, kita jelajahi bersama! 👇"
+      },
+      "navigation": {
+        "title": "🚀 Menu Navigasi",
+        "content": "Untuk akses semua menu, silahkan klik atau pilih menu yang ingin Anda kunjungi."
+      },
+      "hero": {
+        "title": "🎯 Hero Section",
+        "content": "Area ini menampilkan informasi utama dan ajakan bertindak untuk menggunakan platform."
+      },
+      "testimonial": {
+        "title": "💬 Testimonial",
+        "content": "Lihat apa kata pengguna lain tentang pengalaman mereka menggunakan platform ini."
+      },
+      "featuredEventsHeader": {
+        "title": "📅 Event Unggulan",
+        "content": "Bagian ini menampilkan event-event terbaik yang mungkin kamu minati."
+      },
+      "featuredEvents": {
+        "title": "✨ Daftar Event",
+        "content": "Scroll untuk melihat lebih banyak event. Klik kartu event untuk melihat detail."
+      },
+      "quickActions": {
+        "title": "⚡ Aksi Cepat",
+        "content": "Akses fitur-fitur utama dengan cepat melalui tombol-tombol ini."
+      },
+      "claimBenefits": {
+        "title": "🎁 Klaim Benefit",
+        "content": "Lihat dan klaim berbagai benefit yang tersedia untuk kemitraan sekolah Anda."
+      },
+      "browseEvents": {
+        "title": "📆 Lihat Event",
+        "content": "Cari dan temukan event-event menarik yang bisa diikuti."
+      },
+      "accountSettings": {
+        "title": "⚙️ Pengaturan Akun",
+        "content": "Kelola profil, pengaturan, dan preferensi akun sekolah Anda."
+      },
+      "helpSection": {
+        "title": "🆘 Butuh Bantuan?",
+        "content": "Temukan panduan, FAQ, atau hubungi tim dukungan jika ada pertanyaan."
+      }
+    }
   },
   "Help": {
     "title": "Butuh Bantuan?",
@@ -250,7 +296,49 @@
     "step3": "Klik \"Lihat\" pada acara untuk melihat detail",
     "step4": "Klik \"Klaim\" pada halaman detail acara untuk menggunakan manfaat Anda",
     "eligibleEvents": "acara yang memenuhi syarat",
-    "eligibleEvent": "acara yang memenuhi syarat"
+    "eligibleEvent": "acara yang memenuhi syarat",
+    "tour": {
+      "welcome": {
+        "title": "🎁 Selamat Datang di Detail Benefit!",
+        "content": "Di sini kamu bisa lihat detail benefit, cek event yang tersedia, dan lihat riwayat penggunaan."
+      },
+      "navigation": {
+        "title": "🔙 Navigasi Kembali",
+        "content": "Gunakan tombol ini untuk kembali ke halaman daftar benefit atau tutup halaman."
+      },
+      "benefitCard": {
+        "title": "📋 Detail Benefit",
+        "content": "Lihat informasi lengkap benefit, termasuk nama, deskripsi, dan masa berlaku."
+      },
+      "quotaInfo": {
+        "title": "📊 Kuota & Masa Berlaku",
+        "content": "Cek sisa kuota yang tersedia dan kapan benefit ini berakhir."
+      },
+      "tabs": {
+        "title": "📑 Tab Informasi",
+        "content": "Dua tab utama: 'Event' untuk melihat event eligible, 'Riwayat' untuk melihat penggunaan benefit."
+      },
+      "eventsTab": {
+        "title": "🎪 Tab Event",
+        "content": "Di sini kamu bisa lihat event-event yang eligible untuk benefit ini."
+      },
+      "eventsList": {
+        "title": "📅 Daftar Event",
+        "content": "Klik tombol 'Lihat' untuk melihat detail event dan melakukan pendaftaran."
+      },
+      "historyTab": {
+        "title": "📜 Tab Riwayat",
+        "content": "Lihat riwayat penggunaan benefit dan status klaim voucher."
+      },
+      "historyItem": {
+        "title": "📋 Riwayat Penggunaan",
+        "content": "Setiap riwayat menunjukkan kode voucher, jumlah slot, dan peserta. Klik panah kanan untuk lihat detail peserta."
+      },
+      "howToClaim": {
+        "title": "ℹ️ Cara Klaim Benefit",
+        "content": "Ikuti panduan langkah demi langkah untuk mengklaim benefit dengan benar."
+      }
+    }
   },
   "EventsSection": {
     "events": "Acara",
@@ -315,5 +403,47 @@
     "noData": "Tidak ada dokumen PK ditemukan",
     "noPIC": "Tidak ada PIC",
     "noPICDetail": "Tidak ada detail PIC untuk dokumen ini"
+  },
+  "OnboardingTour": {
+    "back": "Kembali",
+    "close": "Tutup",
+    "last": "Terakhir",
+    "finish": "Selesai",
+    "next": "Selanjutnya",
+    "skip": "Lewati"
+  },
+  "tour": {
+    "welcome": {
+      "title": "🎁 Selamat Datang di Halaman Benefit!",
+      "content": "Di sini kamu bisa lihat dan klaim semua benefit yang tersedia untukmu."
+    },
+    "filter": {
+      "title": "🔍 Filter & Pencarian",
+      "content": "Filter benefit berdasarkan PK atau cari nama benefit tertentu."
+    },
+    "pkFilter": {
+      "title": "📁 Filter PK",
+      "content": "Pilih PK tertentu untuk melihat benefit dari PK tersebut saja."
+    },
+    "search": {
+      "title": "🔎 Cari Benefit",
+      "content": "Ketik nama benefit yang kamu cari, hasil akan langsung terfilter."
+    },
+    "expandCollapse": {
+      "title": "📂 Expand / Collapse",
+      "content": "Buka atau tutup semua daftar benefit sekaligus dengan tombol ini."
+    },
+    "benefitList": {
+      "title": "📋 Daftar Benefit",
+      "content": "Setiap PK memiliki daftar benefit. Klik header untuk expand/collapse."
+    },
+    "pkHeader": {
+      "title": "📄 Header PK",
+      "content": "Lihat nomor PK, masa berlaku, dan jumlah benefit di sini."
+    },
+    "benefitCard": {
+      "title": "✨ Kartu Benefit",
+      "content": "Klik kartu dengan badge hijau 'Bisa diklaim' untuk melihat detail dan melakukan klaim."
+    }
   }
 }

@@ -249,7 +249,7 @@ export default function EventsPage() {
   )
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-background to-secondary/20">
+    <div className="min-h-screen">
       <div className="container mx-auto px-4 max-[640px]:px-3 py-8 max-[640px]:py-6">
         {/* Header */}
         <div className="text-center mb-8 max-[640px]:mb-6">
@@ -268,7 +268,7 @@ export default function EventsPage() {
         {/* Main Content Area - Sidebar layout */}
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Desktop Sidebar Filter - hidden on mobile */}
-          <aside className="hidden lg:block lg:w-72 shrink-0">
+          <aside className="hidden lg:block lg:w-60 shrink-0">
             <div className="sticky top-24 bg-card rounded-xl border border-border p-4">
               <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
                 <Filter size={16} className="text-primary" />

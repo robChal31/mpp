@@ -89,7 +89,7 @@ export function HelpSection({
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full flex items-center justify-between p-4 max-[640px]:p-3 text-left hover:bg-muted/30 transition-colors"
+                className="w-full flex items-center justify-between p-4 max-[640px]:p-3 text-left hover:bg-muted/30 transition-colors cursor-pointer"
               >
                 <span className="font-medium text-foreground text-sm max-[640px]:text-xs max-[640px]:pr-2">
                   {item.question}

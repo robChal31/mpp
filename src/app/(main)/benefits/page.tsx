@@ -1,7 +1,7 @@
 // app/benefits/page.tsx
 'use client'
 
-import { useState, useEffect, JSX } from 'react'
+import { useState, useEffect, JSX, useMemo } from 'react'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -21,12 +21,14 @@ import {
   ChevronDown,
   ChevronUp,
   Filter,
-  X
+  X,
 } from 'lucide-react'
 import { formatDate } from '@/lib/utils/date'
 import { BenefitGroupV2, FlattenedBenefit, PK } from '@/types/benefit/benefit.type'
 import { toast } from 'sonner'
 import { useTranslations } from 'next-intl'
+import Link from 'next/link'
+import OnBoardingTour from '@/components/OnboardingTour'
 
 const getBenefitIcon = (type: string, size: number = 20) => {
   const icons: Record<string, JSX.Element> = {
@@ -70,6 +72,7 @@ interface BenefitGroupByPK {
 // ============ MAIN COMPONENT ============
 export default function BenefitsPage() {
   const t = useTranslations('Benefits')
+  const tour = useTranslations('tour')
   const [benefitGroups, setBenefitGroups] = useState<BenefitGroupByPK[]>([])
   const [filteredGroups, setFilteredGroups] = useState<BenefitGroupByPK[]>([])
   const [loading, setLoading] = useState(true)
@@ -203,6 +206,62 @@ export default function BenefitsPage() {
     setSearchQuery('')
   }
 
+  const steps = useMemo(() => [
+    {
+      target: "main",
+      title: tour('welcome.title'),
+      content: tour('welcome.content'),
+      disableBeacon: false,
+      placement: "center",
+    },
+    {
+      target: "#benefits-filter-section",
+      title: tour('filter.title'),
+      content: tour('filter.content'),
+      placement: "bottom",
+    },
+    {
+      target: "#benefits-pk-select",
+      title: tour('pkFilter.title'),
+      content: tour('pkFilter.content'),
+      placement: "bottom",
+    },
+    {
+      target: "#benefits-search-input",
+      title: tour('search.title'),
+      content: tour('search.content'),
+      placement: "top",
+    },
+    {
+      target: "#benefits-expand-buttons",
+      title: tour('expandCollapse.title'),
+      content: tour('expandCollapse.content'),
+      placement: "top",
+    },
+    {
+      target: "#benefits-list .overflow-hidden:first-child",
+      title: tour('benefitList.title'),
+      content: tour('benefitList.content'),
+      placement: "top",
+    },
+    {
+      target: "#benefits-list .overflow-hidden:first-child [id^='benefits-pk-header']",
+      title: tour('pkHeader.title'),
+      content: tour('pkHeader.content'),
+      placement: "bottom",
+    },
+    {
+      target: () => {
+        const firstClaimableBenefit = document.querySelector('[id^="benefit-card-"]:not([href="#"])');
+        return firstClaimableBenefit || '[id^="benefit-card-"]:first-child';
+      },
+      title: tour('benefitCard.title'),
+      content: tour('benefitCard.content'),
+      placement: "top",
+      disableBeacon: true,
+    },
+  ], [t])
+
   // Get unique PKs for filter
   const uniquePKs = Array.from(new Map(benefitGroups.map(group => [group.pk.id, group])).values())
 
@@ -216,6 +275,7 @@ export default function BenefitsPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+      <OnBoardingTour pageName='benefits' steps={steps} />
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold">{t('title')}</h1>
@@ -225,38 +285,35 @@ export default function BenefitsPage() {
       </div>
 
       {/* Filter Section */}
-      <div className="space-y-3">
+      <div id="benefits-filter-section" className="space-y-3">
         {/* Filter Bar */}
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="flex flex-wrap items-center gap-2">
+        <div id="benefits-filter-bar" className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+          <div className="flex items-center gap-2">
             <Filter size={16} className="text-muted-foreground" />
             <span className="text-sm font-medium text-foreground">{t('filterByPK')}</span>
-            <div className="flex flex-wrap gap-2">
-              <Button
-                variant={selectedPK === 'all' ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setSelectedPK('all')}
-                className="h-7 px-3 text-xs"
+            
+            <div className="relative">
+              <select
+                id="benefits-pk-select"
+                value={selectedPK}
+                onChange={(e) => setSelectedPK(e.target.value)}
+                className="pl-3 pr-7 py-1.5 text-sm rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer min-w-45"
               >
-                {t('allPKs')}
-              </Button>
-              {uniquePKs.map((group) => (
-                <Button
-                  key={group.pk.id}
-                  variant={selectedPK === group.pk.id ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setSelectedPK(group.pk.id)}
-                  className="h-7 px-3 text-xs"
-                >
-                  {group.pk.no_pk.replace(/&#39;/, "'").slice(0, 15)}...
-                </Button>
-              ))}
+                <option value="all">📁 {t('allPKs')}</option>
+                {uniquePKs.map((group) => (
+                  <option key={group.pk.id} value={group.pk.id}>
+                    📄 {group.pk.no_pk.replace(/&#39;/, "'")}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             </div>
           </div>
           
           <div className="flex items-center gap-2">
             {/* Search Input */}
             <input
+              id="benefits-search-input"
               type="text"
               placeholder={t('searchBenefits')}
               value={searchQuery}
@@ -265,12 +322,12 @@ export default function BenefitsPage() {
             />
             
             {/* Expand/Collapse Buttons */}
-            <div className="flex gap-1">
+            <div className="flex gap-1" id="benefits-expand-buttons">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={expandAll}
-                className="h-8 px-2 text-xs"
+                className="h-8 px-2 text-xs cursor-pointer"
                 title={t('expandAll')}
               >
                 <ChevronDown size={14} />
@@ -279,7 +336,7 @@ export default function BenefitsPage() {
                 variant="ghost"
                 size="sm"
                 onClick={collapseAll}
-                className="h-8 px-2 text-xs"
+                className="h-8 px-2 text-xs cursor-pointer"
                 title={t('collapseAll')}
               >
                 <ChevronUp size={14} />
@@ -292,7 +349,7 @@ export default function BenefitsPage() {
                 variant="ghost"
                 size="sm"
                 onClick={clearFilters}
-                className="h-8 px-2 text-xs gap-1 text-red-500 hover:text-red-600"
+                className="h-8 px-2 text-xs cursor-pointer gap-1 text-red-500 hover:text-red-600"
               >
                 <X size={14} />
                 {t('clear')}
@@ -338,16 +395,14 @@ export default function BenefitsPage() {
       </div>
 
       {/* Benefits List - Grouped by PK */}
-      <div className="space-y-4">
+      <div id="benefits-list" className="space-y-4">
         {filteredGroups.map((group) => {
           const isGroupExpanded = expandedGroups[group.pk.id] || false
           const hasActiveBenefits = group.benefits.some(b => b.redeemable === '1' && !group.isExpired)
           
           return (
-            <Card key={group.pk.id} className="overflow-hidden border-border">
-              {/* PK Header */}
-              <div 
-                className={`p-4 border-b border-border cursor-pointer hover:bg-muted/50 transition-colors ${
+            <Card id={`benefits-pk-${group.pk.id}`} key={group.pk.id} className="overflow-hidden border-border">
+              <div id={`benefits-pk-header-${group.pk.id}`} className={`p-4 border-b border-border cursor-pointer hover:bg-muted/50 transition-colors ${
                   !hasActiveBenefits ? 'opacity-80' : ''
                 }`}
                 onClick={() => toggleGroup(group.pk.id)}
@@ -400,7 +455,7 @@ export default function BenefitsPage() {
 
               {/* Benefits List - Collapsible */}
               {isGroupExpanded && (
-                <div className="p-4 space-y-3">
+                <div id={`benefits-pk-body-${group.pk.id}`} className="p-4 space-y-3">
                   {group.benefits.map((benefit) => {
                     const expired = group.isExpired
                     const colorClass = getBenefitColor(benefit.type)
@@ -408,65 +463,61 @@ export default function BenefitsPage() {
                     const canClick = isRedeemable && !expired
                     
                     return (
-                      <Card 
-                        key={benefit.id_benefit_list}
-                        className={`p-4 transition-all ${
-                          canClick 
-                            ? 'cursor-pointer hover:shadow-md hover:border-primary' 
-                            : 'opacity-75'
-                        }`}
-                        onClick={() => {
-                          if (canClick) {
-                            window.location.href = `/benefits/${benefit.id_benefit_list}`
-                          }
-                        }}
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className={`p-2 rounded-lg ${colorClass} shrink-0`}>
-                            {getBenefitIcon(benefit.type)}
-                          </div>
-                          
-                          <div className="flex-1 min-w-0">
-                            <div className={`flex flex-wrap items-center gap-2 ${benefit.subject_benefit ? '' : 'mb-1'}`}>
-                              <h4 className="font-semibold">{benefit.benefit_name}</h4>
-                              {benefit.subbenefit && (
-                                <span className="text-xs text-muted-foreground">
-                                  {benefit.subbenefit}
+                      <Link id={`benefit-card-${benefit.id_benefit_list}`} href={canClick ? `/benefits/${benefit.id_benefit_list}` : '#'} key={benefit.id_benefit_list}>
+                        <Card 
+                          className={`p-4 transition-all ${
+                            canClick 
+                              ? 'cursor-pointer hover:shadow-md hover:border-primary' 
+                              : 'opacity-75'
+                          }`}
+                        >
+                          <div className="flex items-start gap-4">
+                            <div className={`p-2 rounded-lg ${colorClass} shrink-0`}>
+                              {getBenefitIcon(benefit.type)}
+                            </div>
+                            
+                            <div className="flex-1 min-w-0">
+                              <div className={`flex flex-wrap items-center gap-2 ${benefit.subject_benefit ? '' : 'mb-1'}`}>
+                                <h4 className="font-semibold">{benefit.benefit_name}</h4>
+                                {benefit.subbenefit && (
+                                  <span className="text-xs text-muted-foreground">
+                                    {benefit.subbenefit}
+                                  </span>
+                                )}
+                              </div>
+                              {benefit.subject_benefit && (
+                                <p className='text-[11px] text-gray-500 mb-1'>
+                                  {t('subject')}: <span className='font-bold'>{benefit.subject_benefit}</span>
+                                </p>
+                              )}
+                              <p className="text-sm text-muted-foreground line-clamp-2">
+                                {benefit.description}
+                              </p>
+                              
+                              <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mt-2">
+                                <span className="flex items-center gap-1">
+                                  <Users size={12} /> {benefit.qty} {t('slots')}
                                 </span>
+                                <span className="flex items-center gap-1">
+                                  <Calendar size={12} /> {benefit.pelaksanaan}
+                                </span>
+                              </div>
+                            </div>
+                            
+                            <div className="shrink-0">
+                              {expired ? (
+                                <Badge variant="destructive">{t('expired')}</Badge>
+                              ) : !isRedeemable ? (
+                                <></>
+                              ) : (
+                                <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 gap-1">
+                                  <CheckCircle size={12} /> {t('claimable')}
+                                </Badge>
                               )}
                             </div>
-                            {benefit.subject_benefit && (
-                              <p className='text-[11px] text-gray-500 mb-1'>
-                                {t('subject')}: <span className='font-bold'>{benefit.subject_benefit}</span>
-                              </p>
-                            )}
-                            <p className="text-sm text-muted-foreground line-clamp-2">
-                              {benefit.description}
-                            </p>
-                            
-                            <div className="flex flex-wrap gap-4 text-xs text-muted-foreground mt-2">
-                              <span className="flex items-center gap-1">
-                                <Users size={12} /> {benefit.qty} {t('slots')}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <Calendar size={12} /> {benefit.pelaksanaan}
-                              </span>
-                            </div>
                           </div>
-                          
-                          <div className="shrink-0">
-                            {expired ? (
-                              <Badge variant="destructive">{t('expired')}</Badge>
-                            ) : !isRedeemable ? (
-                              <></>
-                            ) : (
-                              <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 gap-1">
-                                <CheckCircle size={12} /> {t('claimable')}
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      </Card>
+                        </Card>
+                      </Link>
                     )
                   })}
                   

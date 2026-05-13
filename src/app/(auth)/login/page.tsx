@@ -59,7 +59,7 @@ export default function LoginPage() {
               <h1 className="text-5xl font-bold leading-tight text-slate-900">
                 Welcome to{' '}
                 <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                  MPP Portal
+                  MP Portal
                 </span>
               </h1>
               
@@ -95,7 +95,7 @@ export default function LoginPage() {
                   </div>
                 </div>
                 <p className="text-sm text-slate-600 mt-2">
-                  "MPP membantu kami mengelola benefit dengan mudah dan efisien."
+                  "MP membantu kami mengelola benefit dengan mudah dan efisien."
                 </p>
               </div>
             </div>
@@ -108,8 +108,8 @@ export default function LoginPage() {
                   <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-3">
                     <GraduationCap className="text-primary" size={24} />
                   </div>
-                  <h1 className="text-2xl font-bold text-slate-900">MPP</h1>
-                  <p className="text-slate-500 text-sm">Mentari Premium Partner</p>
+                  <h1 className="text-2xl font-bold text-slate-900">MP</h1>
+                  <p className="text-slate-500 text-sm">Mentari Partner</p>
                 </div>
 
                 <div className="text-center mb-6">

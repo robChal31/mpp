@@ -21,3 +21,14 @@ model User {
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt
 }
+
+model UserTour {
+  id        String   @id @default(cuid())
+  userId    Int
+  pageName  String   // "dashboard" | "benefit" | "claim"
+  seen      Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, pageName])  // biar gak duplikat
+  @@index([userId, pageName])
+}

@@ -4,6 +4,8 @@ import { ArrowRight, Building, Calendar, Clock, Eye, MapPin } from 'lucide-react
 import { Button } from '../ui/button'
 import { RefObject } from 'react'
 import { useTranslations } from 'next-intl'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 type EventCardListModeProps = {
   event: EventI;
@@ -23,104 +25,105 @@ const EventCardListMode: React.FC<EventCardListModeProps> = ({
   typeConfig
 }) => {
   const t = useTranslations('EventCard')
-    
+  const router = useRouter()
   return (
-    <div
-      key={`${event.id_event}-${index}`}
-      ref={index === eventsLength - 1 ? lastEventRef : null}
-      className="group cursor-pointer"
-      onClick={() => window.location.href = `/events/${event.title_url}`}
-    >
-      <div className="relative bg-card rounded-xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden">
-        <div className="flex flex-col md:flex-row">
-          {/* Image Section */}
-          <div className="md:w-64 h-60 max-[640px]:h-48 md:h-auto relative overflow-hidden bg-linear-to-br from-muted to-secondary shrink-0">
-            {event.photoevent ? (
-              <>
-                <img
-                  src={event.photoevent}
-                  alt={event.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </>
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <EventTypeIcon size={40} className="text-muted-foreground/30 max-[640px]:size-8" />
-              </div>
-            )}
-            {/* Category badge overlay on image - mobile only */}
-            <div className="absolute top-3 left-3 md:hidden">
-              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[10px] font-medium backdrop-blur-sm bg-black/50 text-white">
-                <EventTypeIcon size={10} />
-                {event.category}
-              </div>
-            </div>
-          </div>
-
-          {/* Content Section */}
-          <div className="flex-1 p-5 max-[640px]:p-4 md:p-6">
-            {/* Category & Status - Desktop */}
-            <div className="hidden md:flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium capitalize ${typeConfig.bgColor} ${typeConfig.color}`}>
-                  <EventTypeIcon size={12} />
+    <Link href={`/events/${event.title_url}`} key={`${event.id_event}-${index}`}>
+      <div
+        key={`${event.id_event}-${index}`}
+        ref={index === eventsLength - 1 ? lastEventRef : null}
+        className="group cursor-pointer"
+      >
+        <div className="relative bg-card rounded-xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden">
+          <div className="flex flex-col md:flex-row">
+            {/* Image Section */}
+            <div className="md:w-64 h-60 max-[640px]:h-48 md:h-auto relative overflow-hidden bg-linear-to-br from-muted to-secondary shrink-0">
+              {event.photoevent ? (
+                <>
+                  <img
+                    src={event.photoevent}
+                    alt={event.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <EventTypeIcon size={40} className="text-muted-foreground/30 max-[640px]:size-8" />
+                </div>
+              )}
+              {/* Category badge overlay on image - mobile only */}
+              <div className="absolute top-3 left-3 md:hidden">
+                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-[10px] font-medium backdrop-blur-sm bg-black/50 text-white">
+                  <EventTypeIcon size={10} />
                   {event.category}
                 </div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium capitalize bg-primary/60 text-white">
-                  <MapPin size={12} />
-                  {event.city ? event.city : (event.province ? event.province : (event.location_place ? event.location_place : t('online')))} 
+              </div>
+            </div>
+
+            {/* Content Section */}
+            <div className="flex-1 p-5 max-[640px]:p-4 md:p-6">
+              {/* Category & Status - Desktop */}
+              <div className="hidden md:flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium capitalize ${typeConfig.bgColor} ${typeConfig.color}`}>
+                    <EventTypeIcon size={12} />
+                    {event.category}
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium capitalize bg-primary/60 text-white">
+                    <MapPin size={12} />
+                    {event.city ? event.city : (event.province ? event.province : (event.location_place ? event.location_place : t('online')))} 
+                  </div>
+                  <StatusBadge date_start={event.date_start} date_end={event.date_end} />
                 </div>
-                <StatusBadge date_start={event.date_start} date_end={event.date_end} />
+                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Clock size={12} />
+                  {t('registerBy')} {formatEventDate(event.date_start)}
+                </span>
               </div>
-              <span className="text-xs text-muted-foreground flex items-center gap-1">
-                <Clock size={12} />
-                {t('registerBy')} {formatEventDate(event.date_start)}
-              </span>
+
+              {/* Title */}
+              <h3 className="text-lg max-[640px]:text-base font-bold text-foreground mb-2 max-[640px]:mb-1.5 group-hover:text-primary transition-colors line-clamp-2">
+                {event.title}
+              </h3>
+              
+              {/* Description */}
+              <p className="text-sm max-[640px]:text-xs text-muted-foreground mb-4 max-[640px]:mb-2 line-clamp-2">
+                {event.description?.replace(/<[^>]*>/g, '').substring(0, 120)}...
+              </p>
+
+              {/* Date & Location */}
+              <div className="flex flex-wrap gap-4 max-[640px]:gap-3 text-sm max-[640px]:text-xs text-muted-foreground mb-4 max-[640px]:mb-3">
+                <div className="flex items-center gap-1.5 max-[640px]:gap-1">
+                  <Calendar size={14} className="text-primary max-[640px]:size-3" />
+                  <span className="max-[640px]:text-[11px]">{formatEventDate(event.date_start)}</span>
+                  <span className="text-muted-foreground/50 max-[640px]:text-[10px]">→</span>
+                  <span className="max-[640px]:text-[11px]">{formatEventDate(event.date_end)}</span>
+                </div>
+                <div className="flex items-center gap-1.5 max-[640px]:gap-1">
+                  <Building size={14} className="text-primary max-[640px]:size-3" />
+                  <span className="truncate max-w-50 max-[640px]:max-w-40 max-[640px]:text-[11px]">{event.location_place || t('onlineEvent')}</span>
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 max-[640px]:gap-1 text-muted-foreground group-hover:text-primary group-hover:scale-110 hover:bg-primary/80 group/btn px-0 hover:px-3 transition-all max-[640px]:text-xs max-[640px]:h-8"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  router.push(`/events/${event.id_event}`)
+                }}
+              >
+                <span>{t('viewDetails')}</span>
+                <ArrowRight size={14} className="transition-transform duration-300 group-hover/btn:translate-x-1 max-[640px]:size-3" />
+              </Button>
             </div>
-
-            {/* Title */}
-            <h3 className="text-lg max-[640px]:text-base font-bold text-foreground mb-2 max-[640px]:mb-1.5 group-hover:text-primary transition-colors line-clamp-2">
-              {event.title}
-            </h3>
-            
-            {/* Description */}
-            <p className="text-sm max-[640px]:text-xs text-muted-foreground mb-4 max-[640px]:mb-2 line-clamp-2">
-              {event.description?.replace(/<[^>]*>/g, '').substring(0, 120)}...
-            </p>
-
-            {/* Date & Location */}
-            <div className="flex flex-wrap gap-4 max-[640px]:gap-3 text-sm max-[640px]:text-xs text-muted-foreground mb-4 max-[640px]:mb-3">
-              <div className="flex items-center gap-1.5 max-[640px]:gap-1">
-                <Calendar size={14} className="text-primary max-[640px]:size-3" />
-                <span className="max-[640px]:text-[11px]">{formatEventDate(event.date_start)}</span>
-                <span className="text-muted-foreground/50 max-[640px]:text-[10px]">→</span>
-                <span className="max-[640px]:text-[11px]">{formatEventDate(event.date_end)}</span>
-              </div>
-              <div className="flex items-center gap-1.5 max-[640px]:gap-1">
-                <Building size={14} className="text-primary max-[640px]:size-3" />
-                <span className="truncate max-w-50 max-[640px]:max-w-40 max-[640px]:text-[11px]">{event.location_place || t('onlineEvent')}</span>
-              </div>
-            </div>
-
-            {/* Action Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="gap-2 max-[640px]:gap-1 text-muted-foreground group-hover:text-primary group-hover:scale-110 hover:bg-primary/80 group/btn px-0 hover:px-3 transition-all max-[640px]:text-xs max-[640px]:h-8"
-              onClick={(e) => {
-                e.stopPropagation()
-                window.location.href = `/events/${event.id_event}`
-              }}
-            >
-              <span>{t('viewDetails')}</span>
-              <ArrowRight size={14} className="transition-transform duration-300 group-hover/btn:translate-x-1 max-[640px]:size-3" />
-            </Button>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

@@ -6,7 +6,7 @@
     "title": "Dashboard",
     "welcome": "Welcome back!",
     "description": "Manage your benefits and discover upcoming events.",
-    "heroBadge": "MPP Dashboard",
+    "heroBadge": "MP Dashboard",
     "heroTitle": "Welcome Back!",
     "heroDescription": "Manage your partnership benefits and discover upcoming events in one place.",
     "viewBenefits": "View Benefits",
@@ -23,7 +23,53 @@
     "accountSettings": "Account Settings",
     "accountSettingsDesc": "Manage your profile",
     "helpTitle": "Need Help?",
-    "helpDescription": "Get the most out of your partnership benefits"
+    "helpDescription": "Get the most out of your partnership benefits",
+    "tour": {
+      "welcome": {
+        "title": "🌟 Welcome to Mentari Partner!",
+        "content": "Partnership benefits management platform for schools. Let's explore together! 👇"
+      },
+      "navigation": {
+        "title": "🚀 Navigation Menu",
+        "content": "To access all menus, please click or select the menu you want to visit."
+      },
+      "hero": {
+        "title": "🎯 Hero Section",
+        "content": "This area displays key information and calls to action for using the platform."
+      },
+      "testimonial": {
+        "title": "💬 Testimonial",
+        "content": "See what other users say about their experience with this platform."
+      },
+      "featuredEventsHeader": {
+        "title": "📅 Featured Events",
+        "content": "This section showcases the best events you might be interested in."
+      },
+      "featuredEvents": {
+        "title": "✨ Events List",
+        "content": "Scroll to see more events. Click on an event card to view details."
+      },
+      "quickActions": {
+        "title": "⚡ Quick Actions",
+        "content": "Access key features quickly through these buttons."
+      },
+      "claimBenefits": {
+        "title": "🎁 Claim Benefits",
+        "content": "View and claim various benefits available for your school partnership."
+      },
+      "browseEvents": {
+        "title": "📆 Browse Events",
+        "content": "Search and find exciting events you can join."
+      },
+      "accountSettings": {
+        "title": "⚙️ Account Settings",
+        "content": "Manage your profile, settings, and school account preferences."
+      },
+      "helpSection": {
+        "title": "🆘 Need Help?",
+        "content": "Find guides, FAQs, or contact support team if you have questions."
+      }
+    }
   },
   "Help": {
     "title": "Need Help?",
@@ -250,7 +296,49 @@
     "step3": "Click \"View\" on the event to see details",
     "step4": "Click \"Claim\" on the event detail page to use your benefit",
     "eligibleEvents": "eligible events",
-    "eligibleEvent": "eligible event"
+    "eligibleEvent": "eligible event",
+    "tour": {
+      "welcome": {
+        "title": "🎁 Welcome to Benefit Detail!",
+        "content": "Here you can view benefit details, check eligible events, and see usage history."
+      },
+      "navigation": {
+        "title": "🔙 Back Navigation",
+        "content": "Use this button to return to benefits list or close the page."
+      },
+      "benefitCard": {
+        "title": "📋 Benefit Details",
+        "content": "View complete benefit information including name, description, and validity period."
+      },
+      "quotaInfo": {
+        "title": "📊 Quota & Validity",
+        "content": "Check remaining available quota and when this benefit expires."
+      },
+      "tabs": {
+        "title": "📑 Information Tabs",
+        "content": "Two main tabs: 'Events' for eligible events, 'History' for benefit usage records."
+      },
+      "eventsTab": {
+        "title": "🎪 Events Tab",
+        "content": "Here you can see events eligible for this benefit."
+      },
+      "eventsList": {
+        "title": "📅 Events List",
+        "content": "Click 'View' button to see event details and register."
+      },
+      "historyTab": {
+        "title": "📜 History Tab",
+        "content": "View benefit usage history and voucher claim status."
+      },
+      "historyItem": {
+        "title": "📋 Usage History",
+        "content": "Each history shows voucher code, slot count, and participants. Click the right arrow to see participant details."
+      },
+      "howToClaim": {
+        "title": "ℹ️ How to Claim Benefit",
+        "content": "Follow step-by-step guide to claim your benefit correctly."
+      }
+    }
   },
   "EventsSection": {
     "events": "Events",
@@ -315,5 +403,47 @@
     "noData": "No PK documents found",
     "noPIC": "No PIC assigned",
     "noPICDetail": "No PIC details available for this document"
+  },
+  "OnboardingTour": {
+    "back": "Back",
+    "close": "Close",
+    "last": "Last",
+    "finish": "Finish",
+    "next": "Next",
+    "skip": "Skip"
+  },
+  "tour": {
+    "welcome": {
+      "title": "🎁 Welcome to Benefits Page!",
+      "content": "Here you can view and claim all benefits available for you."
+    },
+    "filter": {
+      "title": "🔍 Filter & Search",
+      "content": "Filter benefits by PK or search for specific benefit names."
+    },
+    "pkFilter": {
+      "title": "📁 Filter by PK",
+      "content": "Select a specific PK to view benefits from that PK only."
+    },
+    "search": {
+      "title": "🔎 Search Benefits",
+      "content": "Type the benefit name you're looking for, results will be filtered instantly."
+    },
+    "expandCollapse": {
+      "title": "📂 Expand / Collapse",
+      "content": "Open or close all benefit lists at once with these buttons."
+    },
+    "benefitList": {
+      "title": "📋 Benefits List",
+      "content": "Each PK has its own benefit list. Click the header to expand/collapse."
+    },
+    "pkHeader": {
+      "title": "📄 PK Header",
+      "content": "View PK number, validity period, and number of benefits here."
+    },
+    "benefitCard": {
+      "title": "✨ Benefit Card",
+      "content": "Click on the card with the green 'Claimable' badge to view details and claim."
+    }
   }
 }

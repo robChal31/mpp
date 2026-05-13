@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, JSX } from 'react'
+import { useState, useEffect, JSX, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -38,6 +38,7 @@ import { getEventDetailByRedeemCode } from '@/server/services/hy/event.service'
 import { BenefitDetailI, EventByRedeemCodeI, PK, UsageHistory } from '@/types/benefit/benefit.type'
 import { toast } from 'sonner'
 import { useTranslations } from 'next-intl'
+import OnBoardingTour from '@/components/OnboardingTour'
 
 interface BenefitDetailProps {
   data: {
@@ -211,33 +212,98 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
     loadHistoryEvents()
   }, [usages])
 
-    const loadHistoryEvents = async () => {
-      if (!usages || usages.length === 0) return
-      
-      setLoadingHistoryEvents(true)
-      try {
-        const enrichedHistory = await Promise.all(
-          usages.map(async (history) => {
-            if (history.redeem_code) {
-              const eventDetail = await getEventDetailByRedeemCode(history.redeem_code)
-              return { ...history, event: eventDetail || undefined }
-            }
-            return { ...history, event: undefined }
-          })
-        )
-        setUsageHistoryWithEvents(enrichedHistory)
-      } catch (err) {
-        console.error('Error loading history events:', err)
-        setUsageHistoryWithEvents(usages.map(h => ({ ...h, event: undefined })))
-      } finally {
-        setLoadingHistoryEvents(false)
-      }
+  const loadHistoryEvents = async () => {
+    if (!usages || usages.length === 0) return
+    
+    setLoadingHistoryEvents(true)
+    try {
+      const enrichedHistory = await Promise.all(
+        usages.map(async (history) => {
+          if (history.redeem_code) {
+            const eventDetail = await getEventDetailByRedeemCode(history.redeem_code)
+            return { ...history, event: eventDetail || undefined }
+          }
+          return { ...history, event: undefined }
+        })
+      )
+      setUsageHistoryWithEvents(enrichedHistory)
+    } catch (err) {
+      console.error('Error loading history events:', err)
+      setUsageHistoryWithEvents(usages.map(h => ({ ...h, event: undefined })))
+    } finally {
+      setLoadingHistoryEvents(false)
     }
+  }
+
+  const steps = useMemo(() => [
+    {
+      target: "main",
+      title: t('tour.welcome.title'),
+      content: t('tour.welcome.content'),
+      disableBeacon: false,
+      placement: "center",
+    },
+    {
+      target: "#benefit-detail-header",
+      title: t('tour.navigation.title'),
+      content: t('tour.navigation.content'),
+      placement: "bottom",
+    },
+    {
+      target: "#benefit-detail-main-card",
+      title: t('tour.benefitCard.title'),
+      content: t('tour.benefitCard.content'),
+      placement: "top",
+    },
+    {
+      target: "#benefit-detail-quota",
+      title: t('tour.quotaInfo.title'),
+      content: t('tour.quotaInfo.content'),
+      placement: "bottom",
+    },
+    {
+      target: "#benefit-detail-tabs",
+      title: t('tour.tabs.title'),
+      content: t('tour.tabs.content'),
+      placement: "top",
+    },
+    {
+      target: "#benefit-detail-tab-events",
+      title: t('tour.eventsTab.title'),
+      content: t('tour.eventsTab.content'),
+      placement: "bottom",
+    },
+    // {
+    //   target: "#benefit-detail-events-list",
+    //   title: t('tour.eventsList.title'),
+    //   content: t('tour.eventsList.content'),
+    //   placement: "top",
+    // },
+    {
+      target: "#benefit-detail-tab-history",
+      title: t('tour.historyTab.title'),
+      content: t('tour.historyTab.content'),
+      placement: "bottom",
+    },
+    // {
+    //   target: "#benefit-detail-history-list .rounded-lg.border:first-child",
+    //   title: t('tour.historyItem.title'),
+    //   content: t('tour.historyItem.content'),
+    //   placement: "top",
+    // },
+    {
+      target: "#benefit-detail-how-to-claim",
+      title: t('tour.howToClaim.title'),
+      content: t('tour.howToClaim.content'),
+      placement: "top",
+    },
+  ], [t])
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+      <OnBoardingTour pageName='claim-benefits' steps={steps} />
       {/* Header with Back Button */}
-      <div className="flex items-center justify-between">
+      <div id="benefit-detail-header" className="flex items-center justify-between">
         <Button variant="ghost" size="sm">
           <Link href="/benefits" className='flex items-center gap-2'>
             <ArrowLeft size={16} /> {t('backToBenefits')}
@@ -251,7 +317,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
       </div>
 
       {/* Benefit Main Card */}
-      <Card className="p-0 overflow-hidden border-border/50 hover:border-primary/30 transition-all duration-300">
+      <Card id="benefit-detail-main-card" className="p-0 overflow-hidden border-border/50 hover:border-primary/30 transition-all duration-300">
         <div className={`h-1 w-full bg-linear-to-r ${detailColor.split(' ')[0]} to-primary/50`} />
         
         <div className="p-5">
@@ -277,7 +343,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
             </Badge>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-border/50">
+          <div id="benefit-detail-quota" className="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-border/50">
             <div className="text-center">
               <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t('availableSlots')}</p>
               <p className="md:text-2xl text-lg font-bold text-foreground">{totalQuota}</p>
@@ -293,9 +359,9 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
       </Card>
 
       {/* Tabs */}
-      <Tabs defaultValue="events" className="w-full">
+      <Tabs id="benefit-detail-tabs" defaultValue="events" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="events" className="gap-2 md:text-sm text-xs">
+          <TabsTrigger id="benefit-detail-tab-events" value="events" className="gap-2 md:text-sm text-xs cursor-pointer">
             <Ticket size={16} />
             {t('events')}
             {relatedEvents.length > 0 && (
@@ -304,7 +370,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
               </Badge>
             )}
           </TabsTrigger>
-          <TabsTrigger value="history" className="gap-2 md:text-sm text-xs">
+          <TabsTrigger id="benefit-detail-tab-history" value="history" className="gap-2 md:text-sm text-xs cursor-pointer">
             <History size={16} />
             {t('usageHistory')}
             {usages.length > 0 && (
@@ -323,7 +389,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                 <Loader2 className="h-6 w-6 animate-spin text-primary" />
               </div>
             ) : relatedEvents.length > 0 ? (
-              <div className="space-y-3">
+              <div id="benefit-detail-events-list" className="space-y-3">
                 {relatedEvents.map((event) => (
                   <div key={event.id_event} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border border-border hover:bg-muted/30 transition-colors gap-3">
                     <div className="flex items-center gap-3 flex-1">
@@ -382,7 +448,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                 <Loader2 className="h-6 w-6 animate-spin text-primary" />
               </div>
             ) : usageHistoryWithEvents.length > 0 ? (
-              <div className="space-y-3">
+              <div id="benefit-detail-history-list" className="space-y-3">
                 {usageHistoryWithEvents.map((history: UsageHistory) => {
                   const qtyUsed = history.qty1 != 0 ? history.qty1 : history.qty2 != 0 ? history.qty2 : history.qty3
                   const participants = Array.isArray(history.event) ? history.event : [] 
@@ -396,12 +462,12 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                       <div className="w-full flex items-center justify-between p-3 text-left max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-2">
                         <div className="flex items-center gap-3 flex-1 min-w-0 max-[640px]:w-full">
                           <div className={`p-2 rounded-lg shrink-0 ${
-                            remainingUnused > 0
-                              ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                              : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                          }`}>
+                              remainingUnused > 0
+                                ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                            }`}>
                             <CheckCircle size={14} />
-          </div>
+                          </div>
                           <div className="flex-1 min-w-0">
                             <p className="font-medium text-sm line-clamp-2">
                               {Array.isArray(history.event) ? (history.event[0]?.event_name || benefit.benefit_name) : history.description?.split('\n')[0] || t('benefitUsed')}
@@ -432,7 +498,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="gap-1 text-xs h-8 border-amber-300 text-amber-700 hover:text-orange-400 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400"
+                              className="gap-1 text-xs h-8 border-amber-300 text-amber-700 hover:text-orange-400 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 cursor-pointer"
                               onClick={() => handleOpenReclaimModal(history, remainingUnused)}
                             >
                               <RefreshCw size={12} />
@@ -442,7 +508,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                           )}
                           <button
                             onClick={() => toggleExpand(history.id)}
-                            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-muted/30 transition-colors"
+                            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-muted/30 transition-colors cursor-pointer"
                           >
                             <ChevronRight 
                               size={16} 
@@ -497,7 +563,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
               </div>
               <button
                 onClick={() => setReclaimModal({ ...reclaimModal, isOpen: false })}
-                className="p-1 rounded-lg hover:bg-muted transition-colors"
+                className="p-1 rounded-lg hover:bg-muted transition-colors cursor-pointer"
               >
                 <X size={18} />
               </button>
@@ -548,7 +614,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                       </div>
                       <button
                         onClick={() => setSelectedNewEventId('')}
-                        className="p-1 rounded-full hover:bg-muted transition-colors"
+                        className="p-1 rounded-full hover:bg-muted transition-colors cursor-pointer"
                       >
                         <X size={14} />
                       </button>
@@ -560,7 +626,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                       <button
                         key={event.id_event}
                         onClick={() => setSelectedNewEventId(event.id_event)}
-                        className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all text-left group"
+                        className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all text-left group cursor-pointer"
                       >
                         <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
                           {event.photoevent ? (
@@ -609,7 +675,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                       type="button"
                       variant="outline"
                       size="icon"
-                      className="h-10 w-10"
+                      className="h-10 w-10 cursor-pointer"
                       onClick={() => setReclaimQty(Math.max(1, reclaimQty - 1))}
                       disabled={reclaimQty <= 1}
                     >
@@ -630,7 +696,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                       type="button"
                       variant="outline"
                       size="icon"
-                      className="h-10 w-10"
+                      className="h-10 w-10 cursor-pointer"
                       onClick={() => setReclaimQty(Math.min(reclaimModal.maxMovable, reclaimQty + 1))}
                       disabled={reclaimQty >= reclaimModal.maxMovable}
                     >
@@ -656,13 +722,13 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
             <div className="flex gap-3 p-5 border-t border-border">
               <Button
                 variant="outline"
-                className="flex-1"
+                className="flex-1 cursor-pointer"
                 onClick={() => setReclaimModal({ ...reclaimModal, isOpen: false })}
               >
                 {t('cancel')}
               </Button>
               <Button
-                className="flex-1 gap-2 bg-linear-to-r from-primary to-primary/80"
+                className="flex-1 cursor-pointer gap-2 bg-linear-to-r from-primary to-primary/80"
                 onClick={handleReclaimSubmit}
                 disabled={isReclaiming || !selectedNewEventId || reclaimQty < 1}
               >
@@ -675,7 +741,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
       )}
 
       {/* How to Claim Card */}
-      <Card className="p-5 bg-linear-to-r from-blue-50/50 to-transparent dark:from-blue-950/20 border border-blue-100 dark:border-blue-900/30">
+      <Card id="benefit-detail-how-to-claim" className="p-5 bg-linear-to-r from-blue-50/50 to-transparent dark:from-blue-950/20 border border-blue-100 dark:border-blue-900/30">
         <div className="flex items-start gap-3">
           <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/50 shrink-0">
             <Info size={16} className="text-blue-600 dark:text-blue-400" />
