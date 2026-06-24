@@ -21,23 +21,41 @@ export function EventCard({ event, variant = 'default', onClick }: EventCardProp
     const EventTypeIcon = getEventTypeIcon(event.category as EventCategory)
     const typeConfig = getEventTypeConfig(event.category as EventCategory)
     const router = useRouter()
+    
+    const stripHtml = (html: string) => {
+        if (!html) return ''
+        if (typeof window !== 'undefined') {
+            const doc = new DOMParser().parseFromString(html, 'text/html')
+            return doc.body.textContent || ''
+        }
+        return html.replace(/<[^>]*>/g, '')
+    }
+    
+    const cleanDescription = stripHtml(event.description || '')
 
     return (
-        <Link href={`/events/${event.title_url}`}className="group relative cursor-pointer h-full block">
+        <Link href={`/events/${event.title_url}`} className="group relative cursor-pointer h-full block">
             {/* Card Container */}
             <div className="relative overflow-hidden rounded-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-white/20 dark:border-gray-800/30 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] h-full flex flex-col">
                 
-                {/* Image with Parallax Effect */}
+                {/* Image Section */}
                 <div className="relative h-52 max-[640px]:h-44 overflow-hidden shrink-0">
-                    <img src={event.photoevent} alt={event.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy"/>
+                    <img 
+                        src={event.photoevent} 
+                        alt={event.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        loading="lazy"
+                        onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = 'https://placehold.co/400x300/3279FF/white?text=Event';
+                        }}
+                    />
                 
-                    {/* Animated Gradient Overlay */}
                     <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent opacity-70" />
                     
-
                     <div className="absolute bottom-4 left-4 max-[640px]:bottom-2 max-[640px]:left-2">
                         <div className="flex items-center gap-2">
-                            <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium capitalize bg-primary/60 text-white max-[640px]:px-1.5 max-[640px]:py-0.5 max-[640px]:text-[9px]`}>
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium capitalize bg-green-500/60 text-white max-[640px]:px-1.5 max-[640px]:py-0.5 max-[640px]:text-[9px]">
                                 <MapPin size={12} className="max-[640px]:size-3" />
                                 {event.city ? event.city : (event.province ? event.province : (event.location_place ? event.location_place : 'Online Event'))}
                             </div>
@@ -53,7 +71,6 @@ export function EventCard({ event, variant = 'default', onClick }: EventCardProp
                         </div>
                     </div>
                     
-                    {/* Date Circle */}
                     <div className="absolute -bottom-6 -right-6 w-24 h-24 max-[640px]:w-20 max-[640px]:h-20 bg-primary rounded-full opacity-90 group-hover:scale-150 transition-transform duration-700" />
                     <div className="absolute bottom-4 right-4 text-white text-right z-10 max-[640px]:bottom-2 max-[640px]:right-2">
                         <p className="text-xs font-light max-[640px]:text-[8px]">{t('starts')}</p>
@@ -66,17 +83,32 @@ export function EventCard({ event, variant = 'default', onClick }: EventCardProp
                     </div>
                 </div>
 
-                {/* Content */}
-                <div className="p-6 flex-1 flex flex-col max-[640px]:p-4">
-                    <h3 className="text-xl max-[640px]:text-base font-bold text-foreground mb-3 max-[640px]:mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                {/* Content Section - fix height dengan min-height */}
+                <div className="p-6 pb-0 flex-1 flex flex-col max-[640px]:p-4 max-[640px]:pb-0">
+                    
+                    {/* Title */}
+                    <h3 className="text-xl max-[640px]:text-base font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                         {event.title}
                     </h3>
+                    
+                    {/* Description - dengan min-height agar tetap konsisten meski kosong */}
+                    <div className="min-h-10 max-[640px]:min-h-8 mb-3">
+                        {cleanDescription.trim() ? (
+                            <p className="text-sm text-muted-foreground line-clamp-2 max-[640px]:text-xs">
+                                {cleanDescription.length > 100 ? cleanDescription.slice(0, 100) + '...' : cleanDescription}
+                            </p>
+                        ) : (
+                            <p className="text-sm text-muted-foreground/50 italic max-[640px]:text-xs">
+                                {t('checkDetails')}
+                            </p>
+                        )}
+                    </div>
 
-                    {/* Info Grid */}
-                    <div className="grid grid-cols-2 gap-3 text-sm text-muted-foreground mb-4 max-[640px:gap-2 max-[640px]:mb-3">
+                    {/* Info Grid - posisinya akan tetap di tempat yang sama karena description punya min-height */}
+                    <div className="grid grid-cols-2 gap-3 text-sm text-muted-foreground mb-4 max-[640px]:gap-2">
                         <div className="flex items-center gap-2 max-[640px]:gap-1">
-                            <div className="p-1.5 rounded-lg bg-primary/10 max-[640px]:p-1">
-                                <Calendar size={14} className="text-primary max-[640px]:size-3" />
+                            <div className="p-1.5 rounded-lg bg-accent/30 max-[640px]:p-1">
+                                <Calendar size={14} className="text-orange-600 max-[640px]:size-3" />
                             </div>
                             <div className="flex flex-col">
                                 <span className="text-[10px] text-muted-foreground/70 max-[640px]:text-[8px]">{t('endsAt')}</span>
@@ -85,8 +117,8 @@ export function EventCard({ event, variant = 'default', onClick }: EventCardProp
                         </div>
                         
                         <div className="flex items-center gap-2 max-[640px]:gap-1">
-                            <div className="p-1.5 rounded-lg bg-primary/10 max-[640px]:p-1">
-                                <MapPin size={14} className="text-primary max-[640px]:size-3" />
+                            <div className="p-1.5 rounded-lg bg-accent/30 max-[640px]:p-1">
+                                <MapPin size={14} className="text-orange-600 max-[640px]:size-3" />
                             </div>
                             <div className="flex flex-col flex-1 min-w-0">
                                 <span className="text-[10px] text-muted-foreground/70 max-[640px]:text-[8px]">{t('location')}</span>
@@ -94,15 +126,16 @@ export function EventCard({ event, variant = 'default', onClick }: EventCardProp
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    {/* Action Button */}
+                {/* Button - nempel di bawah */}
+                <div className="mt-2 border-primary">
                     <Button 
-                    variant="outline"
-                    className="w-full gap-2 bg-transparent border-primary/20 hover:bg-primary hover:text-white transition-all duration-300 group/btn group-hover:bg-primary group-hover:text-white max-[640px]:text-xs max-[640px]:h-8 cursor-pointer"
-                    onClick={(e) => {
-                        e.stopPropagation()
-                        router.push(`/events/${event.title_url}`)
-                    }}
+                        className="w-full gap-2 bg-primary hover:bg-primary/80 text-white transition-all duration-300 rounded-none rounded-b-2xl py-6 max-[640px]:py-2.5 max-[640px]:text-xs cursor-pointer"
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            router.push(`/events/${event.title_url}`)
+                        }}
                     >
                         <span>{t('viewDetails')}</span>
                         <ArrowRight size={16} className="transition-transform duration-300 group-hover/btn:translate-x-1 max-[640px]:size-3" />

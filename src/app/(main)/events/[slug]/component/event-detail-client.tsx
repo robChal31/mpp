@@ -32,6 +32,13 @@ import he from 'he'
 import { CheckBenefitByEventGroupResult } from '@/types/benefit/benefit.type'
 import { toast } from 'sonner'
 import { useTranslations } from 'next-intl'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 interface EventDetailClientProps {
   event: EventI
@@ -174,9 +181,13 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
           }
         )
         setClaimModal({ ...claimModal, isOpen: false })
-        const ticketUrl = `https://hadiryuk.id/event/ticket/${event.title_url}?mppcode=${data.data.redeem_code}`
-        window.open(ticketUrl, '_blank')
-        router.refresh()
+        setTimeout(() => {
+          const ticketUrl = event.is_eduhub == '1' 
+            ? `${process.env.NEXT_PUBLIC_ASTA_URL}/event-checkout?id=${event.id_event}` 
+            : `${process.env.NEXT_PUBLIC_HY_URL}/event/ticket/${event.title_url}?mppcode=${data.data.redeem_code}`
+          window.open(ticketUrl, '_blank')
+          router.refresh()
+        }, 5000)
       } else {
         toast.error(data.message || t('claimFailed'), {
           duration: 3000,
@@ -207,7 +218,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
       {/* Modal Claim */}
       {claimModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-background rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-5 border-b border-border">
               <div className="flex items-center gap-2">
@@ -216,7 +227,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
               </div>
               <button
                 onClick={() => setClaimModal({ ...claimModal, isOpen: false })}
-                className="p-1 rounded-lg hover:bg-muted transition-colors"
+                className="p-1 rounded-lg hover:bg-muted transition-colors cursor-pointer"
               >
                 <X size={18} />
               </button>
@@ -239,7 +250,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                     type="button"
                     variant="outline"
                     size="icon"
-                    className="h-10 w-10"
+                    className="h-10 w-10 bg-white"
                     onClick={() => setClaimQty(Math.max(1, claimQty - 1))}
                     disabled={claimQty <= 1}
                   >
@@ -254,13 +265,13 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                         setClaimQty(val)
                       }
                     }}
-                    className="w-20 h-10 text-center rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-20 h-10 text-center rounded-lg border border-border bg-white focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <Button
                     type="button"
                     variant="outline"
                     size="icon"
-                    className="h-10 w-10"
+                    className="h-10 w-10 bg-white"
                     onClick={() => setClaimQty(Math.min(claimModal.availableQuota, claimQty + 1))}
                     disabled={claimQty >= claimModal.availableQuota}
                   >
@@ -285,13 +296,13 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
             <div className="flex gap-3 p-5 border-t border-border">
               <Button
                 variant="outline"
-                className="flex-1"
+                className="flex-1 cursor-pointer bg-gray-100"
                 onClick={() => setClaimModal({ ...claimModal, isOpen: false })}
               >
                 {t('cancel')}
               </Button>
               <Button
-                className="flex-1 gap-2 bg-linear-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600"
+                className="flex-1 gap-2 bg-linear-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 cursor-pointer"
                 onClick={handleClaimSubmit}
                 disabled={isClaiming || claimQty < 1 || claimQty > claimModal.availableQuota}
               >
@@ -310,12 +321,12 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
         </div>
 
         <div className="absolute top-6 left-6 right-6 z-20 flex justify-between max-[640px]:top-3 max-[640px]:left-3 max-[640px]:right-3">
-          <Button variant="outline" size="sm" onClick={() => router.back()} className="gap-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-none shadow-lg md:text-xs text-[10px] max-[640px]:text-[8px] max-[640px]:h-7 max-[640px]:px-2">
+          <Button variant="outline" size="sm" onClick={() => router.back()} className="gap-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-none shadow-lg md:text-xs text-[10px] max-[640px]:text-[8px] max-[640px]:h-7 max-[640px]:px-2 cursor-pointer">
             <ArrowLeft size={16} className="max-[640px]:size-3" />
             <span className="max-[640px]:hidden">{t('back')}</span>
           </Button>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={handleShare} disabled={isSharing} className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-none shadow-lg max-[640px]:h-7 max-[640px]:w-7 max-[640px]:p-0">
+            <Button variant="outline" size="sm" onClick={handleShare} disabled={isSharing} className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-none shadow-lg max-[640px]:h-7 max-[640px]:w-7 max-[640px]:p-0 cursor-pointer">
               <Share2 size={16} className="max-[640px]:size-3" />
             </Button>
           </div>
@@ -487,24 +498,39 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
               {/* Action Button */}
               {hasBenefit?.hasBenefit && hasBenefit.benefits ? (
                 <div className="space-y-3 max-[640px]:space-y-2">
-                  <select
-                    className="w-full p-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary max-[640px]:text-xs max-[640px]:p-1.5"
-                    value={selectedBenefitId}
-                    onChange={(e) => setSelectedBenefitId(e.target.value)}
+                  <Select
+                    value={selectedBenefitId || 'none'}
+                    onValueChange={(value) => setSelectedBenefitId(value === 'none' ? '' : value)}
                   >
-                    <option value="">{t('selectBenefit')}</option>
-                    {hasBenefit.benefits.map((b, idx) => {
-                      const remainingQuota = b.benefit.active_quota.available ?? 0
-                      return (
-                        <option key={idx} value={b.benefit.id}>
-                          {b.benefit.name} ({remainingQuota} {remainingQuota !== 1 ? t('slotsLeft') : t('slotLeft')})
-                        </option>
-                      )
-                    })}
-                  </select>
+                    <SelectTrigger className="w-full p-2 rounded-lg border border-border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary max-[640px]:text-xs max-[640px]:p-1.5">
+                      <SelectValue placeholder={t('selectBenefit')} />
+                    </SelectTrigger>
+                    <SelectContent 
+                      className="rounded-lg border border-border bg-white shadow-lg"
+                      style={{ width: 'auto', minWidth: '200px', maxWidth: '400px' }}
+                      // atau pake className:
+                      // className="rounded-lg border border-border bg-white shadow-lg w-auto min-w-[200px] max-w-[400px]"
+                    >
+                      <SelectItem value="none" className="cursor-pointer hover:bg-primary/10">
+                        {t('selectBenefit')}
+                      </SelectItem>
+                      {hasBenefit.benefits.map((b, idx) => {
+                        const remainingQuota = b.benefit.active_quota.available ?? 0
+                        return (
+                          <SelectItem 
+                            key={idx} 
+                            value={b.benefit.id}
+                            className="cursor-pointer hover:bg-primary/10"
+                          >
+                            {b.benefit.name} ({remainingQuota} {remainingQuota !== 1 ? t('slotsLeft') : t('slotLeft')})
+                          </SelectItem>
+                        )
+                      })}
+                    </SelectContent>
+                  </Select>
                   <Button
                     size="lg"
-                    className="w-full bg-linear-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 gap-2 max-[640px:text-xs max-[640px]:py-2 max-[640px]:h-auto"
+                    className="w-full bg-linear-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 gap-2 max-[640px:text-xs max-[640px]:py-2 max-[640px]:h-auto cursor-pointer"
                     disabled={status === 'ended' || event.sales_active !== 'active' || !selectedBenefitId || maxQty === 0}
                     onClick={handleOpenClaimModal}
                   >

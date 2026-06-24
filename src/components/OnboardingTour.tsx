@@ -35,7 +35,6 @@ export default function OnBoardingTour({
                 throw new Error("Failed to mark tour as seen");
             }
             
-            console.log(`Tour ${pageName} marked as seen`);
         } catch (error) {
             console.error("Error marking tour as seen:", error);
         }
@@ -105,7 +104,7 @@ export default function OnBoardingTour({
                 skip: t("skip"),
             }}
             options={{
-                primaryColor: "#6366f1",
+                primaryColor: "#3279FF",
                 backgroundColor: "#ffffff", 
                 textColor: "#1f2937",
                 zIndex: 1000,
@@ -130,7 +129,7 @@ export default function OnBoardingTour({
                     marginTop: "12px",
                 },
                 buttonPrimary: {
-                    backgroundColor: "#6366f1",
+                    backgroundColor: "#3279FF",
                     borderRadius: "999px",
                     padding: "8px 20px",
                 },
@@ -139,16 +138,15 @@ export default function OnBoardingTour({
                 },
                 overlay: {
                     backgroundColor: "rgba(0, 0, 0, 0.6)",
-                    // HAPUS backdropFilter dari sini!
                 },
                 beacon: {
                     transform: "scale(1.2)",
                 },
                 beaconInner: {
-                    backgroundColor: "#6366f1",
+                    backgroundColor: "#3279FF",
                 },
                 beaconOuter: {
-                    borderColor: "rgba(99, 102, 241, 0.5)",
+                    borderColor: "rgba(50, 121, 255, 0.5)",
                 },
                 buttonClose: {
                     color: "#6b7280",

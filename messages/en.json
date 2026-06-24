@@ -6,9 +6,21 @@
     "title": "Dashboard",
     "welcome": "Welcome back!",
     "description": "Manage your benefits and discover upcoming events.",
-    "heroBadge": "MP Dashboard",
-    "heroTitle": "Welcome Back!",
-    "heroDescription": "Manage your partnership benefits and discover upcoming events in one place.",
+    "heroBadge": "Welcome Back, Mentari Partner!",
+    "heroTitle": "Manage Benefits",
+    "heroTitleHighlight": "Easy in One Platform",
+    "heroDescription": "Access all your partnership benefits, register for exclusive events, and track your partnership progress all in this dashboard.",
+    "viewEvents": "Find Events",
+    "cardTitle": "Mentari Partner Dashboard",
+    "cardTotalBenefit": "Total Benefits",
+    "cardProgramsAvailable": "Programs Available",
+    "cardActiveEvents": "Active Events",
+    "cardUpcomingEvents": "Upcoming Events",
+    "cardDocuments": "Partnership Documents",
+    "cardActiveDocuments": "Active Documents",
+    "cardPartnershipStatus": "Partnership Status",
+    "cardActive": "Active",
+    "newBenefits": "New Benefits",
     "viewBenefits": "View Benefits",
     "browseEvents": "Browse Events",
     "featuredEvents": "Featured Events",
@@ -24,6 +36,21 @@
     "accountSettingsDesc": "Manage your profile",
     "helpTitle": "Need Help?",
     "helpDescription": "Get the most out of your partnership benefits",
+     "agreementRenewal": {
+      "title": "Agreement Renewal",
+      "subtitle": "Mentari Group Partnership Agreement",
+      "active": "Active",
+      "endsOn": "ends on",
+      "description": "The Partnership Agreement with Mentari Group will end on 11 Jun 2029. To continue the partnership, we provide an automatic renewal option. Press the \"Automatic Renewal\" button in Mentari Premium Partner.",
+      "consultantHelp": "If you have questions or need further explanation,",
+      "consultantAvailable": "our Education Consultant is ready to help and can be contacted",
+      "gratitude": "We hope that the partnership established so far can continue. Thank you for your trust and support.",
+      "autoRenew": "Automatic Renewal",
+      "contactConsultant": "Contact Consultant",
+      "processing": "Processing...",
+      "renewed": "Renewed Successfully!",
+      "successMessage": "Agreement has been automatically renewed. We will send confirmation to your email."
+    },
     "tour": {
       "welcome": {
         "title": "🌟 Welcome to Mentari Partner!",
@@ -73,8 +100,13 @@
   },
   "Help": {
     "title": "Need Help?",
+     "heroBadge": "FAQ",
+    "heroTitle": "Frequently Asked",
+    "heroHighlight": "Questions",
+    "heroDescription": "Find answers to the most frequently asked questions about the Mentari Partner platform",
     "description": "Find answers to common questions or contact our support team",
     "faqTitle": "Frequently Asked Questions",
+    "responseTime": "Response within 24 hours",
     "faq1": {
       "question": "How do I claim my benefits?",
       "answer": "Go to the Benefits section, find an active benefit, and click 'Claim'. You can then select an eligible event to use your benefit."
@@ -101,6 +133,7 @@
     "quickLinks": "Quick Links",
     "dashboard": "Dashboard",
     "benefits": "Benefits",
+    "helpCenter": "Help Center",
     "events": "Events",
     "settings": "Settings",
     "support": "Support",
@@ -111,6 +144,10 @@
     "subscribedSuccess": "Subscribed successfully!",
     "privacyAgreement": "By subscribing, you agree to our Privacy Policy.",
     "privacyPolicy": "Privacy Policy",
+    "helpTutorials": "Help & Tutorials",
+    "about": "About",
+    "videoTutorial": "Video Tutorial",
+    "faq": "FAQ",
     "termsOfService": "Terms of Service",
     "contactUs": "Contact Us",
     "backToTop": "Back to top",
@@ -123,7 +160,8 @@
     "endsAt": "Ends at",
     "location": "Location",
     "viewDetails": "View Details",
-    "onlineEvent": "Online Event"
+    "onlineEvent": "Online Event",
+    "checkDetails": "Check event details for more information."
   },
   "Events": {
     "pageTitle": "Events & Competitions",
@@ -147,7 +185,8 @@
     "list": "List",
     "active": "Active:",
     "clearAll": "Clear all",
-    "filter": "Filter"
+    "filter": "Filter",
+    "searchPlaceholder": "Search events..."
   },
   "Subjects": {
     "english": "English",
@@ -166,7 +205,11 @@
     "benefits": "Benefits",
     "events": "Events",
     "settings": "Settings",
-    "documents": "Documents"
+    "documents": "Documents",
+    "profile": "Profile",
+    "videoTutorial": "Video Tutorial",
+    "about": "About",
+    "faq": "FAQ"
   },
   "EventDetail": {
     "back": "Back",
@@ -219,7 +262,9 @@
     "description": "Available benefits from your partnership packages. Click on any claimable benefit to view details.",
     "failedToLoad": "Failed to load benefits",
     "filterByPK": "Filter by PK:",
+    "filterByProgram": "Filter by Program:",
     "allPKs": "All PKs",
+    "allPrograms": "All Programs",
     "searchBenefits": "Search benefits...",
     "expandAll": "Expand all",
     "collapseAll": "Collapse all",
@@ -233,6 +278,7 @@
     "benefitsSingular": "benefit",
     "benefitsPlural": "benefits",
     "claimable": "Claimable",
+    "viewOnly": "View Only",
     "subject": "Subject",
     "slots": "slots",
     "noBenefitsFound": "No benefits found matching your search.",
@@ -297,6 +343,14 @@
     "step4": "Click \"Claim\" on the event detail page to use your benefit",
     "eligibleEvents": "eligible events",
     "eligibleEvent": "eligible event",
+    "expiredBenefit": "Benefit Has Expired",
+    "expiredBenefitMessage": "This benefit can no longer be claimed as it has reached its expiration date.",
+    "viewOnlyTitle": "Benefit Information",
+    "viewOnlyDescription": "This benefit is for information purposes only and cannot be claimed through this platform.",
+    "informationOnly": "Information Only",
+    "records": "records",
+    "entries": "entries",
+    "completed": "Completed",
     "tour": {
       "welcome": {
         "title": "🎁 Welcome to Benefit Detail!",
@@ -350,7 +404,12 @@
     "latestFirst": "Latest first",
     "seenAllEvents": "You've seen all {total} events 🎉",
     "noEventsFound": "No events found",
-    "tryChangingFilter": "Try changing your filter or check back later for new events."
+    "tryChangingFilter": "Try changing your filter or check back later for new events.",
+    "searchResults": "search results",
+    "searchingFor": "Searching for",
+    "resultsFound": "results found",
+    "noSearchResults": "No events found",
+    "tryDifferentSearch": "Try using different keywords"
   },
   "EventCard": {
     "online": "Online",
@@ -391,8 +450,8 @@
     "failedToFetchUser": "Failed to fetch user data"
   },
   "Programs": {
-    "title": "PK Documents",
-    "description": "List of Partnership Agreement documents",
+    "title": "Profiles",
+    "description": "List of Partnership Agreement",
     "active": "Active",
     "expired": "Expired",
     "pic": "PIC",
@@ -400,9 +459,9 @@
     "details": "Details",
     "hide": "Hide",
     "failedToLoad": "Failed to load data",
-    "noData": "No PK documents found",
+    "noData": "No Profiles found",
     "noPIC": "No PIC assigned",
-    "noPICDetail": "No PIC details available for this document"
+    "noPICDetail": "No PIC details available for this partnership"
   },
   "OnboardingTour": {
     "back": "Back",
@@ -445,5 +504,96 @@
       "title": "✨ Benefit Card",
       "content": "Click on the card with the green 'Claimable' badge to view details and claim."
     }
+  },
+  "Tutorial": {
+    "title": "Help Center",
+    "description": "Complete guide to using the Mentari Partner platform",
+    "noVideos": "No tutorial videos available for this category yet"
+  },
+  "About": {
+    "title": "About Mentari Partner",
+    "description": "Partnership platform empowering schools with premium benefits, training, and educational resources.",
+    "badge": "Mentari Partner",
+    "heroTitle": "About Mentari Partner",
+    "heroHighlight": "Mentari Partner",
+    "heroDescription": "Partnership platform empowering schools with premium benefits, training, and educational resources to support the advancement of Indonesian education.",
+    "missionTitle": "Our Mission",
+    "missionDescription": "To become an active contributor in developing superior human resources in Indonesia, enabling the nation to stand alongside the world's leading countries through the path of education.",
+    "visionTitle": "Our Vision",
+    "visionDescription": "1. To become a place of growth for the young generation of Indonesia who are competent, of good character, and prosperous.\n\n2. To become a source of quality and superior learning materials and training for all educational institutions, school leaders, teachers, parents, and students across Indonesia.\n\n3. To actively contribute in creating innovative learning materials that align with the demands of the times by integrating the latest technology, resources, and the best talents from around the world.",
+    "stats": {
+      "schools": "Partner Schools",
+      "support": "Support",
+      "satisfaction": "Partner Satisfaction",
+      "years": "Years Established"
+    },
+    "valuesTitle": "Our Values",
+    "valuesSubtitle": "Principles that guide us in serving educational partners",
+    "values": {
+      "excellence": {
+        "title": "Excellence",
+        "description": "We are committed to providing the best service for educational partners."
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "description": "Working together with schools to create positive impact."
+      },
+      "care": {
+        "title": "Care",
+        "description": "Caring about the development and needs of educational partners."
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "Continuously innovating to support the advancement of Indonesian education."
+      }
+    },
+    "offerTitle": "What We Offer",
+    "offer": {
+      "benefits": {
+        "title": "Premium Benefits",
+        "description": "Access to various exclusive benefits for partners"
+      },
+      "training": {
+        "title": "Training & Workshops",
+        "description": "Professional development programs for educators"
+      },
+      "events": {
+        "title": "Exclusive Events",
+        "description": "Events and competitions for students and teachers"
+      },
+      "certification": {
+        "title": "Certification",
+        "description": "International exams and certifications"
+      },
+      "competition": {
+        "title": "Competitions",
+        "description": "Olympiads and academic competitions"
+      }
+    }
+  },
+  "ForgotPassword": {
+    "title": "Forgot Password",
+    "description": "Enter your email to receive a password reset link",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "school@example.com",
+    "sendResetLink": "Send Reset Link",
+    "sending": "Sending...",
+    "backToLogin": "Back to Login",
+    "secure": "Secure & Encrypted",
+    "trusted": "Trusted",
+    "emailRequired": "Email is required",
+    "successMessage": "Password reset link has been sent to your email",
+    "errorMessage": "Failed to send reset link. Please try again.",
+    "checkEmail": "Check Your Email",
+    "checkEmailDescription": "We've sent a password reset link to your email. The link will expire in 24 hours.",
+    "sentTo": "Sent to",
+    "resendHint": "Didn't receive the email?",
+    "tryAgain": "Try again"
+  },
+  "EventNotFound": {
+    "title": "Event Not Found",
+    "description": "Sorry, the event you're looking for is not available or has been removed. Please check the link or explore other events.",
+    "backToEvents": "Back to Events",
+    "goToDashboard": "Go to Dashboard"
   }
 }

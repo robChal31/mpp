@@ -8,6 +8,7 @@ export interface EventI {
   title: string
   title_url: string
   event_code: string
+  event_group: string
   category: string
   subject: string
   description: string
@@ -40,6 +41,7 @@ export interface EventI {
   is_hidden: string
   is_stream: string
   is_request_royalti: string
+  is_eduhub: string
 }
 
 // Ini type yang sesuai dengan response API lo

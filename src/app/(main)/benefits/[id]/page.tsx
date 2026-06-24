@@ -7,6 +7,7 @@ import { AlertCircle, ArrowLeft, Ticket } from 'lucide-react';
 import BenefitDetail from '../components/detail';
 import { getCurrentUser } from '@/lib/auth';
 import { getTranslations } from 'next-intl/server';
+import { decodeId } from '@/lib/utils/hash';
 
 interface BenefitDetailPageProps {
   params: {
@@ -18,8 +19,8 @@ export default async function BenefitDetailPage({ params }: BenefitDetailPagePro
   try {
     const resolvedParams = await params;
     const user = await getCurrentUser()
-    const benefit = user?.email ? await getBenefitById(resolvedParams.id, user.email) : null
-    
+    const benefit = user?.email ? await getBenefitById(decodeId(resolvedParams.id), user.email) : null
+ 
     if (!benefit) {
       return <NotFoundPage />
     }

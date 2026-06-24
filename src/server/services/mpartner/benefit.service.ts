@@ -42,7 +42,7 @@ export async function fetchBenefits(email: string): Promise<BenefitGroupV2[]> {
 }
 
 // server/services/mpartner/benefit.service.ts
-export async function getBenefitById(id: string, email: string): Promise<GetBenefitByIdResponse | null> {
+export async function getBenefitById(id: number, email: string): Promise<GetBenefitByIdResponse | null> {
   try {
     const phpUrl = `${process.env.NEXT_PUBLIC_MBS_API_URL}/get_benefit_by_id.php`
     const apiToken = process.env.NEXT_PUBLIC_MBS_API_TOKEN
@@ -88,7 +88,7 @@ export async function getBenefitById(id: string, email: string): Promise<GetBene
 }
 
 // server/services/mpartner/benefit.service.ts
-export async function getBenefitByEventGroup(benefitType: string, subject: string, email: string): Promise<CheckBenefitByEventGroupResult> {
+export async function getBenefitByEventGroup(benefitType: string, subject: string, eventGroup: string, email: string): Promise<CheckBenefitByEventGroupResult> {
   try {
     const phpUrl = `${process.env.NEXT_PUBLIC_MBS_API_URL}/check_benefit_by_event_group.php`
     const apiToken = process.env.NEXT_PUBLIC_MBS_API_TOKEN
@@ -98,9 +98,10 @@ export async function getBenefitByEventGroup(benefitType: string, subject: strin
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         token: apiToken,
-        benefit_type: benefitType,
+        benefit_type: benefitType ?? '',
         email: email,
-        subject: subject
+        subject: subject,
+        event_group: eventGroup
       }),
       cache: 'no-store',
     })

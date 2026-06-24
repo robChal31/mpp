@@ -14,6 +14,8 @@ export interface FlattenedBenefit {
   pk: PK
   subject_benefit: string
   subbenefit_group: string
+  active_qty: number
+  active_year: number
 }
 
 export interface PK {
@@ -22,6 +24,8 @@ export interface PK {
   no_pk: string
   start_at: string
   expired_at: string
+  program?: string
+  active_quota: ActiveQuota
 }
 
 export interface BenefitGroup {
@@ -130,7 +134,7 @@ export interface BenefitQuota {
 }
 
 export interface ActiveQuota {
-  year: number | null;
+  year: number;
   total: number;
   used: number;
   available: number;
@@ -161,6 +165,8 @@ export interface PKData {
   no_pk: string;
   start_at: string;
   expired_at: string;
+  program?: string;
+  active_quota: ActiveQuota
 }
 
 export interface UsageHistory {

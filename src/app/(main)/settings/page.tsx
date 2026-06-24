@@ -92,7 +92,7 @@ export default function SettingsPage() {
     setMessage(null)
     
     try {
-      const res = await fetch('/api/auth/reset_password', {
+      const res = await fetch('/api/auth/reset-password', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -54,23 +54,23 @@ export async function POST(req: NextRequest) {
 
     try {
         // Upsert: update kalo ada, create kalo belum ada
-        // const userTour = await prisma.userTour.upsert({
-        //     where: {
-        //         userId_pageName: {
-        //             userId: userId,
-        //             pageName: pageName,
-        //         },
-        //     },
-        //     update: {
-        //         seen: true,
-        //         updatedAt: new Date(),
-        //     },
-        //     create: {
-        //         userId: userId,
-        //         pageName: pageName,
-        //         seen: true,
-        //     },
-        // });
+        const userTour = await prisma.userTour.upsert({
+            where: {
+                userId_pageName: {
+                    userId: userId,
+                    pageName: pageName,
+                },
+            },
+            update: {
+                seen: true,
+                updatedAt: new Date(),
+            },
+            create: {
+                userId: userId,
+                pageName: pageName,
+                seen: true,
+            },
+        });
 
         return NextResponse.json({ 
             success: true, 

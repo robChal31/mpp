@@ -49,3 +49,13 @@ export async function changePasswordService(
   return { success: true }
 }
 
+export async function changeResetPasswordToken(email: string){
+  const user = await userRepo.findUserByEmail(email)
+  if (!user) return {status: 'error', message: 'User not found'}
+
+  const updatedUser = await userRepo.updateResetPasswordToken(user.id)
+
+  if(!updatedUser) return {status: 'error', message: 'Failed to update reset password token'}
+  return { status: 'success', resetToken: updatedUser.resetPasswordToken, name: updatedUser.name, messaege: 'Reset password token updated successfully' }
+}
+

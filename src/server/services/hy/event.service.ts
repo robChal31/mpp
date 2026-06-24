@@ -27,8 +27,8 @@ export async function getEvent(group: string, subject: string, event_group: stri
   }
 }
 
-export async function getEvents(page: number = 1, limit: number = 10, category: string = '', subject: string = '', city: string = '') {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_HADIRYUK_URL}/EventBenefit?limit=${limit}&page=${page}&category=${category}&subject=${subject}&city=${city}`, {
+export async function getEvents(page: number = 1, limit: number = 10, category: string = '', subject: string = '', city: string = '', search: string = '') {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_HADIRYUK_URL}/EventBenefit?limit=${limit}&page=${page}&category=${category}&subject=${subject}&city=${city}&name=${search}`, {
     cache: "no-store",
   })
 
@@ -73,7 +73,7 @@ export async function getEventBySlug(slug: string): Promise<EventI | null> {
     }
     
     const data = await response.json()
-    return data ? data.events[0] : null
+    return data && data.events && data.events.length > 0 ? data.events[0] : null
   } catch (error) {
     console.error('Error fetching event:', error)
     return null

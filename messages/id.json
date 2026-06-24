@@ -6,10 +6,6 @@
     "title": "Dasbor",
     "welcome": "Selamat datang kembali!",
     "description": "Kelola manfaat Anda dan temukan acara mendatang.",
-    "heroBadge": "Dasbor MP",
-    "heroTitle": "Selamat Datang Kembali!",
-    "heroDescription": "Kelola manfaat kemitraan Anda dan temukan acara mendatang dalam satu tempat.",
-    "viewBenefits": "Lihat Manfaat",
     "browseEvents": "Jelajahi Acara",
     "featuredEvents": "Acara Unggulan",
     "featuredEventsDesc": "Acara yang mungkin Anda minati",
@@ -24,6 +20,37 @@
     "accountSettingsDesc": "Kelola profil Anda",
     "helpTitle": "Butuh Bantuan?",
     "helpDescription": "Manfaatkan maksimal manfaat kemitraan Anda",
+    "heroBadge": "Selamat Datang Kembali, Mitra Mentari!",
+    "heroTitle": "Kelola Manfaat",
+    "heroTitleHighlight": "Mudah dalam Satu Platform",
+    "heroDescription": "Akses semua manfaat kerjasama Anda, daftar event eksklusif, dan pantau progress partnership hanya di dashboard ini.",
+    "viewBenefits": "Lihat Manfaat Saya",
+    "viewEvents": "Cari Event",
+    "cardTitle": "Mentari Partner Dashboard",
+    "cardTotalBenefit": "Total Manfaat",
+    "cardProgramsAvailable": "Program Tersedia",
+    "cardActiveEvents": "Event Aktif",
+    "cardUpcomingEvents": "Event Mendatang",
+    "cardDocuments": "Dokumen Kerjasama",
+    "cardActiveDocuments": "Dokumen Aktif",
+    "cardPartnershipStatus": "Status Kerjasama",
+    "cardActive": "Active",
+    "newBenefits": "Manfaat Baru",
+    "agreementRenewal": {
+      "title": "Perpanjangan Perjanjian",
+      "subtitle": "Perjanjian Kerja Sama Mentari Group",
+      "active": "Aktif",
+      "endsOn": "berakhir pada",
+      "description": "Perjanjian Kerja Sama dengan Mentari Group akan berakhir pada 11 Jun 2029. Untuk melanjutkan kerja sama, kami menyediakan opsi perpanjangan otomatis. Tekan tombol \"Perpanjangan Otomatis\" di Mentari Premium Partner.",
+      "consultantHelp": "Jika Anda memiliki pertanyaan atau penjelasan yang perlu diketahui terlebih dahulu,",
+      "consultantAvailable": "kami siap membantu dan dapat dihubungi",
+      "gratitude": "Kami berharap kerja sama yang telah terjalin selama ini dapat terus berlanjut. Terima kasih atas kepercayaan dan dukungan Anda.",
+      "autoRenew": "Perpanjangan Otomatis",
+      "contactConsultant": "Hubungi Consultant",
+      "processing": "Memproses...",
+      "renewed": "Berhasil Diperpanjang!",
+      "successMessage": "Perjanjian berhasil diperpanjang otomatis. Kami akan mengirimkan konfirmasi ke email Anda."
+    },
     "tour": {
       "welcome": {
         "title": "🌟 Selamat Datang di Mentari Partner!",
@@ -54,8 +81,8 @@
         "content": "Akses fitur-fitur utama dengan cepat melalui tombol-tombol ini."
       },
       "claimBenefits": {
-        "title": "🎁 Klaim Benefit",
-        "content": "Lihat dan klaim berbagai benefit yang tersedia untuk kemitraan sekolah Anda."
+        "title": "🎁 Klaim Manfaat",
+        "content": "Lihat dan klaim berbagai manfaat yang tersedia untuk kemitraan sekolah Anda."
       },
       "browseEvents": {
         "title": "📆 Lihat Event",
@@ -73,8 +100,13 @@
   },
   "Help": {
     "title": "Butuh Bantuan?",
+    "heroBadge": "FAQ",
+    "heroTitle": "Pertanyaan yang Sering",
+    "heroHighlight": "Diajukan",
+    "heroDescription": "Temukan jawaban untuk pertanyaan yang paling sering diajukan tentang platform Mentari Partner",
     "description": "Temukan jawaban untuk pertanyaan umum atau hubungi tim dukungan kami",
     "faqTitle": "Pertanyaan yang Sering Diajukan",
+    "responseTime": "Respon dalam 24 jam",
     "faq1": {
       "question": "Bagaimana cara mengklaim manfaat saya?",
       "answer": "Buka bagian Manfaat, temukan manfaat yang aktif, dan klik 'Klaim'. Anda kemudian dapat memilih acara yang memenuhi syarat untuk menggunakan manfaat Anda."
@@ -101,6 +133,7 @@
     "quickLinks": "Tautan Cepat",
     "dashboard": "Dasbor",
     "benefits": "Manfaat",
+    "helpCenter": "Pusat Bantuan",
     "events": "Acara",
     "settings": "Pengaturan",
     "support": "Dukungan",
@@ -116,14 +149,19 @@
     "backToTop": "Kembali ke atas",
     "madeWith": "Dibuat dengan",
     "forEducators": "untuk pendidik Indonesia",
-    "allRightsReserved": "Hak cipta dilindungi."
+    "allRightsReserved": "Hak cipta dilindungi.",
+    "helpTutorials": "Bantuan & Tutorial",
+    "about": "Tentang",
+    "videoTutorial": "Video Tutorial",
+    "faq": "FAQ"
   },
   "Event": {
     "starts": "Mulai",
     "endsAt": "Berakhir pada",
     "location": "Lokasi",
     "viewDetails": "Lihat Detail",
-    "onlineEvent": "Acara Online"
+    "onlineEvent": "Acara Online",
+    "checkDetails": "Periksa Detail Acara untuk mengetahui informasi lebih lanjut."
   },
   "Events": {
     "pageTitle": "Acara & Kompetisi",
@@ -147,7 +185,8 @@
     "list": "Daftar",
     "active": "Aktif:",
     "clearAll": "Hapus semua",
-    "filter": "Filter"
+    "filter": "Filter",
+    "searchPlaceholder": "Cari event..."
   },
   "Subjects": {
     "english": "Bahasa Inggris",
@@ -166,7 +205,11 @@
     "benefits": "Manfaat",
     "events": "Event",
     "settings": "Pengaturan",
-    "documents": "Dokumen"
+    "documents": "Dokumen",
+    "profile": "Profil",
+    "videoTutorial": "Tutorial Video",
+    "about": "Tentang",
+    "faq": "FAQ"
   },
   "EventDetail": {
     "back": "Kembali",
@@ -219,7 +262,9 @@
     "description": "Manfaat yang tersedia dari paket kemitraan Anda. Klik pada manfaat yang dapat diklaim untuk melihat detail.",
     "failedToLoad": "Gagal memuat manfaat",
     "filterByPK": "Filter berdasarkan PK:",
+    "filterByProgram": "Filter Program:",
     "allPKs": "Semua PK",
+    "allPrograms": "Semua Program",
     "searchBenefits": "Cari manfaat...",
     "expandAll": "Buka semua",
     "collapseAll": "Tutup semua",
@@ -230,9 +275,10 @@
     "expired": "Kadaluarsa",
     "active": "Aktif",
     "valid": "Berlaku",
-    "benefitsSingular": "manfaat",
-    "benefitsPlural": "manfaat",
+    "benefitsSingular": "Manfaat",
+    "benefitsPlural": "Manfaat",
     "claimable": "Dapat diklaim",
+    "viewOnly": "Hanya dapat dilihat",
     "subject": "Subjek",
     "slots": "slot",
     "noBenefitsFound": "Tidak ada manfaat yang ditemukan sesuai pencarian Anda.",
@@ -297,30 +343,38 @@
     "step4": "Klik \"Klaim\" pada halaman detail acara untuk menggunakan manfaat Anda",
     "eligibleEvents": "acara yang memenuhi syarat",
     "eligibleEvent": "acara yang memenuhi syarat",
+    "expiredBenefit": "Manfaat Telah Kedaluwarsa",
+    "expiredBenefitMessage": "Manfaat ini tidak dapat diklaim lagi karena masa berlakunya telah berakhir.",
+    "viewOnlyTitle": "Informasi manfaat",
+    "viewOnlyDescription": "manfaat ini hanya dapat dilihat informasinya dan tidak dapat diklaim melalui platform ini.",
+    "informationOnly": "Informasi Saja",
+    "records": "catatan",
+    "entries": "entri",
+    "completed": "Selesai",
     "tour": {
       "welcome": {
-        "title": "🎁 Selamat Datang di Detail Benefit!",
-        "content": "Di sini kamu bisa lihat detail benefit, cek event yang tersedia, dan lihat riwayat penggunaan."
+        "title": "🎁 Selamat Datang di Detail Manfaat!",
+        "content": "Di sini kamu bisa lihat detail manfaat, cek event yang tersedia, dan lihat riwayat penggunaan."
       },
       "navigation": {
         "title": "🔙 Navigasi Kembali",
-        "content": "Gunakan tombol ini untuk kembali ke halaman daftar benefit atau tutup halaman."
+        "content": "Gunakan tombol ini untuk kembali ke halaman daftar manfaat atau tutup halaman."
       },
       "benefitCard": {
-        "title": "📋 Detail Benefit",
-        "content": "Lihat informasi lengkap benefit, termasuk nama, deskripsi, dan masa berlaku."
+        "title": "📋 Detail Manfaat",
+        "content": "Lihat informasi lengkap manfaat, termasuk nama, deskripsi, dan masa berlaku."
       },
       "quotaInfo": {
         "title": "📊 Kuota & Masa Berlaku",
-        "content": "Cek sisa kuota yang tersedia dan kapan benefit ini berakhir."
+        "content": "Cek sisa kuota yang tersedia dan kapan manfaat ini berakhir."
       },
       "tabs": {
         "title": "📑 Tab Informasi",
-        "content": "Dua tab utama: 'Event' untuk melihat event eligible, 'Riwayat' untuk melihat penggunaan benefit."
+        "content": "Dua tab utama: 'Event' untuk melihat event eligible, 'Riwayat' untuk melihat penggunaan manfaat."
       },
       "eventsTab": {
         "title": "🎪 Tab Event",
-        "content": "Di sini kamu bisa lihat event-event yang eligible untuk benefit ini."
+        "content": "Di sini kamu bisa lihat event-event yang eligible untuk manfaat ini."
       },
       "eventsList": {
         "title": "📅 Daftar Event",
@@ -328,15 +382,15 @@
       },
       "historyTab": {
         "title": "📜 Tab Riwayat",
-        "content": "Lihat riwayat penggunaan benefit dan status klaim voucher."
+        "content": "Lihat riwayat penggunaan manfaat dan status klaim voucher."
       },
       "historyItem": {
         "title": "📋 Riwayat Penggunaan",
         "content": "Setiap riwayat menunjukkan kode voucher, jumlah slot, dan peserta. Klik panah kanan untuk lihat detail peserta."
       },
       "howToClaim": {
-        "title": "ℹ️ Cara Klaim Benefit",
-        "content": "Ikuti panduan langkah demi langkah untuk mengklaim benefit dengan benar."
+        "title": "ℹ️ Cara Klaim Manfaat",
+        "content": "Ikuti panduan langkah demi langkah untuk mengklaim manfaat dengan benar."
       }
     }
   },
@@ -350,7 +404,12 @@
     "latestFirst": "Terjauh dulu",
     "seenAllEvents": "Anda telah melihat semua {total} acara 🎉",
     "noEventsFound": "Tidak ada acara ditemukan",
-    "tryChangingFilter": "Coba ubah filter atau periksa kembali nanti untuk acara baru."
+    "tryChangingFilter": "Coba ubah filter atau periksa kembali nanti untuk acara baru.",
+    "searchResults": "hasil pencarian",
+    "searchingFor": "Mencari",
+    "resultsFound": "hasil ditemukan",
+    "noSearchResults": "Tidak ada event yang ditemukan",
+    "tryDifferentSearch": "Coba gunakan kata kunci lain"
   },
   "EventCard": {
     "online": "Online",
@@ -391,8 +450,8 @@
     "failedToFetchUser": "Gagal mengambil data pengguna"
   },
   "Programs": {
-    "title": "Dokumen PK",
-    "description": "Daftar dokumen Perjanjian Kerjasama",
+    "title": "Profil",
+    "description": "Daftar Perjanjian Kerjasama",
     "active": "Aktif",
     "expired": "Kadaluarsa",
     "pic": "PIC",
@@ -400,9 +459,9 @@
     "details": "Detail",
     "hide": "Tutup",
     "failedToLoad": "Gagal memuat data",
-    "noData": "Tidak ada dokumen PK ditemukan",
+    "noData": "Tidak ada profil ditemukan",
     "noPIC": "Tidak ada PIC",
-    "noPICDetail": "Tidak ada detail PIC untuk dokumen ini"
+    "noPICDetail": "Tidak ada detail PIC untuk PK ini"
   },
   "OnboardingTour": {
     "back": "Kembali",
@@ -414,36 +473,127 @@
   },
   "tour": {
     "welcome": {
-      "title": "🎁 Selamat Datang di Halaman Benefit!",
-      "content": "Di sini kamu bisa lihat dan klaim semua benefit yang tersedia untukmu."
+      "title": "🎁 Selamat Datang di Halaman Manfaat!",
+      "content": "Di sini kamu bisa lihat dan klaim semua manfaat yang tersedia untukmu."
     },
     "filter": {
       "title": "🔍 Filter & Pencarian",
-      "content": "Filter benefit berdasarkan PK atau cari nama benefit tertentu."
+      "content": "Filter manfaat berdasarkan PK atau cari nama manfaat tertentu."
     },
     "pkFilter": {
       "title": "📁 Filter PK",
-      "content": "Pilih PK tertentu untuk melihat benefit dari PK tersebut saja."
+      "content": "Pilih PK tertentu untuk melihat manfaat dari PK tersebut saja."
     },
     "search": {
-      "title": "🔎 Cari Benefit",
-      "content": "Ketik nama benefit yang kamu cari, hasil akan langsung terfilter."
+      "title": "🔎 Cari Manfaat",
+      "content": "Ketik nama manfaat yang kamu cari, hasil akan langsung terfilter."
     },
     "expandCollapse": {
       "title": "📂 Expand / Collapse",
-      "content": "Buka atau tutup semua daftar benefit sekaligus dengan tombol ini."
+      "content": "Buka atau tutup semua daftar manfaat sekaligus dengan tombol ini."
     },
     "benefitList": {
-      "title": "📋 Daftar Benefit",
-      "content": "Setiap PK memiliki daftar benefit. Klik header untuk expand/collapse."
+      "title": "📋 Daftar Manfaat",
+      "content": "Setiap PK memiliki daftar manfaat. Klik header untuk expand/collapse."
     },
     "pkHeader": {
       "title": "📄 Header PK",
-      "content": "Lihat nomor PK, masa berlaku, dan jumlah benefit di sini."
+      "content": "Lihat nomor PK, masa berlaku, dan jumlah manfaat di sini."
     },
     "benefitCard": {
-      "title": "✨ Kartu Benefit",
+      "title": "✨ Kartu Manfaat",
       "content": "Klik kartu dengan badge hijau 'Bisa diklaim' untuk melihat detail dan melakukan klaim."
     }
+  },
+  "Tutorial": {
+    "title": "Pusat Bantuan",
+    "description": "Panduan lengkap menggunakan platform Mentari Partner",
+    "noVideos": "Belum ada video tutorial untuk kategori ini"
+  },
+  "About": {
+    "title": "Tentang Mentari Partner",
+    "description": "Platform kemitraan yang memberdayakan sekolah dengan benefit premium, pelatihan, dan sumber daya pendidikan.",
+    "badge": "Mentari Partner",
+    "heroTitle": "Tentang Mentari Partner",
+    "heroHighlight": "Mentari Partner",
+    "heroDescription": "Platform kemitraan yang memberdayakan sekolah dengan benefit premium, pelatihan, dan sumber daya pendidikan untuk mendukung kemajuan pendidikan Indonesia.",
+    "missionTitle": "Misi Kami",
+    "missionDescription": "Menjadi kontributor aktif dalam pembangunan SDM yang unggul di Indonesia untuk bisa berdiri sejajar dengan bangsa-bangsa terkemuka di dunia melalui jalur pendidikan",
+    "visionTitle": "Visi Kami",
+    "visionDescription": "1. Menjadi tempat bertumbuh bagi generasi muda Indonesia yang kompeten, berkarakter baik, dan sejahtera.\n\n2. Menjadi sumber pengadaan materi pembelajaran dan pelatihan yang berkualitas dan unggul untuk seluruh lembaga pendidikan, pimpinan lembaga pendidikan, guru, orang tua, dan murid di seluruh Indonesia.\n\n3. Berkontribusi aktif dalam menciptakan materi pembelajaran yang inovatif dan sesuai dengan tuntutan zaman dengan mengintegrasikan teknologi terkini, sumber daya, dan talenta terbaik dari seluruh dunia.",
+    "stats": {
+      "schools": "Sekolah Mitra",
+      "support": "Support",
+      "satisfaction": "Kepuasan Mitra",
+      "years": "Tahun Berdiri"
+    },
+    "valuesTitle": "Nilai-Nilai Kami",
+    "valuesSubtitle": "Prinsip yang menjadi dasar kami dalam melayani mitra pendidikan",
+    "values": {
+      "excellence": {
+        "title": "Excellence",
+        "description": "Kami berkomitmen memberikan layanan terbaik untuk mitra pendidikan."
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "description": "Bekerja sama dengan sekolah untuk menciptakan dampak positif."
+      },
+      "care": {
+        "title": "Care",
+        "description": "Peduli terhadap perkembangan dan kebutuhan mitra pendidikan."
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "Terus berinovasi untuk mendukung kemajuan pendidikan Indonesia."
+      }
+    },
+    "offerTitle": "Apa yang Kami Tawarkan",
+    "offer": {
+      "benefits": {
+        "title": "Benefit Premium",
+        "description": "Akses ke berbagai benefit eksklusif untuk mitra"
+      },
+      "training": {
+        "title": "Pelatihan & Workshop",
+        "description": "Program pengembangan profesional untuk pendidik"
+      },
+      "events": {
+        "title": "Event Eksklusif",
+        "description": "Event dan kompetisi untuk siswa dan guru"
+      },
+      "certification": {
+        "title": "Sertifikasi",
+        "description": "Ujian dan sertifikasi internasional"
+      },
+      "competition": {
+        "title": "Kompetisi",
+        "description": "Olimpiade dan kompetisi akademik"
+      }
+    }
+  },
+  "ForgotPassword": {
+    "title": "Lupa Password",
+    "description": "Masukkan email Anda untuk menerima link reset password",
+    "emailLabel": "Alamat Email",
+    "emailPlaceholder": "school@example.com",
+    "sendResetLink": "Kirim Link Reset",
+    "sending": "Mengirim...",
+    "backToLogin": "Kembali ke Login",
+    "secure": "Aman & Terenkripsi",
+    "trusted": "Terpercaya",
+    "emailRequired": "Email wajib diisi",
+    "successMessage": "Link reset password telah dikirim ke email Anda",
+    "errorMessage": "Gagal mengirim link reset. Silakan coba lagi.",
+    "checkEmail": "Cek Email Anda",
+    "checkEmailDescription": "Kami telah mengirimkan link reset password ke email Anda. Link akan kadaluarsa dalam 24 jam.",
+    "sentTo": "Dikirim ke",
+    "resendHint": "Tidak menerima email?",
+    "tryAgain": "Coba lagi"
+  },
+  "EventNotFound": {
+    "title": "Event Tidak Ditemukan",
+    "description": "Maaf, event yang Anda cari tidak tersedia atau telah dihapus. Silakan cek kembali link atau jelajahi event lainnya.",
+    "backToEvents": "Kembali ke Events",
+    "goToDashboard": "Ke Dashboard"
   }
 }

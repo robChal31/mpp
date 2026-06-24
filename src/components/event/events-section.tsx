@@ -12,13 +12,15 @@ interface EventsSectionProps {
   subjectFilter?: string,
   cityFilter?: string,
   sortBy?: string
+  searchQuery?: string
 }
 
 export default function EventsSection({ 
   typeFilter = 'all', 
   subjectFilter = 'all', 
   cityFilter = 'all',
-  sortBy = 'date_asc'
+  sortBy = 'date_asc',
+  searchQuery = ''
 }: EventsSectionProps) {
   const t = useTranslations('EventsSection')
   const [events, setEvents] = useState<EventI[]>([])
@@ -31,11 +33,28 @@ export default function EventsSection({
   const lastEventRef = useRef<HTMLDivElement>(null);
   const limit: number = 9
 
-  // Sort events di client berdasarkan date_start
-  const sortedEvents = useMemo(() => {
-    if (!events.length) return []
+  // ============ FILTER EVENTS BERDASARKAN SEARCH QUERY ============
+  const filteredEvents = useMemo(() => {
+    if (!searchQuery.trim()) return events
     
-    const sorted = [...events]
+    const query = searchQuery.toLowerCase().trim()
+    return events.filter(event => {
+      const titleMatch = event.title?.toLowerCase().includes(query)
+      const descMatch = event.description?.toLowerCase().includes(query)
+      const locationMatch = (
+        event.location_place?.toLowerCase().includes(query) ||
+        event.city?.toLowerCase().includes(query) ||
+        event.province?.toLowerCase().includes(query)
+      )
+      return titleMatch || descMatch || locationMatch
+    })
+  }, [events, searchQuery])
+
+  // Sort filtered events
+  const sortedEvents = useMemo(() => {
+    if (!filteredEvents.length) return []
+    
+    const sorted = [...filteredEvents]
     return sorted.sort((a, b) => {
       const dateA = new Date(a.date_start).getTime()
       const dateB = new Date(b.date_start).getTime()
@@ -46,7 +65,7 @@ export default function EventsSection({
         return dateB - dateA
       }
     })
-  }, [events, sortBy])
+  }, [filteredEvents, sortBy])
 
   useEffect(() => {
     setMounted(true)
@@ -54,7 +73,7 @@ export default function EventsSection({
     setEvents([])
     setHasMore(true)
     loadMore(true)
-  }, [typeFilter, subjectFilter, cityFilter])
+  }, [typeFilter, subjectFilter, cityFilter, searchQuery])
 
   useEffect(() => {
     if (loading || !mounted) return
@@ -86,8 +105,9 @@ export default function EventsSection({
       const typeParam = typeFilter !== 'all' ? typeFilter : ''
       const subjectParam = subjectFilter !== 'all' ? subjectFilter : ''
       const cityParam = cityFilter !== 'all' ? cityFilter : ''
+      const searchName = searchQuery !== '' ? searchQuery : ''
       
-      const response = await getEvents(currentPage, limit, typeParam, subjectParam, cityParam)
+      const response = await getEvents(currentPage, limit, typeParam, subjectParam, cityParam, searchName)
       
       if (response && response.status == false) {
         setEvents([])
@@ -140,14 +160,28 @@ export default function EventsSection({
         <h2 className="text-xl font-semibold text-foreground">{t('allEvents')}</h2>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-          <span>{t('eventsCount', { count: events.length, total: totalEvents })}</span>
+          <span>{t('eventsCount', { count: sortedEvents.length, total: totalEvents })}</span>
+          {searchQuery && (
+            <span className="text-xs text-primary ml-1">
+              ({t('searchResults', { count: sortedEvents.length })})
+            </span>
+          )}
           <span className="text-xs text-muted-foreground ml-2">
             ({t('sortedBy', { sort: sortBy === 'date_asc' ? t('earliestFirst') : t('latestFirst') })})
           </span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+      {/* Search query indicator */}
+      {searchQuery && (
+        <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded-lg">
+          <span className="font-medium">{t('searchingFor')}</span>
+          <span className="font-semibold text-foreground">"{searchQuery}"</span>
+          <span className="text-xs">- {sortedEvents.length} {t('resultsFound')}</span>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
         {sortedEvents.map((event, index) => (
           <div key={event.id_event} ref={index === sortedEvents.length - 1 ? lastEventRef : null}>
             <EventCard event={event} />
@@ -161,7 +195,7 @@ export default function EventsSection({
         </div>
       )}
 
-      {!hasMore && events.length > 0 && (
+      {!hasMore && sortedEvents.length > 0 && (
         <div className="text-center py-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-muted text-muted-foreground text-sm">
             <Ticket size={14} />
@@ -170,13 +204,17 @@ export default function EventsSection({
         </div>
       )}
 
-      {events.length === 0 && !loading && (
+      {sortedEvents.length === 0 && !loading && (
         <div className="text-center py-16">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-4">
             <CalendarDays size={32} className="text-muted-foreground" />
           </div>
-          <h3 className="text-lg font-semibold text-foreground mb-2">{t('noEventsFound')}</h3>
-          <p className="text-muted-foreground">{t('tryChangingFilter')}</p>
+          <h3 className="text-lg font-semibold text-foreground mb-2">
+            {searchQuery ? t('noSearchResults') : t('noEventsFound')}
+          </h3>
+          <p className="text-muted-foreground">
+            {searchQuery ? t('tryDifferentSearch') : t('tryChangingFilter')}
+          </p>
         </div>
       )}
     </div>

@@ -31,7 +31,7 @@ const EventCardListMode: React.FC<EventCardListModeProps> = ({
       <div
         key={`${event.id_event}-${index}`}
         ref={index === eventsLength - 1 ? lastEventRef : null}
-        className="group cursor-pointer"
+        className="group cursor-pointer mb-2"
       >
         <div className="relative bg-card rounded-xl border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 overflow-hidden">
           <div className="flex flex-col md:flex-row">

@@ -17,6 +17,7 @@ import {
   Grid3X3,
   ArrowUpDown,
   CalendarDays,
+  Search,
 } from 'lucide-react'
 import EventsSection from '@/components/event/events-section'
 import EventsSectionList from '@/components/event/events-section-list'
@@ -24,7 +25,7 @@ import { EVENT_TYPES } from '@/constants/event.constant'
 import { EventCategory } from '@/types/event/event.types'
 import { useTranslations } from 'next-intl'
 
-// Subject options - akan diganti dengan translation nanti
+// Subject options
 const SUBJECTS = [
   { value: 'english', label: 'English' },
   { value: 'mathematics', label: 'Mathematics' },
@@ -47,7 +48,7 @@ const CITIES = [
   'Yogyakarta',
 ]
 
-// Sort options - akan diganti dengan translation nanti
+// Sort options
 const SORT_OPTIONS = [
   { value: 'date_asc', icon: CalendarDays },
   { value: 'date_desc', icon: CalendarDays },
@@ -59,6 +60,7 @@ export default function EventsPage() {
   const [typeFilter, setTypeFilter] = useState<EventCategory | 'all'>('all')
   const [subjectFilter, setSubjectFilter] = useState<string>('all')
   const [cityFilter, setCityFilter] = useState<string>('all')
+  const [searchQuery, setSearchQuery] = useState<string>('')
   const [sortBy, setSortBy] = useState<string>('date_asc')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -95,7 +97,12 @@ export default function EventsPage() {
     return t('sortDateDesc')
   }
 
-  // Filter component yang reusable dengan toggle
+  // Clear search
+  const clearSearch = () => {
+    setSearchQuery('')
+  }
+
+  // Filter Content
   const FilterContent = () => (
     <div className="space-y-4">
       {/* Category Filter - Toggle */}
@@ -233,12 +240,13 @@ export default function EventsPage() {
       </div>
 
       {/* Reset Button */}
-      {(typeFilter !== 'all' || subjectFilter !== 'all' || cityFilter !== 'all') && (
+      {(typeFilter !== 'all' || subjectFilter !== 'all' || cityFilter !== 'all' || searchQuery) && (
         <button
           onClick={() => {
             setTypeFilter('all')
             setSubjectFilter('all')
             setCityFilter('all')
+            setSearchQuery('')
           }}
           className="w-full text-center text-xs text-primary hover:underline py-2 mt-2"
         >
@@ -267,7 +275,7 @@ export default function EventsPage() {
 
         {/* Main Content Area - Sidebar layout */}
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Desktop Sidebar Filter - hidden on mobile */}
+          {/* Desktop Sidebar Filter */}
           <aside className="hidden lg:block lg:w-60 shrink-0">
             <div className="sticky top-24 bg-card rounded-xl border border-border p-4">
               <div className="flex items-center gap-2 mb-4 pb-3 border-b border-border">
@@ -280,6 +288,30 @@ export default function EventsPage() {
 
           {/* Main Content */}
           <main className="flex-1">
+            {/* Search Bar - NEW */}
+            <div className="relative mb-4">
+              <div className="relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                  <Search size={18} className="max-[640px]:size-4" />
+                </div>
+                <input
+                  type="text"
+                  placeholder={t('searchPlaceholder')}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-10 py-2.5 max-[640px]:py-2 text-sm rounded-xl border border-border bg-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={clearSearch}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    <X size={16} className="max-[640px]:size-4" />
+                  </button>
+                )}
+              </div>
+            </div>
+
             {/* Top Bar - Sort, View Toggle & Mobile Filter Button */}
             <div className="flex flex-wrap items-center justify-between gap-3 lg:mb-4 mb-2">
               <div className="flex items-center gap-2">
@@ -299,7 +331,7 @@ export default function EventsPage() {
                 <div className="relative">
                   <button
                     onClick={() => setIsSortOpen(!isSortOpen)}
-                    className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-background text-xs"
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-white text-xs"
                   >
                     <ArrowUpDown size={12} />
                     {getSelectedSortLabel()}
@@ -311,7 +343,7 @@ export default function EventsPage() {
                         className="fixed inset-0 z-30 lg:hidden"
                         onClick={() => setIsSortOpen(false)}
                       />
-                      <div className="absolute top-full left-0 mt-1 w-48 rounded-lg border border-border bg-background shadow-lg z-40">
+                      <div className="absolute top-full left-0 mt-1 w-48 rounded-lg border border-border bg-white shadow-lg z-40">
                         {SORT_OPTIONS.map((option) => (
                           <button
                             key={option.value}
@@ -348,7 +380,7 @@ export default function EventsPage() {
                   <span className="sm:hidden">{t('grid')}</span>
                 </Button>
                 <Button
-                  variant={viewMode === 'list' ? 'default' : 'ghost'}
+                  variant={viewMode === 'list' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('list')}
                   className={`h-9 px-4 gap-2 max-[640px]:flex-1 max-[640px]:h-8 max-[640px]:px-2 text-xs cursor-pointer ${
@@ -362,10 +394,17 @@ export default function EventsPage() {
               </div>
             </div>
 
-            {/* Active filter chips */}
-            {(typeFilter !== 'all' || subjectFilter !== 'all' || cityFilter !== 'all') && (
+            {/* Active filter chips - tambah search query */}
+            {(typeFilter !== 'all' || subjectFilter !== 'all' || cityFilter !== 'all' || searchQuery) && (
               <div className="flex flex-wrap items-center gap-1.5 mb-4">
                 <span className="text-[10px] text-muted-foreground">{t('active')}</span>
+                {searchQuery && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs bg-primary/10 text-primary">
+                    <Search size={10} />
+                    {searchQuery}
+                    <X size={10} className="cursor-pointer hover:text-destructive" onClick={clearSearch} />
+                  </span>
+                )}
                 {typeFilter !== 'all' && (
                   <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs bg-primary/10 text-primary">
                     {getSelectedTypeLabel()}
@@ -389,6 +428,7 @@ export default function EventsPage() {
                     setTypeFilter('all')
                     setSubjectFilter('all')
                     setCityFilter('all')
+                    setSearchQuery('')
                   }}
                   className="text-[10px] text-muted-foreground hover:text-primary transition-colors ml-1 cursor-pointer"
                 >
@@ -397,13 +437,14 @@ export default function EventsPage() {
               </div>
             )}
 
-            {/* Events Content */}
+            {/* Events Content - pass searchQuery */}
             {viewMode === 'grid' ? (
               <EventsSection 
                 typeFilter={typeFilter} 
                 subjectFilter={subjectFilter}
                 cityFilter={cityFilter}
                 sortBy={sortBy}
+                searchQuery={searchQuery}
               />
             ) : (
               <EventsSectionList 
@@ -411,6 +452,7 @@ export default function EventsPage() {
                 subjectFilter={subjectFilter}
                 cityFilter={cityFilter}
                 sortBy={sortBy}
+                searchQuery={searchQuery}
               />
             )}
           </main>
