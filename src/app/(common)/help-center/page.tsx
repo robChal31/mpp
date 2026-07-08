@@ -221,7 +221,7 @@ export default function TutorialPage() {
       <div className="bg-primary/1">
         <div className="mx-auto max-w-6xl p-4 md:p-8">
           {/* Header */}
-          <div className="py-2 flex flex-col sm:flex-row items-center justify-between relative">
+          <div className="md:py-8 md:pb-12 py-8 flex flex-col sm:flex-row items-center justify-between relative">
             <div className="flex-1 backdrop-blur-4xl md:backdrop-blur-none">
               <h1 className="text-2xl sm:text-3xl font-bold text-foreground"><span>{t('title1')}</span> <span className="text-primary">{t('title2')}</span></h1>
               <p className="text-sm sm:text-md text-muted-foreground mt-1 whitespace-pre-line max-w-2xl">
@@ -230,11 +230,11 @@ export default function TutorialPage() {
             </div>
             
             {/* Ilustrasi - absolute di pojok kanan */}
-            <div className="absolute right-10 md:top-1/2 top-1/2 -translate-y-1/2 md:block pointer-events-none">
+            <div className="absolute right-10 md:top-1/2 top-1/2 -translate-y-1/2 md:block pointer-events-none md:opacity-60 opacity-60">
               <img 
                 src="/illustrations/help-center.png" 
                 alt="benefits" 
-                className="w-42 md:w-96 h-auto md:opacity-40 opacity-20 object-cover"
+                className="w-42 md:w-96 h-auto md:opacity-40 opacity-50 object-cover"
               />
             </div>
           </div>
