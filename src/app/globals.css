@@ -1,85 +1,53 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
-  --background: #FCF6E4;
+  --background: #ffffff;
   --foreground: #1a1a2e;
   --card: #ffffff;
   --card-foreground: #1a1a2e;
   --popover: #ffffff;
   --popover-foreground: #1a1a2e;
   
-  /* PRIMARY - Biru cerah #3279FF */
-  --primary: #3279FF;
+  /* PRIMARY - Merah Marun dari Logo */
+  --primary: #97262C;
   --primary-foreground: #ffffff;
-  --primary-dark: #2b66d9;
-  --primary-light: #5e93ff;
-  --primary-soft: #e8f0ff;
+  --primary-dark: #7a1e22;
+  --primary-light: #b83036;
+  --primary-soft: #f5e6e7;
   
-  /* ACCENT - Untuk highlight tambahan */
-  --accent: #FFB347;
-  --accent-foreground: #1a1a2e;
-  --accent-dark: #e59e3d;
-  --accent-light: #ffc570;
-  --accent-soft: #fff5e8;
+  /* SECONDARY - Oranye Cerah dari Logo */
+  --secondary: #FF9025;
+  --secondary-foreground: #ffffff;
+  --secondary-dark: #e67a1a;
+  --secondary-light: #ffa84d;
+  --secondary-soft: #fff3e6;
   
-  --secondary: #f3f4f6;
-  --secondary-foreground: #1a1a2e;
+  /* ACCENT - Oranye Kemerahan dari Logo */
+  --accent: #EB5225;
+  --accent-foreground: #ffffff;
+  --accent-dark: #c9441e;
+  --accent-light: #ef744f;
+  --accent-soft: #fdeee9;
   
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  /* NEUTRAL */
+  --muted: #f8f7f4;
+  --muted-foreground: #6b6b6b;
   
-  --destructive: #ef4444;
+  --destructive: #97262C;
   --destructive-foreground: #ffffff;
   
-  --success: #10b981;
+  --success: #27ae60;
   --success-foreground: #ffffff;
   
-  --warning: #f59e0b;
+  --warning: #FF9025;
   --warning-foreground: #ffffff;
   
-  --border: #e2e8f0;
+  --border: #e8e4e0;
   --input: #ffffff;
-  --ring: #3279FF;
+  --ring: #97262C;
   
   --radius: 0.75rem;
-}
-
-.dark {
-  --background: #1a1a2e;
-  --foreground: #FCF6E4;
-  --card: #2a2a3e;
-  --card-foreground: #FCF6E4;
-  --popover: #2a2a3e;
-  --popover-foreground: #FCF6E4;
-  
-  --primary: #5e93ff;
-  --primary-foreground: #ffffff;
-  --primary-dark: #3279FF;
-  
-  --accent: #FFB347;
-  --accent-foreground: #1a1a2e;
-  
-  --secondary: #2a2a3e;
-  --secondary-foreground: #FCF6E4;
-  
-  --muted: #2a2a3e;
-  --muted-foreground: #94a3b8;
-  
-  --destructive: #f87171;
-  --destructive-foreground: #ffffff;
-  
-  --success: #34d399;
-  --success-foreground: #ffffff;
-  
-  --warning: #fbbf24;
-  --warning-foreground: #1a1a2e;
-  
-  --border: #3a3a4e;
-  --input: #2a2a3e;
-  --ring: #5e93ff;
 }
 
 @theme inline {
@@ -122,7 +90,7 @@
 @layer utilities {
   /* Badges */
   .badge-claimable {
-    background-color: #10b981;
+    background-color: #27ae60;
     color: white;
     border-radius: 9999px;
     padding: 0.25rem 1rem;
@@ -131,8 +99,8 @@
   }
   
   .badge-viewonly {
-    background-color: #e2e8f0;
-    color: #475569;
+    background-color: #e8e4e0;
+    color: #6b6b6b;
     border-radius: 9999px;
     padding: 0.25rem 1rem;
     font-size: 0.7rem;
@@ -140,8 +108,8 @@
   }
   
   .badge-expired {
-    background-color: #fee2e2;
-    color: #dc2626;
+    background-color: #f5e6e7;
+    color: #97262C;
     border-radius: 9999px;
     padding: 0.25rem 1rem;
     font-size: 0.7rem;
@@ -149,7 +117,16 @@
   }
   
   .badge-active {
-    background-color: #3279FF;
+    background-color: #97262C;
+    color: white;
+    border-radius: 9999px;
+    padding: 0.25rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+  
+  .badge-secondary {
+    background-color: #FF9025;
     color: white;
     border-radius: 9999px;
     padding: 0.25rem 1rem;
@@ -160,51 +137,193 @@
   /* Card hover */
   .card-hover {
     transition: all 0.2s ease;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e8e4e0;
     background-color: white;
     border-radius: 1rem;
   }
   .card-hover:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-    border-color: #3279FF;
+    box-shadow: 0 10px 15px -3px rgba(151, 38, 44, 0.1);
+    border-color: #97262C;
   }
   
   /* Buttons */
   .btn-primary {
-    background-color: #3279FF;
+    background-color: var(--primary);
     color: white;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
+    font-size: 0.875rem;
     transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
   }
   .btn-primary:hover {
-    background-color: #2b66d9;
+    background-color: var(--primary-dark);
+  }
+  
+  .btn-secondary {
+    background-color: var(--secondary);
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  .btn-secondary:hover {
+    background-color: var(--secondary-dark);
   }
   
   .btn-outline {
     background-color: transparent;
-    color: #3279FF;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
+    color: var(--primary);
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
-    border: 1px solid #3279FF;
+    font-size: 0.875rem;
+    border: 2px solid var(--primary);
     transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
   }
   .btn-outline:hover {
-    background-color: #3279FF;
+    background-color: var(--primary);
     color: white;
+  }
+  
+  .btn-outline-secondary {
+    background-color: transparent;
+    color: var(--secondary);
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    border: 2px solid var(--secondary);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  .btn-outline-secondary:hover {
+    background-color: var(--secondary);
+    color: white;
+  }
+
+  .btn-outline-primary {
+    background-color: transparent;
+    color: var(--primary);
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    border: 2px solid var(--primary);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  .btn-outline-primary:hover {
+    background-color: var(--primary);
+    color: white;
+  }
+  
+  .btn-white-outline {
+    background-color: transparent;
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    border: 2px solid white;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  .btn-white-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Small button variant */
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+  }
+  
+  /* Large button variant */
+  .btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+  
+  /* Icon-only button */
+  .btn-icon {
+    padding: 0.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   
   /* Link */
   .link-primary {
-    color: #3279FF;
+    color: var(--primary);
     font-weight: 500;
     transition: color 0.2s ease;
   }
   .link-primary:hover {
-    color: #2b66d9;
+    color: var(--primary-dark);
+  }
+  
+  .link-secondary {
+    color: var(--secondary);
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+  .link-secondary:hover {
+    color: var(--secondary-dark);
+  }
+  
+  /* Gradients */
+  .gradient-primary {
+    background: linear-gradient(135deg, #97262C 0%, #7a1e22 100%);
+  }
+  
+  .gradient-secondary {
+    background: linear-gradient(135deg, #FF9025 0%, #e67a1a 100%);
+  }
+  
+  .gradient-hero {
+    background: linear-gradient(135deg, #97262C 0%, #FF9025 100%);
+  }
+  
+  .gradient-accent {
+    background: linear-gradient(135deg, #EB5225 0%, #FF9025 100%);
+  }
+  
+  .gradient-soft {
+    background: linear-gradient(135deg, #f5e6e7 0%, #fff3e6 100%);
   }
 }
 
@@ -215,23 +334,15 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #e2e8f0;
+  background: #e8e4e0;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6299ff;
+  background: #97262C;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2b66d9;
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: #2a2a3e;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #5e93ff;
+  background: #7a1e22;
 }

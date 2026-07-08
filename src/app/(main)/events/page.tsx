@@ -32,6 +32,7 @@ const SUBJECTS = [
   { value: 'science', label: 'Science' },
   { value: 'indonesian', label: 'Bahasa Indonesia' },
   { value: 'mandarin', label: 'Mandarin' },
+  { value: 'characterBuilding', label: 'Character Building' },
 ]
 
 // City options
@@ -113,7 +114,7 @@ export default function EventsPage() {
         >
           <span className="flex items-center gap-2">
             <Grid3X3 size={14} />
-            {t('category')}
+            {t('activity')}
           </span>
           <ChevronDown size={16} className={`transition-transform ${openSections.category ? 'rotate-180' : ''}`} />
         </button>
@@ -127,7 +128,7 @@ export default function EventsPage() {
                   : 'text-foreground hover:bg-muted/50'
               }`}
             >
-              <span>{t('allCategories')}</span>
+              <span>{t('allActivities')}</span>
               {typeFilter === 'all' && <ChevronRight size={16} />}
             </button>
             {EVENT_TYPES.map((item) => (
@@ -258,19 +259,46 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="container mx-auto px-4 max-[640px]:px-3 py-8 max-[640px]:py-6">
+      <div className="max-w-6xl mx-auto px-4 max-[640px]:px-3 py-8 max-[640px]:py-6">
         {/* Header */}
-        <div className="text-center mb-8 max-[640px]:mb-6">
-          <div className="inline-flex items-center gap-2 px-4 max-[640px]:px-3 py-2 rounded-full bg-primary/10 text-primary mb-4 max-[640px]:mb-3">
-            <Calendar size={18} className="max-[640px]:size-4" />
-            <span className="text-sm max-[640px]:text-xs font-medium">{t('upcomingBadge')}</span>
+        <div className="relative mb-8 text-center max-[640px]:mb-6">
+          {/* Decorative badge */}
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-primary max-[640px]:mb-3 max-[640px]:px-3">
+            <Calendar size={16} className="max-[640px]:size-4" />
+            <span className="text-sm font-medium max-[640px]:text-xs">{t('upcomingBadge')}</span>
           </div>
-          <h1 className="text-4xl max-[640px]:text-2xl md:text-5xl font-bold text-foreground mb-4 max-[640px]:mb-2">
+          
+          {/* Title & Description */}
+          <h1 className="mb-4 text-3xl font-bold text-foreground max-[640px]:mb-2 max-[640px]:text-2xl md:text-4xl">
             {t('pageTitle')}
           </h1>
-          <p className="text-lg max-[640px]:text-sm text-muted-foreground max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-base text-muted-foreground max-[640px]:text-sm">
             {t('pageDescription')}
           </p>
+          
+          {/* Ilustrasi Date - Kiri dengan overlay */}
+          <div className="pointer-events-none absolute left-4 md:top-1/2 top-1/7 -translate-y-1/2 max-[640px]:left-2">
+            <div className="relative">
+              <div className="absolute inset-0 md:bg-linear-to-r from-white via-white/60 to-transparent bg-transparent"></div>
+              <img 
+                src="/illustrations/date.png" 
+                alt="date" 
+                className="relative h-auto w-32 md:opacity-20 opacity-40 max-[640px]:w-20 md:w-42 lg:w-52"
+              />
+            </div>
+          </div>
+          
+          {/* Ilustrasi Benefits - Kanan dengan overlay */}
+          <div className="pointer-events-none absolute right-4 md:top-1/2 top-1/7 -translate-y-1/2 max-[640px]:right-2">
+            <div className="relative">
+              <div className="absolute inset-0 md:bg-linear-to-l from-white via-white/60 to-transparent bg-transparent"></div>
+              <img 
+                src="/illustrations/benefits.png" 
+                alt="benefits" 
+                className="relative h-auto w-32 md:opacity-20 opacity-40 max-[640px]:w-20 md:w-42 lg:w-52"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Main Content Area - Sidebar layout */}

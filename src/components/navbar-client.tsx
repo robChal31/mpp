@@ -18,17 +18,17 @@ import {
   Folder,
   PlayCircle,
   Info,
+  HelpCircle,
 } from 'lucide-react'
 import Image from 'next/image'
 import { Locale, useTranslations } from 'next-intl'
 import LocalSwitcher from './local-switcher'
 
 const navigationItems = [
-  { labelKey: 'nav.dashboard', href: '/dashboard', icon: LayoutDashboard, id: 'nav_dashboard' },
   { labelKey: 'nav.benefits', href: '/benefits', icon: Gift, id: 'nav_benefits' },
   { labelKey: 'nav.events', href: '/events', icon: Calendar, id: 'nav_events' },
-  { labelKey: 'nav.profile', href: '/profile', icon: Folder, id: 'nav_profile' },
-  { labelKey: 'nav.videoTutorial', href: '/video-tutorial', icon: PlayCircle, id: 'nav_video_tutorial' },
+  { labelKey: 'nav.overview', href: '/overview', icon: Folder, id: 'nav_overview' },
+  { labelKey: 'nav.helpCenter', href: '/help-center', icon: HelpCircle, id: 'nav_help-center' },
 ]
 
 interface NavbarClientProps {
@@ -71,26 +71,25 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
 
   return (
     <nav 
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-[#3279FF]/95 backdrop-blur-md shadow-lg' 
-          : 'bg-[#3279FF]'
+      className={`sticky top-0 z-50 transition-all duration-300 bg-white border-b border-border ${
+        isScrolled ? 'shadow-sm' : ''
       }`}
     >
-      {/* Top gradient accent bar */}
-      <div className="absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r from-white/40 via-white/80 to-white/40" />
+      {/* Top linear accent bar */}
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r from-primary/60 via-primary to-primary/60" />
       
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className={`max-w-6xl mx-auto ${isOpen ? 'fixed inset-x-0 top-0 bg-white border-b border-primary' : ''}`}>
         <div className="flex items-center justify-between h-16">
           {/* Logo and Brand */}
           <div className="flex items-center gap-8">
-            <Link href="/dashboard" className="flex items-center gap-2 group shrink-0">
-              <div className="relative w-28 h-28 transition-transform duration-300 group-hover:scale-105">
+            <Link href="/" className="flex items-center gap-2 group shrink-0">
+              <div className="relative w-32 h-32 transition-transform duration-300 group-hover:scale-105">
                 <Image
-                  src="/compro2.png"
+                  src="/compro.png"
                   alt="Mentari Partner Logo"
                   fill
-                  className="object-contain brightness-0 invert"
+                  sizes=''
+                  className="object-contain"
                   priority
                 />
               </div>
@@ -106,16 +105,16 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className={`relative gap-2 transition-all duration-200 cursor-pointer rounded-lg px-4 py-2 ${
+                      className={`group/navlink relative gap-2 transition-all duration-200 cursor-pointer rounded-lg px-4 py-2 ${
                         active
-                          ? 'bg-white/20 text-white shadow-sm'
-                          : 'text-white/80 hover:text-white hover:bg-white/10'
+                          ? 'bg-primary/10 text-primary shadow-sm'
+                          : 'text-muted-foreground hover:text-primary hover:bg-muted'
                       }`}
                     >
-                      <Icon size={18} className={active ? 'text-white' : 'text-white/70'} />
+                      <Icon size={18} className={active ? 'text-primary group-hover/navlink:text-white' : 'text-muted-foreground group-hover/navlink:text-primary'} />
                       <span className="hidden lg:inline font-medium">{t(item.labelKey)}</span>
                       {active && (
-                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-white rounded-full" />
+                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full" />
                       )}
                     </Button>
                   </Link>
@@ -125,32 +124,32 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
           </div>
 
           {/* Right side */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center md:gap-3 gap-0">
             {/* Profile Dropdown */}
             <div className="relative profile-dropdown">
               <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-white/10 transition-all duration-200"
+                className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-muted transition-all duration-200"
               >
-                <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-white/20 flex items-center justify-center">
-                  <User size={14} className="text-white" />
+                <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-primary/10 flex items-center justify-center">
+                  <User size={14} className="text-primary" />
                 </div>
                 <div className="hidden lg:block text-left">
-                  <p className="text-[10px] text-white/60 uppercase tracking-wide">{t('common.schoolAccount')}</p>
-                  <p className="text-sm font-medium text-white truncate max-w-32">
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wide">{t('common.schoolAccount')}</p>
+                  <p className="text-sm font-medium text-foreground truncate max-w-32">
                     {user?.name || 'Sekolah Example'}
                   </p>
                 </div>
-                <ChevronDown size={14} className={`hidden lg:block text-white/60 transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown size={14} className={`hidden lg:block text-muted-foreground transition-transform duration-200 ${isProfileOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {/* Dropdown Menu */}
               {isProfileOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setIsProfileOpen(false)} />
-                  <div className="absolute right-0 mt-2 w-64 rounded-xl border border-gray-100 bg-white shadow-xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
+                  <div className="absolute right-0 mt-2 w-64 rounded-xl border border-border bg-white shadow-xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-100">
                     {/* User Info */}
-                    <div className="px-4 py-4 bg-linear-to-r from-[#3279FF] to-[#5e93ff]">
+                    <div className="px-4 py-4 bg-primary">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
                           <User size={18} className="text-white" />
@@ -170,29 +169,29 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
                       <Link
                         href="/settings"
                         onClick={() => setIsProfileOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors group/nav1"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-muted hover:text-primary transition-colors group/nav1"
                       >
-                        <Settings size={16} className="text-gray-400 group-hover/nav1:text-primary transition-colors" />
+                        <Settings size={16} className="text-muted-foreground group-hover/nav1:text-primary transition-colors" />
                         <span>{t('nav.settings')}</span>
                       </Link>
                       <Link
                         href="/about"
                         onClick={() => setIsProfileOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors group/nav2"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-muted hover:text-primary transition-colors group/nav2"
                       >
-                        <Info size={16} className="text-gray-400 group-hover/nav2:text-primary transition-colors" />
+                        <Info size={16} className="text-muted-foreground group-hover/nav2:text-primary transition-colors" />
                         <span>{t('nav.about')}</span>
                       </Link>
                     </div>
 
-                    <div className="border-t border-gray-200" />
+                    <div className="border-t border-border" />
 
                     <div className="py-2">
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-destructive hover:bg-destructive/10 transition-colors"
                       >
-                        <LogOut size={16} className="text-red-400" />
+                        <LogOut size={16} className="text-destructive/70" />
                         <span>{t('common.logout')}</span>
                       </button>
                     </div>
@@ -209,9 +208,9 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
+              className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
             >
-              {isOpen ? <X size={20} className="text-white" /> : <Menu size={20} className="text-white" />}
+              {isOpen ? <X size={20} className="text-foreground" /> : <Menu size={20} className="text-foreground" />}
             </button>
           </div>
         </div>
@@ -221,14 +220,14 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
           <div className="lg:hidden fixed inset-x-0 top-16 bottom-0 bg-white z-40 overflow-y-auto animate-in slide-in-from-top-2 duration-200 shadow-xl">
             <div className="p-4 space-y-2">
               {/* User Info Mobile */}
-              <div className="flex items-center gap-3 p-4 mb-3 rounded-xl bg-linear-to-r from-[#3279FF]/10 to-[#FFB347]/10 border border-[#3279FF]/20">
-                <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                  <User size={20} className="text-[#3279FF]" />
+              <div className="flex items-center gap-3 p-4 mb-3 rounded-xl bg-linear-soft border border-primary/20">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <User size={20} className="text-primary" />
                 </div>
                 <div>
-                  <p className="font-semibold text-gray-900">{user?.name || 'Sekolah Example'}</p>
-                  <p className="text-xs text-gray-500 truncate">{user?.email || 'school@example.com'}</p>
-                  <p className="text-xs text-[#3279FF] mt-1 capitalize">{user?.role || 'School'}</p>
+                  <p className="font-semibold text-foreground">{user?.name || 'Sekolah Example'}</p>
+                  <p className="text-xs text-muted-foreground truncate">{user?.email || 'school@example.com'}</p>
+                  <p className="text-xs text-primary mt-1 capitalize">{user?.role || 'School'}</p>
                 </div>
               </div>
 
@@ -242,29 +241,29 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
                       variant="ghost"
                       className={`w-full justify-start gap-3 cursor-pointer rounded-xl py-3 transition-all duration-200 ${
                         active
-                          ? 'bg-[#3279FF]/10 text-[#3279FF]'
-                          : 'text-gray-700 hover:bg-gray-50'
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-foreground hover:bg-muted'
                       }`}
                       onClick={() => setIsOpen(false)}
                     >
-                      <Icon size={20} className={active ? 'text-[#3279FF]' : 'text-gray-500'} />
+                      <Icon size={20} className={active ? 'text-primary' : 'text-muted-foreground'} />
                       <span className="font-medium">{t(item.labelKey)}</span>
                       {active && (
-                        <div className="ml-auto w-1.5 h-1.5 bg-[#3279FF] rounded-full" />
+                        <div className="ml-auto w-1.5 h-1.5 bg-primary rounded-full" />
                       )}
                     </Button>
                   </Link>
                 )
               })}
 
-              <div className="my-3 h-px bg-gray-200" />
+              <div className="my-3 h-px bg-border" />
 
               <Link href="/settings" onClick={() => setIsOpen(false)}>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start gap-3 rounded-xl py-3 text-gray-700 hover:bg-gray-50 cursor-pointer"
+                  className="w-full justify-start gap-3 rounded-xl py-3 text-foreground hover:bg-muted cursor-pointer"
                 >
-                  <Settings size={20} className="text-gray-500" />
+                  <Settings size={20} className="text-muted-foreground" />
                   <span className="font-medium">{t('nav.settings')}</span>
                 </Button>
               </Link>
@@ -272,27 +271,27 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
               <Link href="/about" onClick={() => setIsOpen(false)}>
                 <Button
                   variant="ghost"
-                  className="w-full justify-start gap-3 rounded-xl py-3 text-gray-700 hover:bg-gray-50 cursor-pointer"
+                  className="w-full justify-start gap-3 rounded-xl py-3 text-foreground hover:bg-muted cursor-pointer"
                 >
-                  <Info size={20} className="text-gray-500" />
+                  <Info size={20} className="text-muted-foreground" />
                   <span className="font-medium">{t('nav.about')}</span>
                 </Button>
               </Link>
 
-              <div className="my-3 h-px bg-gray-200" />
+              <div className="my-3 h-px bg-border" />
 
-              <div className="flex items-center justify-between px-3 py-3 bg-gray-50 rounded-xl">
-                <span className="text-sm text-gray-600 font-medium">{t('common.language')}</span>
+              <div className="flex items-center justify-between px-3 py-3 bg-muted rounded-xl">
+                <span className="text-sm text-foreground font-medium">{t('common.language')}</span>
                 <LocalSwitcher changeLocalAction={changeLocalAction} />
               </div>
 
-              <div className="my-3 h-px bg-gray-200" />
+              <div className="my-3 h-px bg-border" />
 
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                className="w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
               >
-                <LogOut size={20} className="text-red-500" />
+                <LogOut size={20} className="text-destructive/70" />
                 <span className="font-medium">{t('common.logout')}</span>
               </button>
             </div>

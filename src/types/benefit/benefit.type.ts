@@ -14,6 +14,20 @@ export interface FlattenedBenefit {
   pk: PK
   subject_benefit: string
   subbenefit_group: string
+  active_quota: ActiveQuota
+}
+
+export interface BenefitReportDataI {
+  id_benefit_list: string
+  benefit_name: string
+  qty: string
+  qty2: string
+  qty3: string
+  type: string
+  packageId: string
+  pk: PK
+  subject_benefit: string
+  subbenefit_group: string
   active_qty: number
   active_year: number
 }
@@ -25,7 +39,6 @@ export interface PK {
   start_at: string
   expired_at: string
   program?: string
-  active_quota: ActiveQuota
 }
 
 export interface BenefitGroup {
@@ -240,7 +253,7 @@ export interface PKDocument {
   name: string
   pk: {
     no_pk: string
-    id_draft?: string
+    id_draft: string
     start_at: string
     expired_at: string
     status: 'active' | 'expired'

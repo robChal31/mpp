@@ -25,12 +25,11 @@ const publicPages = [
   '/forgot-password',
   '/reset-password',
   '/about',
-  '/video-tutorial',
   '/faq',
   '/privacy',
   '/terms',
   '/contact',
-  '/help'
+  '/help-center'
 ]
 
 // Prefix untuk halaman di folder (auth) dan (common) - semuanya public
@@ -39,9 +38,8 @@ const publicPrefixes = [
   '/setup-password', 
   '/reset-password',
   '/about',
-  '/video-tutorial',
   '/faq',
-  '/help',
+  '/help-center',
   '/privacy',
   '/terms',
   '/contact'
@@ -73,17 +71,26 @@ export async function proxy(req: NextRequest) {
     return NextResponse.next()
   }
 
-  // Handle root path "/" - redirect ke dashboard atau login
+  // ============ HANDLE ROOT PATH "/" ============
+  // Root path sekarang adalah dashboard
   if (isRootPath) {
+    // Jika tidak ada token, redirect ke login
     if (!token) {
-      return NextResponse.redirect(new URL("/login", req.url))
+      const loginUrl = new URL("/login", req.url)
+      return NextResponse.redirect(loginUrl)
     }
     
+    // Verifikasi token
     try {
       await jwtVerify(token, secret)
-      return NextResponse.redirect(new URL("/dashboard", req.url))
+      // Token valid, lanjutkan ke root (yang akan render dashboard)
+      return NextResponse.next()
     } catch (error) {
-      return NextResponse.redirect(new URL("/login", req.url))
+      // Token invalid, redirect ke login
+      const loginUrl = new URL("/login", req.url)
+      const response = NextResponse.redirect(loginUrl)
+      response.cookies.delete("mpp_session")
+      return response
     }
   }
 
@@ -117,22 +124,23 @@ export async function proxy(req: NextRequest) {
   // ============ UNTUK HALAMAN PUBLIC (auth & common) ============
   // Jika halaman public (auth atau common), izinkan akses tanpa login
   if (isPublicPage || isPublicPrefix) {
-    // Jika user sudah login dan akses halaman login, redirect ke dashboard
+    // Jika user sudah login dan akses halaman login, redirect ke root (dashboard)
     if (token && isLoginPage) {
       try {
         await jwtVerify(token, secret)
-        return NextResponse.redirect(new URL("/dashboard", req.url))
+        return NextResponse.redirect(new URL("/", req.url))
       } catch (error) {
         return NextResponse.next()
       }
     }
     
-    // Untuk halaman public lainnya, izinkan akses
+    // Jika user sudah login dan akses halaman public lainnya, biarkan akses
+    // (misalnya about, help-center, dll bisa diakses tanpa login)
     return NextResponse.next()
   }
 
   // ============ UNTUK HALAMAN PROTECTED (main) ============
-  // Handle non-API routes yang butuh login (halaman di folder main)
+  // Semua halaman selain yang sudah di-handle di atas butuh login
   const redirectToLogin = () => {
     const loginUrl = new URL("/login", req.url)
     if (pathname !== "/login") {

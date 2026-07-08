@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     name: user.name
   })
     .setProtectedHeader({ alg: "HS256" })
-    .setExpirationTime("7h")
+    .setExpirationTime("2d") // 2 hari
     .sign(secret)
 
   const res = NextResponse.json({ ok: true })
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     path: "/",
-    maxAge: 60 * 360,
+    maxAge: 60 * 60 * 24 * 2, // 2 hari = 172800 detik
   })
 
   return res

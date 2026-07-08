@@ -18,36 +18,36 @@ async function EventNotFound() {
   const t = await getTranslations('EventNotFound')
   
   return (
-    <div className="min-h-[70vh] flex flex-col items-center justify-center px-4 bg-white/70 rounded-2xl">
-      <div className="text-center max-w-md">
+    <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">
+      <div className="relative max-w-md text-center">
         {/* Decorative blur */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-[#3279FF]/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#FFB347]/20 rounded-full blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 opacity-20">
+          <div className="absolute -left-20 -top-20 h-96 w-96 rounded-full bg-primary/20 blur-3xl" />
+          <div className="absolute -bottom-20 -right-20 h-96 w-96 rounded-full bg-secondary/20 blur-3xl" />
         </div>
         
         <div className="relative">
-          <div className="w-24 h-24 mx-auto bg-linear-to-br from-[#3279FF]/10 to-[#FFB347]/10 rounded-full flex items-center justify-center mb-6 border border-[#3279FF]/20">
-            <CalendarX size={40} className="text-[#3279FF]" />
+          <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full border border-primary/20 bg-linear-to-br from-primary/10 to-secondary/10">
+            <CalendarX size={40} className="text-primary" />
           </div>
           
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+          <h1 className="mb-3 text-2xl font-bold text-foreground">
             {t('title')}
           </h1>
           
-          <p className="text-gray-500 dark:text-gray-400 text-sm mb-8 leading-relaxed">
+          <p className="mb-8 text-sm leading-relaxed text-muted-foreground">
             {t('description')}
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link href="/events">
-              <Button className="bg-[#3279FF] hover:bg-[#2b66d9] text-white gap-2 rounded-xl px-6 py-2.5 shadow-lg shadow-[#3279FF]/20 hover:shadow-xl transition-all duration-300">
+              <Button className="btn-primary gap-2 rounded-xl px-6 py-2.5 shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-xl">
                 <ArrowLeft size={16} />
                 {t('backToEvents')}
               </Button>
             </Link>
-            <Link href="/dashboard">
-              <Button variant="outline" className="gap-2 rounded-xl px-6 py-2.5 border-[#3279FF]/20 text-[#3279FF] hover:bg-[#3279FF]/5 transition-all duration-300">
+            <Link href="/">
+              <Button variant="outline" className="btn-outline gap-2 rounded-xl border-primary/20 px-6 py-2.5 transition-all duration-300 hover:bg-primary/5">
                 <Home size={16} />
                 {t('goToDashboard')}
               </Button>
@@ -55,8 +55,8 @@ async function EventNotFound() {
           </div>
           
           {/* Decorative dots */}
-          <div className="absolute -top-4 -right-4 w-2 h-2 rounded-full bg-[#FFB347]/30" />
-          <div className="absolute -bottom-4 -left-4 w-3 h-3 rounded-full bg-[#3279FF]/20" />
+          <div className="absolute -right-4 -top-4 h-2 w-2 rounded-full bg-secondary/30" />
+          <div className="absolute -bottom-4 -left-4 h-3 w-3 rounded-full bg-primary/20" />
         </div>
       </div>
     </div>

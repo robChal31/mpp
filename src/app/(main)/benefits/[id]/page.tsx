@@ -36,30 +36,30 @@ async function NotFoundPage() {
   const t = await getTranslations('BenefitDetailPage')
   
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <Card className="p-8 text-center">
-        <div className="flex justify-center mb-2">
-          <div className="p-4 rounded-full bg-red-100 dark:bg-red-950/30">
-            <AlertCircle size={48} className="text-red-600 dark:text-red-400" />
+    <div className="mx-auto max-w-4xl px-4 py-12">
+      <Card className="border-border bg-white p-8 text-center shadow-sm">
+        <div className="mb-4 flex justify-center">
+          <div className="rounded-full bg-primary/10 p-4">
+            <AlertCircle size={48} className="text-primary" />
           </div>
         </div>
-        <h1 className="text-2xl font-bold text-foreground mb-3">
+        <h1 className="mb-2 text-2xl font-bold text-foreground">
           {t('benefitNotFound')}
         </h1>
         <p className="text-muted-foreground">
           {t('benefitNotFoundDesc')}
         </p>
-        <span className='mb-6 text-foreground text-sm block'>
+        <span className="mb-6 block text-sm text-foreground">
           {t('pleaseInformUs')}
         </span>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Button asChild variant="default" className="gap-2">
+        <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <Button asChild className="btn-primary gap-2">
             <Link href="/benefits">
               <Ticket size={16} />
               {t('browseAllBenefits')}
             </Link>
           </Button>
-          <Button asChild variant="outline" className="gap-2">
+          <Button asChild variant="outline" className="btn-outline gap-2">
             <Link href="/">
               <ArrowLeft size={16} />
               {t('goHome')}
@@ -75,20 +75,20 @@ async function ErrorPage() {
   const t = await getTranslations('BenefitDetailPage')
   
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12">
-      <Card className="p-8 text-center">
-        <div className="flex justify-center mb-6">
-          <div className="p-4 rounded-full bg-red-100 dark:bg-red-950/30">
-            <AlertCircle size={48} className="text-red-600 dark:text-red-400" />
+    <div className="mx-auto max-w-4xl px-4 py-12">
+      <Card className="border-border bg-white p-8 text-center shadow-sm">
+        <div className="mb-4 flex justify-center">
+          <div className="rounded-full bg-destructive/10 p-4">
+            <AlertCircle size={48} className="text-destructive" />
           </div>
         </div>
-        <h1 className="text-2xl font-bold text-foreground mb-3">
+        <h1 className="mb-2 text-2xl font-bold text-foreground">
           {t('somethingWentWrong')}
         </h1>
-        <p className="text-muted-foreground mb-6">
+        <p className="mb-6 text-muted-foreground">
           {t('errorDesc')}
         </p>
-        <Button asChild variant="default" className="gap-2">
+        <Button asChild className="btn-primary gap-2">
           <Link href="/benefits">
             <Ticket size={16} />
             {t('backToBenefits')}

@@ -30,7 +30,10 @@ import {
   ChevronRight,
   RefreshCw,
   FileText,
-  Eye
+  Eye,
+  Check,
+  ArrowRight,
+  Package
 } from 'lucide-react'
 import Link from 'next/link'
 import { EventI } from '@/types/event/event.types'
@@ -42,6 +45,7 @@ import { useTranslations } from 'next-intl'
 import OnBoardingTour from '@/components/OnboardingTour'
 import { HowToClaim } from '@/components/benefit/how-to-claim'
 import { BenefitMainCard } from '@/components/benefit/benefit-main-card'
+import { BenefitCTA } from '@/components/benefit/benefit-cta'
 
 interface BenefitDetailProps {
   data: {
@@ -266,42 +270,38 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
   ], [t])
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <div className="space-y-4 min-h-[calc(90vh)]">
       <OnBoardingTour pageName='claim-benefits' steps={steps} />
       
-      {/* Header */}
-      <div id="benefit-detail-header" className="flex items-center justify-between">
-        <Button variant="outline" size="sm" className='bg-gray-100'>
-          <Link href="/benefits" className='flex items-center gap-2'>
-            <ArrowLeft size={16} /> {t('backToBenefits')}
-          </Link>
-        </Button>
-        <Button variant="ghost" size="sm">
-          <Link href="/benefits">
-            <X size={16} />
-          </Link>
-        </Button>
+      <div className="bg-primary/2 px-4 py-6">
+        <div className="mx-auto max-w-4xl space-y-4">
+          {/* Header */}
+          <div id="benefit-detail-header" className="flex items-center justify-between">
+            <Button variant="outline" size="sm" className="border-primary/50 text-primary/80">
+              <Link href="/benefits" className="flex items-center gap-2 text-xs">
+                <ArrowLeft size={12} /> {t('backToBenefits')}
+              </Link>
+            </Button>
+          </div>
+
+          {/* Benefit Main Card */}
+          <BenefitMainCard 
+            benefit={benefit}
+            pk={pk}
+            totalQuota={totalQuota}
+            expired={expired}
+          />
+        </div>
       </div>
-
-      {/* Benefit Main Card */}
-      <BenefitMainCard 
-        benefit={benefit}
-        pk={pk}
-        totalQuota={totalQuota}
-        expired={expired}
-      />
-
-      {/* ====== VIEW ONLY ====== */}
-      {!isClaimable ? (
-        <div className="space-y-4">
-          
-          {/* Usage History - Simplified untuk View Only */}
+      <div className="max-w-4xl mx-auto">
+        {/* ====== VIEW ONLY ====== */}
+        {!isClaimable ? (
           <Card className="p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <History size={18} className="text-[#3279FF]" />
-              <h3 className="font-semibold text-gray-900 dark:text-white">{t('usageHistory')}</h3>
+            <div className="flex items-center">
+              <History size={18} className="text-primary mr-1" />
+              <h3 className="font-semibold text-gray-900">{t('usageHistory')}</h3>
               {usages.length > 0 && (
-                <span className="ml-auto px-2 py-0.5 rounded-full bg-[#3279FF]/10 text-[#3279FF] text-xs font-medium">
+                <span className="ml-auto px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
                   {usages.length} {t('entries')}
                 </span>
               )}
@@ -317,30 +317,30 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                   const qtyUsed = history.qty1 != 0 ? history.qty1 : history.qty2 != 0 ? history.qty2 : history.qty3
                   
                   return (
-                    <div className="rounded-lg border border-gray-200 dark:border-gray-700 hover:border-[#3279FF]/20 transition-colors" key={history.id}>
+                    <div className="rounded-lg border border-gray-200 hover:border-primary/20 transition-colors" key={history.id}>
                       <div className="p-4">
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex items-center gap-3 flex-1 min-w-0">
-                            <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 shrink-0">
-                              <FileText size={16} className="text-gray-500 dark:text-gray-400" />
+                            <div className="p-2 rounded-lg bg-gray-100 shrink-0">
+                              <FileText size={16} className="text-gray-500" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="font-medium text-sm text-gray-800 dark:text-gray-200 line-clamp-2">
+                              <p className="font-medium text-sm text-gray-800 line-clamp-2">
                                 {history.description?.split('\n')[0] || benefit.benefit_name || t('benefitUsed')}
                               </p>
-                              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground mt-1">
-                                <span className="flex items-center gap-1.5">
-                                  <Clock size={12} className="text-gray-400" />
+                              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mt-1">
+                                <span className="flex items-center gap-1">
+                                  <Clock size={12} className="text-primary/70" />
                                   {formatDateTime(history.used_at)}
                                 </span>
-                                <span className="flex items-center gap-1.5">
-                                  <Users size={12} className="text-gray-400" />
-                                  {qtyUsed} {qtyUsed !== 1 ? t('slots') : t('slot')}
+                                <span className="flex items-center gap-0.5">
+                                  <Package size={12} className="text-primary/70" />
+                                  {qtyUsed} {qtyUsed !== 1 ? t('units') : t('unit')}
                                 </span>
                               </div>
                             </div>
                           </div>
-                          <Badge variant="secondary" className="text-[10px] shrink-0 bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+                          <Badge variant="secondary" className="text-[10px] shrink-0 bg-green-50 text-green-600">
                             {t('completed')}
                           </Badge>
                         </div>
@@ -351,7 +351,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
               </div>
             ) : (
               <div className="text-center py-10 text-muted-foreground">
-                <div className="w-16 h-16 mx-auto bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-3">
+                <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-3">
                   <History size={28} className="opacity-30" />
                 </div>
                 <p>{t('noUsageHistory')}</p>
@@ -359,409 +359,411 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
               </div>
             )}
           </Card>
-        </div>
-      ) : (
-        /* ====== CLAIMABLE ====== */
-        <>
-          {/* Tabs untuk Claimable */}
-          <Tabs id="benefit-detail-tabs" defaultValue="events" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 gap-1 bg-gray-100/50 dark:bg-gray-800/50 p-1 rounded-xl">
-              <TabsTrigger 
-                id="benefit-detail-tab-events" 
-                value="events" 
-                className="gap-2 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:shadow-sm data-[state=active]:text-[#3279FF] data-[state=inactive]:text-gray-500 hover:data-[state=inactive]:text-gray-700 cursor-pointer"
-              >
-                <Ticket size={16} className="data-[state=active]:text-[#3279FF]" />
-                <span>{t('events')}</span>
-                {relatedEvents.length > 0 && (
-                  <span className="ml-1 px-1.5 py-0.5 rounded-full bg-[#3279FF]/10 text-[#3279FF] text-[10px] font-bold">
-                    {relatedEvents.length}
-                  </span>
-                )}
-              </TabsTrigger>
-              
-              <TabsTrigger 
-                id="benefit-detail-tab-history" 
-                value="history" 
-                className="gap-2 py-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 data-[state=active]:shadow-sm data-[state=active]:text-[#3279FF] data-[state=inactive]:text-gray-500 hover:data-[state=inactive]:text-gray-700 cursor-pointer"
-              >
-                <History size={16} className="data-[state=active]:text-[#3279FF]" />
-                <span>{t('usageHistory')}</span>
-                {usages.length > 0 && (
-                  <span className="ml-1 px-1.5 py-0.5 rounded-full bg-[#FFB347]/10 text-[#FFB347] text-[10px] font-bold">
-                    {usages.length}
-                  </span>
-                )}
-              </TabsTrigger>
-            </TabsList>
+        ) : (
+          /* ====== CLAIMABLE ====== */
+          <>
+            {/* Tabs untuk Claimable */}
+            <Tabs id="benefit-detail-tabs" defaultValue="events" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 gap-1 bg-primary/10 p-1 rounded-xl">
+                <TabsTrigger 
+                  id="benefit-detail-tab-events" 
+                  value="events" 
+                  className="gap-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 data-[state=active]:bg-white  data-[state=active]:shadow-sm data-[state=active]:text-primary data-[state=inactive]:text-gray-500 hover:data-[state=inactive]:text-gray-700 cursor-pointer"
+                >
+                  <Ticket size={16} className="data-[state=active]:text-primary" />
+                  <span>{t('events')}</span>
+                  {relatedEvents.length > 0 && (
+                    <span className="ml-1 px-1.5 py-0.5 rounded-full bg-primary/10 text-primary/60 text-[10px] font-bold">
+                      {relatedEvents.length}
+                    </span>
+                  )}
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  id="benefit-detail-tab-history" 
+                  value="history" 
+                  className="gap-2 rounded-lg text-xs md:text-sm font-medium transition-all duration-200 data-[state=active]:bg-white  data-[state=active]:shadow-sm data-[state=active]:text-primary data-[state=inactive]:text-gray-500 hover:data-[state=inactive]:text-gray-700 cursor-pointer"
+                >
+                  <History size={16} className="data-[state=active]:text-primary" />
+                  <span>{t('usageHistory')}</span>
+                  {usages.length > 0 && (
+                    <span className="ml-1 px-1.5 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold">
+                      {usages.length}
+                    </span>
+                  )}
+                </TabsTrigger>
+              </TabsList>
 
-            {/* Tab: Eligible Events */}
-            <TabsContent value="events" className="mt-4">
-              <Card className="p-5">
-                {loadingEvents ? (
-                  <div className="flex justify-center py-8">
-                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                  </div>
-                ) : relatedEvents.length > 0 ? (
-                  <div id="benefit-detail-events-list" className="space-y-3 max-h-100 overflow-y-auto pr-2 scrollbar-thin">
-                    {relatedEvents.map((event) => (
-                      <div key={event.id_event} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border border-border hover:bg-muted/30 transition-colors gap-3">
-                        <div className="flex items-center gap-3 flex-1 min-w-0">
-                          <div className="w-12 h-12 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center overflow-hidden shrink-0">
-                            <img
-                              src={event.photoevent}
-                              alt={event.title}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                              loading="lazy"
-                            />
+              {/* Tab: Eligible Events */}
+              <TabsContent value="events" className="mt-4">
+                <Card className="p-5">
+                  {loadingEvents ? (
+                    <div className="flex justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                    </div>
+                  ) : relatedEvents.length > 0 ? (
+                    <div id="benefit-detail-events-list" className="space-y-3 max-h-100 overflow-y-auto pr-2 scrollbar-thin">
+                      {relatedEvents.map((event) => (
+                        <div key={event.id_event} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border border-border hover:bg-muted/30 transition-colors gap-3">
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
+                            <div className="w-12 h-12 sm:w-10 sm:h-10 rounded-lg bg-primary/10 flex items-center justify-center overflow-hidden shrink-0">
+                              <img
+                                src={event.photoevent}
+                                alt={event.title}
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                loading="lazy"
+                              />
+                            </div>
+                            
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-sm sm:text-xs line-clamp-2">
+                                {event.title}
+                              </p>
+                              <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-muted-foreground mt-0.5">
+                                <span className="flex items-center gap-1 shrink-0">
+                                  <Calendar size={10} /> {formatDate(event.date_start)}
+                                </span>
+                                <span className="flex items-center gap-1 min-w-0 max-w-[70%]">
+                                  <MapPin size={10} className="shrink-0" />
+                                  <span className="truncate">{event.location_address || event.location_place || t('online')}</span>
+                                </span>
+                              </div>
+                            </div>
                           </div>
                           
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-sm sm:text-xs line-clamp-2">
-                              {event.title}
-                            </p>
-                            <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-muted-foreground mt-0.5">
-                              <span className="flex items-center gap-1 shrink-0">
-                                <Calendar size={10} /> {formatDate(event.date_start)}
-                              </span>
-                              <span className="flex items-center gap-1 min-w-0 max-w-[70%]">
-                                <MapPin size={10} className="shrink-0" />
-                                <span className="truncate">{event.location_address || event.location_place || t('online')}</span>
-                              </span>
-                            </div>
-                          </div>
+                          <Button 
+                            size="sm"
+                            variant="outline"
+                            className="gap-1 cursor-pointer w-full text-[11px] text-primary/80 border-primary/30 sm:w-auto shrink-0"
+                            asChild
+                          >
+                            <Link href={`/events/${event.title_url}`}>
+                              {t('view')} <Eye size={10} />
+                            </Link>
+                          </Button>
                         </div>
-                        
-                        <Button 
-                          size="sm" 
-                          className="gap-1 cursor-pointer w-full sm:w-auto shrink-0"
-                          asChild
-                        >
-                          <Link href={`/events/${event.title_url}`}>
-                            {t('view')} <ExternalLink size={12} />
-                          </Link>
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Ticket size={32} className="mx-auto mb-2 opacity-30" />
-                    <p>{t('noEventsAvailable')}</p>
-                    <p className="text-xs mt-1">{t('checkBackLater')}</p>
-                  </div>
-                )}
-              </Card>
-            </TabsContent>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <Ticket size={32} className="mx-auto mb-2 opacity-30" />
+                      <p>{t('noEventsAvailable')}</p>
+                      <p className="text-xs mt-1">{t('checkBackLater')}</p>
+                    </div>
+                  )}
+                </Card>
+              </TabsContent>
 
-            {/* Tab: Usage History - Full dengan Reclaim */}
-            <TabsContent value="history" className="mt-4">
-              <Card className="p-5">
-                {loadingHistoryEvents ? (
-                  <div className="flex justify-center py-8">
-                    <Loader2 className="h-6 w-6 animate-spin text-primary" />
-                  </div>
-                ) : usageHistoryWithEvents.length > 0 ? (
-                  <div id="benefit-detail-history-list" className="space-y-3 max-h-100 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-[#3279FF]/30 scrollbar-track-gray-100 dark:scrollbar-track-gray-800 hover:scrollbar-thumb-[#3279FF]/50">
-                    {usageHistoryWithEvents.map((history: UsageHistory) => {
-                      const qtyUsed = history.qty1 != 0 ? history.qty1 : history.qty2 != 0 ? history.qty2 : history.qty3
-                      const participants = Array.isArray(history.event) ? history.event : [] 
-                      const hasParticipants = Array.isArray(participants) && participants.length > 0
-                      const isItemExpanded = expandedItems[history.id] || false
-                      
-                      const remainingUnused = qtyUsed - participants.length
-                      const canReclaim = remainingUnused > 0;
-                      return (
-                        <div className="rounded-lg border border-border" key={history.id}>
-                          <div className="w-full flex items-center justify-between p-3 text-left max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-2">
-                            <div className="flex items-center gap-3 flex-1 min-w-0 max-[640px]:w-full">
-                              <div className={`p-2 rounded-lg shrink-0 ${
-                                  remainingUnused > 0
-                                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                                    : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                                }`}>
-                                <CheckCircle size={14} />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="font-medium text-sm line-clamp-2">
-                                  {Array.isArray(history.event) ? (history.event[0]?.event_name || benefit.benefit_name) : history.description?.split('\n')[0] || t('benefitUsed')}
-                                </p>
-                                <p className="text-[11px] text-muted-foreground max-[640px]:text-[10px]">{t('voucherCode')}: <span className="font-semibold">{history.redeem_code}</span></p>
-                                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground max-[640px]:text-[10px]">
-                                  <span className="flex items-center gap-1">
-                                    <Clock size={10} /> {formatDateTime(history.used_at)}
-                                  </span>
-                                  <span className="flex items-center gap-1">
-                                    <Users size={10} /> {qtyUsed} {qtyUsed !== 1 ? t('slots') : t('slot')}
-                                  </span>
-                                  {hasParticipants && (
-                                    <span className="flex items-center gap-1 text-green-600">
-                                      ✅ {participants.length} {t('used')}
-                                    </span>
-                                  )}
-                                  {remainingUnused > 0 && (
-                                    <span className="flex items-center gap-1 text-amber-600">
-                                      ⏳ {remainingUnused} {t('unused')}
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2 max-[640px]:w-full max-[640px]:justify-end">
-                              {canReclaim && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="gap-1 text-xs h-8 border-amber-300 text-amber-700 hover:text-orange-400 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 cursor-pointer"
-                                  onClick={() => handleOpenReclaimModal(history, remainingUnused)}
+              {/* Tab: Usage History - Full dengan Reclaim */}
+              <TabsContent value="history" className="mt-4">
+                <Card className="p-5">
+                  {loadingHistoryEvents ? (
+                    <div className="flex justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                    </div>
+                  ) : usageHistoryWithEvents.length > 0 ? (
+                    <div id="benefit-detail-history-list" className="space-y-3 max-h-100 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-gray-100 hover:scrollbar-thumb-primary/50">
+                      {usageHistoryWithEvents.map((history: UsageHistory) => {
+                        const qtyUsed = history.qty1 != 0 ? history.qty1 : history.qty2 != 0 ? history.qty2 : history.qty3
+                        const participants = Array.isArray(history.event) ? history.event : [] 
+                        const hasParticipants = Array.isArray(participants) && participants.length > 0
+                        const isItemExpanded = expandedItems[history.id] || false
+                        
+                        const remainingUnused = qtyUsed - participants.length
+                        const canReclaim = remainingUnused > 0;
+                        return (
+                          <div className="rounded-lg border border-border" key={history.id}>
+                            <div className="w-full flex items-center justify-between p-3 text-left max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-2">
+                              <div className="flex items-center gap-3 flex-1 min-w-0 max-[640px]:w-full">
+                                <button
+                                  onClick={() => toggleExpand(history.id)}
+                                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-muted/30 transition-colors cursor-pointer"
                                 >
-                                  <RefreshCw size={12} />
-                                  <span className="max-[640px]:hidden">{t('moveSlots', { count: remainingUnused })}</span>
-                                  <span className="hidden max-[640px]:inline">{t('move', { count: remainingUnused })}</span>
-                                </Button>
-                              )}
-                              <button
-                                onClick={() => toggleExpand(history.id)}
-                                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-muted/30 transition-colors cursor-pointer"
-                              >
-                                <ChevronRight 
-                                  size={16} 
-                                  className={`text-muted-foreground transition-transform duration-200 shrink-0 ${isItemExpanded ? 'rotate-90' : ''}`}
-                                />
-                              </button>
-                            </div>
-                          </div>
-                          {isItemExpanded && (
-                            <div className="border-t border-border p-3 space-y-2 bg-muted/10">
-                              <p className="text-xs font-medium text-foreground">{t('participantsList', { count: participants.length })}</p>
-                              {hasParticipants && participants.map((p: EventByRedeemCodeI, i) => (
-                                <div key={i} className="text-sm py-1 border-b border-border/50 last:border-0">
-                                  <div className="font-medium max-[640px]:text-xs">{p.fullname}</div>
-                                  <div className="text-xs text-muted-foreground flex flex-wrap gap-x-3 gap-y-1 mt-0.5 max-[640px]:text-[10px]">
-                                    <span>✉️ {p.email}</span>
-                                    {p.phone && <span>📞 {p.phone}</span>}
+                                  <ChevronRight 
+                                    size={16} 
+                                    className={`text-muted-foreground transition-transform duration-200 shrink-0 ${isItemExpanded ? 'rotate-90' : ''}`}
+                                  />
+                                </button>
+                                <div className="flex-1 min-w-0">
+                                  <p className="font-medium text-sm line-clamp-2">
+                                    {Array.isArray(history.event) ? (history.event[0]?.event_name || benefit.benefit_name) : history.description?.split('\n')[0] || t('benefitUsed')}
+                                  </p>
+                                  <p className="text-[11px] text-muted-foreground max-[640px]:text-[10px]">{t('voucherCode')}: <span className="font-semibold">{history.redeem_code}</span></p>
+                                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground max-[640px]:text-[10px]">
+                                    <span className="flex items-center gap-1">
+                                      <Clock size={10} /> {formatDateTime(history.used_at)}
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                      <Users size={10} /> {qtyUsed} {qtyUsed !== 1 ? t('slots') : t('slot')}
+                                    </span>
+                                    {hasParticipants && (
+                                      <span className="flex items-center justify-center gap-1 text-primary">
+                                        <CheckCircle size={12} />
+                                        {participants.length} {t('used')}
+                                      </span>
+                                    )}
+                                    {remainingUnused > 0 && (
+                                      <span className="flex items-center gap-1 text-secondary">
+                                        ⏳ {remainingUnused} {t('unused')}
+                                      </span>
+                                    )}
                                   </div>
                                 </div>
-                              ))}
-                              {!hasParticipants && (
-                                <div className="text-sm text-muted-foreground max-[640px]:text-xs">
-                                  {t('noParticipantsUsed')} {qtyUsed} {qtyUsed !== 1 ? t('slots') : t('slot')} {t('stillAvailable')}
-                                </div>
-                              )}
+                              </div>
+                              <div className="flex items-center gap-2 max-[640px]:w-full max-[640px]:justify-end">
+                                {canReclaim && (
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="text-accent/80 border-accent/30 gap-1 text-xs h-8 cursor-pointer"
+                                    onClick={() => handleOpenReclaimModal(history, remainingUnused)}
+                                  >
+                                    <RefreshCw size={12} />
+                                    <span className="max-[640px]:hidden">{t('moveSlots', { count: remainingUnused })}</span>
+                                    <span className="hidden max-[640px]:inline">{t('move', { count: remainingUnused })}</span>
+                                  </Button>
+                                )}
+
+                              </div>
                             </div>
-                          )}
-                        </div>
-                      )
-                    })}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <History size={32} className="mx-auto mb-2 opacity-30" />
-                    <p>{t('noUsageHistory')}</p>
-                    <p className="text-xs mt-1">{t('historyWillAppear')}</p>
-                  </div>
-                )}
-              </Card>
-            </TabsContent>
-          </Tabs>
-
-          {/* Modal Reclaim / Move Event */}
-          {reclaimModal.isOpen && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-              <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden">
-                <div className="flex items-center justify-between p-5 border-b border-border">
-                  <div className="flex items-center gap-2">
-                    <RefreshCw size={20} className="text-primary" />
-                    <h2 className="text-lg font-semibold text-foreground">{t('moveToAnotherEvent')}</h2>
-                  </div>
-                  <button
-                    onClick={() => setReclaimModal({ ...reclaimModal, isOpen: false })}
-                    className="p-1 rounded-lg hover:bg-muted transition-colors cursor-pointer"
-                  >
-                    <X size={18} />
-                  </button>
-                </div>
-
-                <div className="p-5 space-y-4">
-                  <div className="p-3 rounded-lg bg-muted/30 border border-border">
-                    <p className="text-xs text-muted-foreground">{t('originalEvent')}</p>
-                    <p className="text-sm font-medium text-foreground">
-                      {selectedEvent?.event_name || t('unknown')}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {t('unusedSlots')}: {reclaimModal.remainingUnused}
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-foreground">{t('selectNewEvent')}</label>
-                    
-                    {selectedNewEventId ? (
-                      <div className="relative">
-                        <div className="flex items-center gap-3 p-3 rounded-lg border-2 border-primary bg-primary/5">
-                          <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center overflow-hidden">
-                            {relatedEvents.find(e => e.id_event === selectedNewEventId)?.photoevent ? (
-                              <img 
-                                src={relatedEvents.find(e => e.id_event === selectedNewEventId)?.photoevent} 
-                                alt="" 
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <Calendar size={20} className="text-primary" />
+                            {isItemExpanded && (
+                              <div className="border-t border-border p-3 space-y-2 bg-muted/10">
+                                <p className="text-xs font-medium text-foreground">{t('participantsList', { count: participants.length })}</p>
+                                {hasParticipants && participants.map((p: EventByRedeemCodeI, i) => (
+                                  <div key={i} className="text-sm py-1 border-b border-border/50 last:border-0">
+                                    <div className="font-medium max-[640px]:text-xs">{p.fullname}</div>
+                                    <div className="text-xs text-muted-foreground flex flex-wrap gap-x-3 gap-y-1 mt-0.5 max-[640px]:text-[10px]">
+                                      <span>✉️ {p.email}</span>
+                                      {p.phone && <span>📞 {p.phone}</span>}
+                                    </div>
+                                  </div>
+                                ))}
+                                {!hasParticipants && (
+                                  <div className="text-sm text-muted-foreground max-[640px]:text-xs">
+                                    {t('noParticipantsUsed')} {qtyUsed} {qtyUsed !== 1 ? t('slots') : t('slot')} {t('stillAvailable')}
+                                  </div>
+                                )}
+                              </div>
                             )}
                           </div>
-                          <div className="flex-1">
-                            <p className="font-medium text-sm text-foreground">
-                              {relatedEvents.find(e => e.id_event === selectedNewEventId)?.title}
-                            </p>
-                            <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                              <span className="flex items-center gap-1">
-                                <Calendar size={10} />
-                                {formatDate(relatedEvents.find(e => e.id_event === selectedNewEventId)?.date_start || '')}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <MapPin size={10} />
-                                {relatedEvents.find(e => e.id_event === selectedNewEventId)?.location_place || t('online')}
-                              </span>
-                            </div>
-                          </div>
-                          <button
-                            onClick={() => setSelectedNewEventId('')}
-                            className="p-1 rounded-full hover:bg-muted transition-colors cursor-pointer"
-                          >
-                            <X size={14} />
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 gap-2 max-h-64 overflow-y-auto">
-                        {relatedEvents.map((event) => (
-                          <button
-                            key={event.id_event}
-                            onClick={() => setSelectedNewEventId(event.id_event)}
-                            className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all text-left group cursor-pointer"
-                          >
-                            <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
-                              {event.photoevent ? (
+                        )
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <History size={32} className="mx-auto mb-2 opacity-30" />
+                      <p>{t('noUsageHistory')}</p>
+                      <p className="text-xs mt-1">{t('historyWillAppear')}</p>
+                    </div>
+                  )}
+                </Card>
+              </TabsContent>
+            </Tabs>
+
+            {/* Modal Reclaim / Move Event */}
+            {reclaimModal.isOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 overflow-hidden">
+                  <div className="flex items-center justify-between p-5 border-b border-border">
+                    <div className="flex items-center gap-2">
+                      <RefreshCw size={20} className="text-primary" />
+                      <h2 className="text-lg font-semibold text-foreground">{t('moveToAnotherEvent')}</h2>
+                    </div>
+                    <button
+                      onClick={() => setReclaimModal({ ...reclaimModal, isOpen: false })}
+                      className="p-1 rounded-lg hover:bg-muted transition-colors cursor-pointer"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
+
+                  <div className="p-5 space-y-4">
+                    <div className="p-3 rounded-lg bg-muted/30 border border-border">
+                      <p className="text-xs text-muted-foreground">{t('originalEvent')}</p>
+                      <p className="text-sm font-medium text-foreground">
+                        {selectedEvent?.event_name || t('unknown')}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {t('unusedSlots')}: {reclaimModal.remainingUnused}
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-foreground">{t('selectNewEvent')}</label>
+                      
+                      {selectedNewEventId ? (
+                        <div className="relative">
+                          <div className="flex items-center gap-3 p-3 rounded-lg border-2 border-primary bg-primary/5">
+                            <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center overflow-hidden">
+                              {relatedEvents.find(e => e.id_event === selectedNewEventId)?.photoevent ? (
                                 <img 
-                                  src={event.photoevent} 
-                                  alt={event.title} 
-                                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                  src={relatedEvents.find(e => e.id_event === selectedNewEventId)?.photoevent} 
+                                  alt="" 
+                                  className="w-full h-full object-cover"
                                 />
                               ) : (
-                                <Ticket size={20} className="text-muted-foreground" />
+                                <Calendar size={20} className="text-primary" />
                               )}
                             </div>
                             <div className="flex-1">
-                              <p className="font-medium text-sm text-foreground line-clamp-1">{event.title}</p>
+                              <p className="font-medium text-sm text-foreground">
+                                {relatedEvents.find(e => e.id_event === selectedNewEventId)?.title}
+                              </p>
                               <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
                                 <span className="flex items-center gap-1">
                                   <Calendar size={10} />
-                                  {formatDate(event.date_start)}
+                                  {formatDate(relatedEvents.find(e => e.id_event === selectedNewEventId)?.date_start || '')}
                                 </span>
                                 <span className="flex items-center gap-1">
                                   <MapPin size={10} />
-                                  {event.location_place || t('online')}
+                                  {relatedEvents.find(e => e.id_event === selectedNewEventId)?.location_place || t('online')}
                                 </span>
                               </div>
                             </div>
-                            <ChevronRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
-                          </button>
-                        ))}
-                      </div>
-                    )}
+                            <button
+                              onClick={() => setSelectedNewEventId('')}
+                              className="p-1 rounded-full hover:bg-muted transition-colors cursor-pointer"
+                            >
+                              <X size={14} />
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-1 gap-2 max-h-64 overflow-y-auto">
+                          {relatedEvents.map((event) => (
+                            <button
+                              key={event.id_event}
+                              onClick={() => setSelectedNewEventId(event.id_event)}
+                              className="flex items-center gap-3 p-3 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-all text-left group cursor-pointer"
+                            >
+                              <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
+                                {event.photoevent ? (
+                                  <img 
+                                    src={event.photoevent} 
+                                    alt={event.title} 
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                  />
+                                ) : (
+                                  <Ticket size={20} className="text-muted-foreground" />
+                                )}
+                              </div>
+                              <div className="flex-1">
+                                <p className="font-medium text-sm text-foreground line-clamp-1">{event.title}</p>
+                                <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
+                                  <span className="flex items-center gap-1">
+                                    <Calendar size={10} />
+                                    {formatDate(event.date_start)}
+                                  </span>
+                                  <span className="flex items-center gap-1">
+                                    <MapPin size={10} />
+                                    {event.location_place || t('online')}
+                                  </span>
+                                </div>
+                              </div>
+                              <ChevronRight size={16} className="text-muted-foreground group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+                            </button>
+                          ))}
+                        </div>
+                      )}
 
-                    {relatedEvents.length === 0 && (
-                      <div className="p-3 rounded-lg bg-muted/30 border border-border">
-                        <p className="text-sm text-muted-foreground">{t('noRelatedEvents')}</p>
-                      </div>
-                    )}
-                  </div>
-
-                  {selectedNewEventId && (
-                    <div className="space-y-2 animate-in fade-in zoom-in-95 duration-200">
-                      <label className="text-sm font-medium text-foreground">
-                        {t('quantityToMove', { max: reclaimModal.maxMovable })}
-                      </label>
-                      <div className="flex items-center gap-3">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon"
-                          className="h-10 w-10 cursor-pointer bg-white"
-                          onClick={() => setReclaimQty(Math.max(1, reclaimQty - 1))}
-                          disabled={reclaimQty <= 1}
-                        >
-                          -
-                        </Button>
-                        <input
-                          type="number"
-                          value={reclaimQty}
-                          onChange={(e) => {
-                            const val = parseInt(e.target.value)
-                            if (!isNaN(val) && val >= 1 && val <= reclaimModal.maxMovable) {
-                              setReclaimQty(val)
-                            }
-                          }}
-                          className="w-20 h-10 text-center rounded-lg border border-border bg-white focus:outline-none focus:ring-2 focus:ring-primary"
-                        />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon"
-                          className="h-10 w-10 cursor-pointer bg-white"
-                          onClick={() => setReclaimQty(Math.min(reclaimModal.maxMovable, reclaimQty + 1))}
-                          disabled={reclaimQty >= reclaimModal.maxMovable}
-                        >
-                          +
-                        </Button>
-                        <span className="text-sm text-muted-foreground">
-                          {t('available')}: {reclaimModal.maxMovable} {reclaimModal.maxMovable !== 1 ? t('slots') : t('slot')}
-                        </span>
-                      </div>
+                      {relatedEvents.length === 0 && (
+                        <div className="p-3 rounded-lg bg-muted/30 border border-border">
+                          <p className="text-sm text-muted-foreground">{t('noRelatedEvents')}</p>
+                        </div>
+                      )}
                     </div>
-                  )}
 
-                  <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
-                    <p className="text-xs text-amber-700 dark:text-amber-400">
-                      ⚠️ {reclaimQty === 1 
-                        ? t('warningMoveMessageSingular', { qty: reclaimQty }) 
-                        : t('warningMoveMessagePlural', { qty: reclaimQty })
-                      }
-                    </p>
+                    {selectedNewEventId && (
+                      <div className="space-y-2 animate-in fade-in zoom-in-95 duration-200">
+                        <label className="text-sm font-medium text-foreground">
+                          {t('quantityToMove', { max: reclaimModal.maxMovable })}
+                        </label>
+                        <div className="flex items-center gap-3">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            className="h-10 w-10 cursor-pointer bg-white"
+                            onClick={() => setReclaimQty(Math.max(1, reclaimQty - 1))}
+                            disabled={reclaimQty <= 1}
+                          >
+                            -
+                          </Button>
+                          <input
+                            type="number"
+                            value={reclaimQty}
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value)
+                              if (!isNaN(val) && val >= 1 && val <= reclaimModal.maxMovable) {
+                                setReclaimQty(val)
+                              }
+                            }}
+                            className="w-20 h-10 text-center rounded-lg border border-border bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            className="h-10 w-10 cursor-pointer bg-white"
+                            onClick={() => setReclaimQty(Math.min(reclaimModal.maxMovable, reclaimQty + 1))}
+                            disabled={reclaimQty >= reclaimModal.maxMovable}
+                          >
+                            +
+                          </Button>
+                          <span className="text-sm text-muted-foreground">
+                            {t('available')}: {reclaimModal.maxMovable} {reclaimModal.maxMovable !== 1 ? t('slots') : t('slot')}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="p-3 rounded-lg bg-amber-50 border border-amber-200">
+                      <p className="text-xs text-amber-700">
+                        ⚠️ {reclaimQty === 1 
+                          ? t('warningMoveMessageSingular', { qty: reclaimQty }) 
+                          : t('warningMoveMessagePlural', { qty: reclaimQty })
+                        }
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex gap-3 p-5 border-t border-border">
-                  <Button
-                    variant="outline"
-                    className="flex-1 cursor-pointer bg-gray-200"
-                    onClick={() => setReclaimModal({ ...reclaimModal, isOpen: false })}
-                  >
-                    {t('cancel')}
-                  </Button>
-                  <Button
-                    className="flex-1 cursor-pointer gap-2 bg-linear-to-r from-primary to-primary/80"
-                    onClick={handleReclaimSubmit}
-                    disabled={isReclaiming || !selectedNewEventId || reclaimQty < 1}
-                  >
-                    {isReclaiming ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
-                    {isReclaiming ? t('processing') : t('moveEvent')}
-                  </Button>
+                  <div className="flex gap-3 p-5 border-t border-border">
+                    <Button
+                      variant="outline"
+                      className="flex-1 cursor-pointer bg-gray-200"
+                      onClick={() => setReclaimModal({ ...reclaimModal, isOpen: false })}
+                    >
+                      {t('cancel')}
+                    </Button>
+                    <Button
+                      className="flex-1 cursor-pointer gap-2 bg-linear-to-r from-primary to-primary/80"
+                      onClick={handleReclaimSubmit}
+                      disabled={isReclaiming || !selectedNewEventId || reclaimQty < 1}
+                    >
+                      {isReclaiming ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
+                      {isReclaiming ? t('processing') : t('moveEvent')}
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </>
-      )}
+            )}
+          </>
+        )}
+      </div>
 
       {/* How to Claim Card - hanya untuk claimable */}
       {isClaimable && (
-        <HowToClaim 
-          totalQuota={totalQuota} 
-          relatedEventsCount={relatedEvents.length}
-          expired={expired}
-        />
+        <div className="bg-primary/2 py-5">
+          <div className="max-w-4xl mx-auto space-y-2 animate-in fade-in zoom-in-95 duration-200">
+            <HowToClaim 
+              totalQuota={totalQuota} 
+              relatedEventsCount={relatedEvents.length}
+              expired={expired}
+            />
+
+            <BenefitCTA />
+          </div>
+        </div>
       )}
     </div>
   )

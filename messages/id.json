@@ -9,7 +9,12 @@
     "browseEvents": "Jelajahi Acara",
     "featuredEvents": "Acara Unggulan",
     "featuredEventsDesc": "Acara yang mungkin Anda minati",
-    "viewAllEvents": "Lihat Semua Acara",
+    "viewAllEvents": "LIHAT SEMUA ACARA",
+    "eventLabel": "EVENT PELATIHAN",
+    "eventTitle1": "Event & Pelatihan",
+    "ctaTitle": "Tertarik dengan event ini?",
+    "ctaDescription": "Daftarkan sekolah Anda sekarang dan manfaatkan kesempatan untuk berkembang bersama para ahli.",
+    "eventTitle2": "Sedang Berlangsung",
     "quickActions": "Aksi Cepat",
     "quickActionsDesc": "Pintasan untuk membantu Anda menyelesaikan tugas",
     "claimBenefits": "Klaim Manfaat",
@@ -36,21 +41,6 @@
     "cardPartnershipStatus": "Status Kerjasama",
     "cardActive": "Active",
     "newBenefits": "Manfaat Baru",
-    "agreementRenewal": {
-      "title": "Perpanjangan Perjanjian",
-      "subtitle": "Perjanjian Kerja Sama Mentari Group",
-      "active": "Aktif",
-      "endsOn": "berakhir pada",
-      "description": "Perjanjian Kerja Sama dengan Mentari Group akan berakhir pada 11 Jun 2029. Untuk melanjutkan kerja sama, kami menyediakan opsi perpanjangan otomatis. Tekan tombol \"Perpanjangan Otomatis\" di Mentari Premium Partner.",
-      "consultantHelp": "Jika Anda memiliki pertanyaan atau penjelasan yang perlu diketahui terlebih dahulu,",
-      "consultantAvailable": "kami siap membantu dan dapat dihubungi",
-      "gratitude": "Kami berharap kerja sama yang telah terjalin selama ini dapat terus berlanjut. Terima kasih atas kepercayaan dan dukungan Anda.",
-      "autoRenew": "Perpanjangan Otomatis",
-      "contactConsultant": "Hubungi Consultant",
-      "processing": "Memproses...",
-      "renewed": "Berhasil Diperpanjang!",
-      "successMessage": "Perjanjian berhasil diperpanjang otomatis. Kami akan mengirimkan konfirmasi ke email Anda."
-    },
     "tour": {
       "welcome": {
         "title": "🌟 Selamat Datang di Mentari Partner!",
@@ -98,6 +88,17 @@
       }
     }
   },
+  "hero": {
+    "welcome": "Selamat Datang",
+    "userName": "nanti nama user",
+    "title1": "Kelola Manfaat,",
+    "title2": "Ikuti Pelatihan,",
+    "title3": "Tingkatkan Potensi.",
+    "description": "Platform eksklusif untuk sekolah dalam mengakses berbagai manfaat, menemukan pelatihan terbaik, dan berpartisipasi dalam event yang relevan untuk kemajuan pendidikan.",
+    "ctaPrimary": "LIHAT MANFAAT",
+    "ctaSecondary": "CARA KERJA",
+    "imageAlt": "Ilustrasi Hero"
+  },
   "Help": {
     "title": "Butuh Bantuan?",
     "heroBadge": "FAQ",
@@ -143,7 +144,6 @@
     "subscribe": "Berlangganan",
     "subscribedSuccess": "Berhasil berlangganan!",
     "privacyAgreement": "Dengan berlangganan, Anda menyetujui Kebijakan Privasi kami.",
-    "privacyPolicy": "Kebijakan Privasi",
     "termsOfService": "Ketentuan Layanan",
     "contactUs": "Hubungi Kami",
     "backToTop": "Kembali ke atas",
@@ -155,24 +155,29 @@
     "videoTutorial": "Video Tutorial",
     "faq": "FAQ"
   },
+  "Login": {
+    "allRightsReserved": "Hak cipta dilindungi."
+  },
   "Event": {
     "starts": "Mulai",
     "endsAt": "Berakhir pada",
     "location": "Lokasi",
     "viewDetails": "Lihat Detail",
-    "onlineEvent": "Acara Online",
+    "onlineEvent": "Acara Daring",
     "checkDetails": "Periksa Detail Acara untuk mengetahui informasi lebih lanjut."
   },
   "Events": {
-    "pageTitle": "Acara & Kompetisi",
-    "pageDescription": "Jelajahi dan daftar untuk acara mendatang, kompetisi, dan program pelatihan",
+    "pageTitle": "Pelatihan & Acara",
+    "pageDescription": "Temukan berbagai pelatihan, kompetisi, dan kegiatan eksklusif untuk mendukung pengembangan guru, pimpinan, dan siswa.",
     "upcomingBadge": "Acara Mendatang",
     "filters": "Filter",
     "category": "Kategori",
-    "subject": "Subjek",
+    "activity": "Kegiatan",
+    "subject": "Bidang",
     "city": "Kota",
     "allCategories": "Semua Kategori",
-    "allSubjects": "Semua Subjek",
+    "allActivities": "Semua Kegiatan",
+    "allSubjects": "Semua Bidang",
     "allCities": "Semua Kota",
     "resetAll": "Reset semua filter",
     "applyFilters": "Terapkan Filter",
@@ -186,19 +191,21 @@
     "active": "Aktif:",
     "clearAll": "Hapus semua",
     "filter": "Filter",
-    "searchPlaceholder": "Cari event..."
+    "searchPlaceholder": "Cari pelatihan dan acara..."
   },
   "Subjects": {
     "english": "Bahasa Inggris",
     "mathematics": "Matematika",
     "science": "Ilmu Pengetahuan Alam",
     "indonesian": "Bahasa Indonesia",
-    "mandarin": "Mandarin"
+    "mandarin": "Mandarin",
+    "characterBuilding": "Penguatan Karakter"
   },
   "common": {
     "schoolAccount": "Akun Sekolah",
     "logout": "Keluar",
-    "language": "Bahasa"
+    "language": "Bahasa",
+    "login": "Masuk"
   },
   "nav": {
     "dashboard": "Dasbor",
@@ -206,8 +213,8 @@
     "events": "Event",
     "settings": "Pengaturan",
     "documents": "Dokumen",
-    "profile": "Profil",
-    "videoTutorial": "Tutorial Video",
+    "overview": "Overview",
+    "helpCenter": "Pusat Bantuan",
     "about": "Tentang",
     "faq": "FAQ"
   },
@@ -255,11 +262,19 @@
     "claimFailed": "Gagal mengklaim manfaat",
     "claimError": "Terjadi kesalahan saat mengklaim manfaat. Silakan coba lagi.",
     "claimForEvent": "Klaim untuk acara:",
-    "linkCopied": "Tautan disalin ke clipboard!"
+    "linkCopied": "Tautan disalin ke clipboard!",
+    "claimSuccessDesc": "Manfaat berhasil diklaim! Simpan kode redeem berikut.",
+    "eventTitle": "Event",
+    "codeCopied": "Kode berhasil disalin!",
+    "successNote": "Kode redeem ini akan digunakan untuk mengakses event. Jangan bagikan ke orang lain.",
+    "goToBenefits": "Ke Halaman Manfaat",
+    "getTicket": "Ambil Tiket",
+    "close": "Tutup"
   },
   "Benefits": {
-    "title": "Semua Manfaat",
-    "description": "Manfaat yang tersedia dari paket kemitraan Anda. Klik pada manfaat yang dapat diklaim untuk melihat detail.",
+    "title1": "Semua",
+    "title2": "Manfaat",
+    "description": "Manfaat yang tersedia dari paket kemitraan Anda. \n Klik pada manfaat yang dapat diklaim untuk melihat detail.",
     "failedToLoad": "Gagal memuat manfaat",
     "filterByPK": "Filter berdasarkan PK:",
     "filterByProgram": "Filter Program:",
@@ -282,7 +297,48 @@
     "subject": "Subjek",
     "slots": "slot",
     "noBenefitsFound": "Tidak ada manfaat yang ditemukan sesuai pencarian Anda.",
-    "noBenefitsAvailable": "Tidak ada manfaat yang tersedia."
+    "noBenefitsAvailable": "Tidak ada manfaat yang tersedia.",
+    "clearFilters": "Hapus Filter",
+    "show": "Tampilkan",
+    "ofPKs": "dari {total} program",
+    "previous": "Sebelumnya",
+    "next": "Selanjutnya",
+    "showingPKRange": "Menampilkan {start} - {end} dari {total} program ({benefits} manfaat)",
+    "searchResults": "{count} manfaat ditemukan",
+    "showingPKs": "Menampilkan {pkCount} program dengan {benefitCount} manfaat",
+    "benefitName": "Nama Manfaat",
+    "type": "Tipe",
+    "subBenefit": "Sub Benefit",
+    "detail": "Detail",
+    "view": "Lihat",
+    "viewDetail": "Lihat Detail",
+    "benefits": "Manfaat",
+    "ctaTitle": "Tidak menemukan manfaat yang Anda cari?",
+    "ctaDescription": "Hubungi tim kami untuk informasi lebih lanjut mengenai manfaat dan cara klaim.",
+    "ctaButton": "Hubungi Kami",
+    "reportLabel": "Progress Report",
+    "reportTitle": "Laporan Rekapitulasi Manfaat",
+    "reportDescription": "Pilih Program Untuk Melihat Laporan Rekap Manfaat",
+    "programList": "Daftar Program",
+    "programs": "Program",
+    "selectProgram": "Pilih Program",
+    "quotaUsage": "Penggunaan Kuota",
+    "used": "Terpakai",
+    "from": "dari",
+    "totalQuota": "Total Kuota",
+    "remaining": "Sisa",
+    "percentage": "Persentase",
+    "noProgramsAvailable": "Belum ada data program",
+    "noBenefitsData": "Tidak ada data manfaat",
+    "selectAnotherProgram": "Silakan pilih program lain",
+    "showingBenefitsFrom": "Menampilkan {count} manfaat dari {program}",
+    "available": "Tersedia",
+    "partial": "Terpakai",
+    "full": "Penuh",
+    "ctaTitle2": "Mengalami kesulitan?",
+    "ctaDescription2": "Akses pusat bantuan kami untuk membantu Anda.",
+    "ctaButton2": "Hubungi Kami"
+
   },
   "BenefitDetailPage": {
     "benefitNotFound": "Manfaat Tidak Ditemukan",
@@ -292,10 +348,10 @@
     "goHome": "Kembali ke Beranda",
     "somethingWentWrong": "Terjadi Kesalahan",
     "errorDesc": "Terjadi kesalahan saat memuat manfaat ini. Silakan coba lagi nanti.",
-    "backToBenefits": "Kembali ke Manfaat"
+    "backToBenefits": "Kembali"
   },
   "BenefitDetail": {
-    "backToBenefits": "Kembali ke Manfaat",
+    "backToBenefits": "Kembali",
     "expired": "Kadaluarsa",
     "availableSlots": "Slot Tersedia",
     "validUntil": "Berlaku Hingga",
@@ -309,6 +365,8 @@
     "benefitUsed": "Manfaat Digunakan",
     "slots": "slot",
     "slot": "slot",
+    "units": "unit",
+    "unit": "unit",
     "used": "digunakan",
     "unused": "belum digunakan",
     "moveSlots": "Pindahkan {count} Slot",
@@ -412,8 +470,9 @@
     "tryDifferentSearch": "Coba gunakan kata kunci lain"
   },
   "EventCard": {
-    "online": "Online",
-    "onlineEvent": "Acara Online",
+    "online": "Daring",
+    "offline": "Luring",
+    "onlineEvent": "Acara Daring",
     "registerBy": "Daftar sebelum",
     "viewDetails": "Lihat Detail",
     "upcoming": "Mendatang",
@@ -450,7 +509,7 @@
     "failedToFetchUser": "Gagal mengambil data pengguna"
   },
   "Programs": {
-    "title": "Profil",
+    "title": "Overview",
     "description": "Daftar Perjanjian Kerjasama",
     "active": "Aktif",
     "expired": "Kadaluarsa",
@@ -461,7 +520,36 @@
     "failedToLoad": "Gagal memuat data",
     "noData": "Tidak ada profil ditemukan",
     "noPIC": "Tidak ada PIC",
-    "noPICDetail": "Tidak ada detail PIC untuk PK ini"
+    "noPICDetail": "Tidak ada detail PIC untuk PK ini",
+    "programsCount": "Menampilkan {count} dari {total} Program",
+    "programsCount_plural": "{count} Program",
+    "table": {
+      "program": "Program",
+      "pkNumber": "No. PK",
+      "period": "Periode",
+      "pic": "PIC",
+      "status": "Status",
+      "action": "Aksi",
+      "contact": "Kontak"
+    },
+    "renew": "Perpanjang",
+    "detail": "Detail",
+    "renewal": {
+      "title": "Daftar Kerjasama Eksklusif",
+      "program": "Program",
+      "endsOn": "Berakhir pada",
+      "description": "Perpanjang program kemitraan Anda untuk terus menikmati berbagai manfaat eksklusif.",
+      "benefit": "Dengan memperpanjang, Anda akan tetap mendapatkan akses ke semua benefit yang tersedia.",
+      "success": "Pengajuan Perpanjangan Program Berhasil dikirim!",
+      "cancel": "Batal",
+      "processing": "Memproses...",
+      "done": "Selesai!",
+      "renew": "Perpanjang Sekarang",
+      "successMessage": "Pengajuan Perpanjangan Program Berhasil dikirim",
+      "consultantHelp": "Jika Anda memiliki pertanyaan atau penjelasan yang perlu diketahui terlebih dahulu,",
+      "consultantAvailable": "Education Consultant kami siap membantu dan dapat dihubungi",
+      "gratitude": "Kami berharap kerja sama yang telah terjalin selama ini dapat terus berlanjut. Terima kasih atas kepercayaan dan dukungan Anda."
+    }
   },
   "OnboardingTour": {
     "back": "Kembali",
@@ -506,15 +594,32 @@
     }
   },
   "Tutorial": {
-    "title": "Pusat Bantuan",
-    "description": "Panduan lengkap menggunakan platform Mentari Partner",
-    "noVideos": "Belum ada video tutorial untuk kategori ini"
+    "title1": "Pusat",
+    "title2": "Bantuan",
+    "description": "Panduan lengkap menggunakan platform Mentari Partner.",
+    "stillNeedHelp": "Masih butuh bantuan?",
+    "helpDescription": "Hubungi tim kami untuk informasi lebih lanjut.",
+    "contactUs": "Hubungi Kami",
+    "allTutorials": "Semua Tutorial",
+    "stillHavingTrouble": "Masih kesulitan?",
+    "troubleDescription": "Tim kami siap membantu Anda dalam menggunakan platform Mentari Partner.",
+    "videoTutorials": "Video Tutorial",
+    "frequentlyAskedQuestions": "Pertanyaan Umum (FAQ)",
+    "all": "Semua",
+    "noFaqFound": "Belum ada pertanyaan untuk kategori ini",
+    "stillNeedHelpTitle": "Masih butuh bantuan?",
+    "stillNeedHelpDesc": "Tim support kami siap membantu Anda 24/7. Hubungi kami melalui email atau telepon.",
+    "showingFaqs": "Menampilkan {count} dari {total} pertanyaan",
+    "searchFaq": "Cari pertanyaan...",
+    "showMore": "Lihat Lainnya",
+    "showLess": "Sembunyikan",
+    "tryDifferentCategory": "Coba pilih kategori lain"
   },
   "About": {
     "title": "Tentang Mentari Partner",
     "description": "Platform kemitraan yang memberdayakan sekolah dengan benefit premium, pelatihan, dan sumber daya pendidikan.",
     "badge": "Mentari Partner",
-    "heroTitle": "Tentang Mentari Partner",
+    "heroTitle": "Tentang",
     "heroHighlight": "Mentari Partner",
     "heroDescription": "Platform kemitraan yang memberdayakan sekolah dengan benefit premium, pelatihan, dan sumber daya pendidikan untuk mendukung kemajuan pendidikan Indonesia.",
     "missionTitle": "Misi Kami",
@@ -579,21 +684,70 @@
     "sendResetLink": "Kirim Link Reset",
     "sending": "Mengirim...",
     "backToLogin": "Kembali ke Login",
-    "secure": "Aman & Terenkripsi",
+    "secure": "Aman",
     "trusted": "Terpercaya",
-    "emailRequired": "Email wajib diisi",
-    "successMessage": "Link reset password telah dikirim ke email Anda",
-    "errorMessage": "Gagal mengirim link reset. Silakan coba lagi.",
     "checkEmail": "Cek Email Anda",
-    "checkEmailDescription": "Kami telah mengirimkan link reset password ke email Anda. Link akan kadaluarsa dalam 24 jam.",
+    "checkEmailDescription": "Kami telah mengirimkan link reset password ke email Anda.",
     "sentTo": "Dikirim ke",
     "resendHint": "Tidak menerima email?",
-    "tryAgain": "Coba lagi"
+    "tryAgain": "Coba lagi",
+    "emailRequired": "Email wajib diisi",
+    "successMessage": "Link reset password telah dikirim ke email Anda",
+    "errorMessage": "Terjadi kesalahan. Silakan coba lagi."
   },
   "EventNotFound": {
     "title": "Event Tidak Ditemukan",
     "description": "Maaf, event yang Anda cari tidak tersedia atau telah dihapus. Silakan cek kembali link atau jelajahi event lainnya.",
     "backToEvents": "Kembali ke Events",
     "goToDashboard": "Ke Dashboard"
+  },
+  "SetupPassword": {
+    "loading": "Memuat...",
+    "validating": "Memvalidasi link Anda...",
+    "title": "Atur Password Anda",
+    "description": "Buat password yang kuat untuk akun Anda",
+    "newPassword": "Password Baru",
+    "newPasswordPlaceholder": "Masukkan password Anda",
+    "confirmPassword": "Konfirmasi Password",
+    "confirmPasswordPlaceholder": "Konfirmasi password Anda",
+    "setPassword": "Atur Password",
+    "settingUp": "Mengatur...",
+    "passwordsMatch": "Password cocok",
+    "terms": "Dengan mengatur password, Anda menyetujui",
+    "termsLink": "Syarat & Ketentuan",
+    "strength": {
+      "label": "Kekuatan password:",
+      "enter": "Masukkan password",
+      "weak": "Password lemah",
+      "medium": "Password sedang",
+      "strong": "Password kuat"
+    },
+    "requirements": {
+      "length": "Minimal 8 karakter",
+      "uppercase": "Minimal 1 huruf kapital",
+      "lowercase": "Minimal 1 huruf kecil",
+      "number": "Minimal 1 angka",
+      "special": "Minimal 1 karakter khusus"
+    },
+    "invalid": {
+      "title": "Link Tidak Valid",
+      "description": "Link pengaturan password ini tidak valid atau sudah kadaluarsa.",
+      "reasons": "Kemungkinan alasan:\n• Link sudah digunakan\n• Link kadaluarsa (berlaku 24 jam)\n• Link telah dimodifikasi",
+      "goToLogin": "Ke Halaman Login"
+    },
+    "success": {
+      "title": "Password Berhasil Diatur!",
+      "description": "Password Anda telah berhasil diatur.",
+      "redirecting": "Mengalihkan ke halaman login..."
+    },
+    "errors": {
+      "noToken": "Tidak ada token. Periksa link undangan Anda.",
+      "invalidToken": "Token tidak valid atau sudah kadaluarsa",
+      "validationFailed": "Gagal memvalidasi token. Silakan coba lagi.",
+      "weakPassword": "Harap penuhi semua persyaratan password di bawah",
+      "passwordMismatch": "Password tidak cocok",
+      "general": "Terjadi kesalahan. Silakan coba lagi.",
+      "network": "Kesalahan jaringan. Silakan coba lagi."
+    }
   }
 }

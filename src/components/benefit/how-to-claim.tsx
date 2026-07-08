@@ -1,8 +1,8 @@
-// components/benefit/how-to-claim.tsx
+// components/benefit/how-to-claim-compact.tsx
 'use client'
 
+import { ArrowRight, Layers, Sparkles, Ticket } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { Layers, Ticket, CheckCircle } from 'lucide-react'
 
 interface HowToClaimProps {
   totalQuota: number
@@ -15,12 +15,12 @@ export function HowToClaim({ totalQuota, relatedEventsCount, expired = false }: 
 
   if (expired) {
     return (
-      <div className="rounded-xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/20 p-4">
+      <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-4">
         <div className="flex items-center gap-3">
           <div className="text-2xl">⏰</div>
           <div>
-            <p className="text-sm font-medium text-red-700 dark:text-red-400">{t('expiredBenefit')}</p>
-            <p className="text-xs text-red-600 dark:text-red-300">{t('expiredBenefitMessage')}</p>
+            <p className="text-sm font-medium text-destructive">{t('expiredBenefit')}</p>
+            <p className="text-xs text-destructive/70">{t('expiredBenefitMessage')}</p>
           </div>
         </div>
       </div>
@@ -28,55 +28,48 @@ export function HowToClaim({ totalQuota, relatedEventsCount, expired = false }: 
   }
 
   const steps = [
-    { number: 1, title: t('step1'), emoji: '📋' },
-    { number: 2, title: t('step2'), emoji: '✏️' },
-    { number: 3, title: t('step3'), emoji: '🔍' },
-    { number: 4, title: t('step4'), emoji: '✅' }
+    { icon: '📋', title: t('step1'), color: 'from-blue-500/20 to-blue-500/5' },
+    { icon: '✏️', title: t('step2'), color: 'from-purple-500/20 to-purple-500/5' },
+    { icon: '🔍', title: t('step3'), color: 'from-orange-500/20 to-orange-500/5' },
+    { icon: '✅', title: t('step4'), color: 'from-green-500/20 to-green-500/5' }
   ]
 
   return (
-    <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
-      
+    <div className="overflow-hidden rounded-xl border border-border bg-white">
       {/* Header */}
-      <div className="px-5 py-3 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">📌</span>
-            <h3 className="font-semibold text-gray-900 dark:text-white">{t('howToClaim')}</h3>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1 text-sm text-gray-500">
-              <Layers size={14} className="text-[#3279FF]" />
-              <span>{totalQuota} {t('slots')}</span>
-            </div>
-            <div className="flex items-center gap-1 text-sm text-gray-500">
-              <Ticket size={14} className="text-green-500" />
-              <span>{relatedEventsCount} {t('eligibleEvents')}</span>
-            </div>
-          </div>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-linear-to-r from-primary/5 to-secondary/5 px-4 py-3 sm:px-6">
+        <div className="flex items-center gap-2.5">
+          <Sparkles size={18} className="text-primary" />
+          <h3 className="font-semibold text-foreground">{t('howToClaim')}</h3>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-xs">
+            <Layers size={12} className="text-primary" />
+            {totalQuota} {t('slots')}
+          </span>
+          <span className="flex items-center gap-1 rounded-full bg-secondary/10 px-3 py-1 text-xs">
+            <Ticket size={12} className="text-secondary" />
+            {relatedEventsCount} {t('eligibleEvents')}
+          </span>
         </div>
       </div>
       
-      {/* Steps */}
-      <div className="p-5">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {steps.map((step) => (
-            <div key={step.number} className="text-center">
-              <div className="w-12 h-12 mx-auto rounded-xl bg-primary/10 dark:bg-gray-800 flex items-center justify-center mb-2">
-                <span className="text-2xl">{step.emoji}</span>
-              </div>
-              <div className="w-5 h-5 mx-auto rounded-full bg-[#3279FF]/10 flex items-center justify-center mt-0 mb-1">
-                <span className="text-[9px] font-bold text-[#3279FF]">{step.number}</span>
-              </div>
-              <p className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                {step.title}
-              </p>
+      {/* Steps - Compact Card */}
+      <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-4 sm:p-5">
+        {steps.map((step, index) => (
+          <div key={index} className="group relative overflow-hidden rounded-xl border border-border bg-white p-4 text-center transition-all hover:border-primary/30 hover:shadow-md">
+            <div className={`absolute inset-0 bg-linear-to-br ${step.color} opacity-0 transition-opacity group-hover:opacity-100`} />
+            
+            <div className="relative">
+              <div className="mb-2 text-3xl">{step.icon}</div>
+              <p className="text-xs font-medium text-foreground">{step.title}</p>
+              {index < steps.length - 1 && (
+                <ArrowRight size={12} className="absolute -right-2 top-1/2 hidden -translate-y-1/2 text-muted-foreground/30 lg:block" />
+              )}
             </div>
-          ))}
-        </div>
-        
+          </div>
+        ))}
       </div>
-      
     </div>
   )
 }

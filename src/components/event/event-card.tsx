@@ -1,22 +1,16 @@
-// components/event-card.tsx
+// components/event-card-alt.tsx
 'use client'
 
-import { EventI, EventCategory } from '@/types/event/event.types'
-import { formatDate, formatEventDate } from '@/lib/utils/date'
-import { Button } from '../ui/button'
-import { Calendar, MapPin, Sparkles, ArrowRight } from 'lucide-react'
 import { getEventTypeConfig, getEventTypeIcon } from '@/constants/event.constant'
+import { formatDateRange } from '@/lib/utils/date'
+import { EventCategory, EventI } from '@/types/event/event.types'
+import { ArrowRight, Calendar, Globe, MapPin } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { Button } from '../ui/button'
 
-interface EventCardProps {
-  event: EventI
-  variant?: 'default' | 'compact'
-  onClick?: () => void
-}
-
-export function EventCard({ event, variant = 'default', onClick }: EventCardProps) {
+export function EventCard({ event }: { event: EventI }) {
     const t = useTranslations('Event')
     const EventTypeIcon = getEventTypeIcon(event.category as EventCategory)
     const typeConfig = getEventTypeConfig(event.category as EventCategory)
@@ -36,110 +30,88 @@ export function EventCard({ event, variant = 'default', onClick }: EventCardProp
     return (
         <Link href={`/events/${event.title_url}`} className="group relative cursor-pointer h-full block">
             {/* Card Container */}
-            <div className="relative overflow-hidden rounded-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-white/20 dark:border-gray-800/30 shadow-xl transition-all duration-500 hover:shadow-2xl hover:scale-[1.02] h-full flex flex-col">
+            <div className="relative overflow-hidden rounded-2xl bg-white border border-border transition-all duration-500 hover:shadow-xl hover:border-primary/30 h-full flex flex-col shadow-lg">
+                
+                {/* Top Accent Bar - linear */}
+                <div className="h-1 w-full bg-linear-to-r from-primary via-secondary to-accent"></div>
                 
                 {/* Image Section */}
-                <div className="relative h-52 max-[640px]:h-44 overflow-hidden shrink-0">
+                <div className="relative h-48 max-[640px]:h-40 overflow-hidden shrink-0">
                     <img 
                         src={event.photoevent} 
                         alt={event.title} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                         loading="lazy"
                         onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            target.src = 'https://placehold.co/400x300/3279FF/white?text=Event';
+                            target.src = 'https://placehold.co/400x300/97262C/white?text=Event';
                         }}
                     />
                 
-                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent opacity-70" />
-                    
-                    <div className="absolute bottom-4 left-4 max-[640px]:bottom-2 max-[640px]:left-2">
-                        <div className="flex items-center gap-2">
-                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium capitalize bg-green-500/60 text-white max-[640px]:px-1.5 max-[640px]:py-0.5 max-[640px]:text-[9px]">
-                                <MapPin size={12} className="max-[640px]:size-3" />
-                                {event.city ? event.city : (event.province ? event.province : (event.location_place ? event.location_place : 'Online Event'))}
-                            </div>
+                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
+
+                    {/* Category Badge - Top Right */}
+                    <div className="absolute top-3 left-3 max-[640px]:top-2 max-[640px]:right-2">
+                        <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium bg-secondary/80 text-white backdrop-blur-sm border border-white/10 max-[640px]:px-2 max-[640px]:py-1 max-[640px]:text-[9px]`}>
+                            <EventTypeIcon size={12} className="max-[640px]:size-3" />
+                            {event.category}
                         </div>
                     </div>
 
-                    <div className="absolute top-4 left-4 max-[640px]:top-2 max-[640px]:left-2">
-                        <div className="flex items-center gap-2">
-                            <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium capitalize ${typeConfig.bgColor} ${typeConfig.color} max-[640px]:px-1.5 max-[640px]:py-0.5 max-[640px]:text-[9px]`}>
-                                <EventTypeIcon size={12} className="max-[640px]:size-3" />
-                                {event.category}
-                            </div>
+                    {/* Location - Right Bottom */}
+                    <div className="absolute bottom-3 right-3 max-[640px]:bottom-2 max-[640px]:right-2">
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium bg-accent/80 text-white backdrop-blur-sm border border-white/10 max-[640px]:px-2 max-[640px]:py-1 max-[640px]:text-[9px]">
+                            <Calendar size={12} />   
+                            {formatDateRange(event.date_start, event.date_end)}
                         </div>
-                    </div>
-                    
-                    <div className="absolute -bottom-6 -right-6 w-24 h-24 max-[640px]:w-20 max-[640px]:h-20 bg-primary rounded-full opacity-90 group-hover:scale-150 transition-transform duration-700" />
-                    <div className="absolute bottom-4 right-4 text-white text-right z-10 max-[640px]:bottom-2 max-[640px]:right-2">
-                        <p className="text-xs font-light max-[640px]:text-[8px]">{t('starts')}</p>
-                        <p className="text-xl font-bold leading-5 max-[640px]:text-sm max-[640px]:leading-4">
-                            {formatDate(event.date_start).split(' ')[0]}
-                        </p>
-                        <p className="text-xs max-[640px]:text-[8px]">
-                            {formatDate(event.date_start).split(' ')[1]}
-                        </p>
                     </div>
                 </div>
 
-                {/* Content Section - fix height dengan min-height */}
-                <div className="p-6 pb-0 flex-1 flex flex-col max-[640px]:p-4 max-[640px]:pb-0">
-                    
+                {/* Content Section */}
+                <div className="px-5 py-3 flex-1 flex flex-col max-[640px]:p-4">
                     {/* Title */}
-                    <h3 className="text-xl max-[640px]:text-base font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                    <h3 className="md:text-lg text-sm font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                         {event.title}
                     </h3>
                     
-                    {/* Description - dengan min-height agar tetap konsisten meski kosong */}
-                    <div className="min-h-10 max-[640px]:min-h-8 mb-3">
+                    {/* Description */}
+                    <div className="flex-1 mb-3">
                         {cleanDescription.trim() ? (
-                            <p className="text-sm text-muted-foreground line-clamp-2 max-[640px]:text-xs">
+                            <p className="md:text-sm text-[11px] text-muted-foreground line-clamp-2">
                                 {cleanDescription.length > 100 ? cleanDescription.slice(0, 100) + '...' : cleanDescription}
                             </p>
                         ) : (
-                            <p className="text-sm text-muted-foreground/50 italic max-[640px]:text-xs">
+                            <p className="md:text-sm text-[11px] text-muted-foreground/80 italic">
                                 {t('checkDetails')}
                             </p>
                         )}
                     </div>
 
-                    {/* Info Grid - posisinya akan tetap di tempat yang sama karena description punya min-height */}
-                    <div className="grid grid-cols-2 gap-3 text-sm text-muted-foreground mb-4 max-[640px]:gap-2">
-                        <div className="flex items-center gap-2 max-[640px]:gap-1">
-                            <div className="p-1.5 rounded-lg bg-accent/30 max-[640px]:p-1">
-                                <Calendar size={14} className="text-orange-600 max-[640px]:size-3" />
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-[10px] text-muted-foreground/70 max-[640px]:text-[8px]">{t('endsAt')}</span>
-                                <span className="text-xs font-medium text-foreground max-[640px]:text-[10px]">{formatEventDate(event.date_end)}</span>
+                    {/* Bottom Row: Info + Button in same row */}
+                    <div className="flex items-center justify-between gap-2 my-2 mt-3 pt-3 border-t border-border">
+                    
+                        {/* Date & Location Info */}
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground min-w-0">
+                            <div className="flex items-center gap-1.5 bg-accent/10 px-2.5 py-1.5 rounded-lg">
+                                {event.city ? <MapPin size={13} className="text-accent max-[640px]:size-3" /> : <Globe size={13} className="text-accent max-[640px]:size-3" />}
+                                <span className="font-medium text-foreground md:text-xs text-[10px] truncate capitalize max-w-42">
+                                    {event.city?.toLocaleLowerCase() || t('onlineEvent')}
+                                </span>
                             </div>
                         </div>
                         
-                        <div className="flex items-center gap-2 max-[640px]:gap-1">
-                            <div className="p-1.5 rounded-lg bg-accent/30 max-[640px]:p-1">
-                                <MapPin size={14} className="text-orange-600 max-[640px]:size-3" />
-                            </div>
-                            <div className="flex flex-col flex-1 min-w-0">
-                                <span className="text-[10px] text-muted-foreground/70 max-[640px]:text-[8px]">{t('location')}</span>
-                                <span className="text-xs font-medium text-foreground truncate max-[640px]:text-[10px]">{event.location_place || t('onlineEvent')}</span>
-                            </div>
-                        </div>
+                        {/* Button - Inline with info */}
+                        <Button 
+                            className="btn-primary shrink-0 group/btn rounded-lg text-[12px]! px-4! py-1.5! h-auto flex-1"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                router.push(`/events/${event.title_url}`)
+                            }}
+                        >
+                            <span>{t('viewDetails')}</span>
+                            <ArrowRight size={13} className="transition-transform duration-300 group-hover/btn:translate-x-1 max-[640px]:size-3" />
+                        </Button>
                     </div>
-                </div>
-
-                {/* Button - nempel di bawah */}
-                <div className="mt-2 border-primary">
-                    <Button 
-                        className="w-full gap-2 bg-primary hover:bg-primary/80 text-white transition-all duration-300 rounded-none rounded-b-2xl py-6 max-[640px]:py-2.5 max-[640px]:text-xs cursor-pointer"
-                        onClick={(e) => {
-                            e.stopPropagation()
-                            router.push(`/events/${event.title_url}`)
-                        }}
-                    >
-                        <span>{t('viewDetails')}</span>
-                        <ArrowRight size={16} className="transition-transform duration-300 group-hover/btn:translate-x-1 max-[640px]:size-3" />
-                    </Button>
                 </div>
             </div>
         </Link>

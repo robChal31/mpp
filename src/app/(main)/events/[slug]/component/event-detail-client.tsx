@@ -23,10 +23,14 @@ import {
   MessageCircle,
   Building,
   X,
-  Loader2
+  Loader2,
+  Circle,
+  Globe,
+  Dot,
+  Copy
 } from 'lucide-react'
 import { EventI, EventCategory } from '@/types/event/event.types'
-import { formatDate } from '@/lib/utils/date'
+import { formatDate, formatDateRange } from '@/lib/utils/date'
 import { getEventTypeConfig, getEventTypeIcon } from '@/constants/event.constant'
 import he from 'he'
 import { CheckBenefitByEventGroupResult } from '@/types/benefit/benefit.type'
@@ -70,37 +74,27 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
     availableQuota: 0,
     activeYear: 1
   })
+  const [successModal, setSuccessModal] = useState<{
+    isOpen: boolean
+    redeemCode: string
+    qty: number
+    eventTitle: string
+  }>({
+    isOpen: false,
+    redeemCode: '',
+    qty: 0,
+    eventTitle: ''
+  })
   const [claimQty, setClaimQty] = useState<number>(1)
   const [claimDescription, setClaimDescription] = useState<string>('')
 
   const EventTypeIcon = getEventTypeIcon(event.category as EventCategory)
-  const typeConfig = getEventTypeConfig(event.category as EventCategory)
 
   // Parse price
   const price = parseInt(event.lowest_price) || 0
   const isFree = price === 0
 
-  // Determine event status
-  const now = new Date()
-  const startDate = new Date(event.date_start)
-  const endDate = new Date(event.date_end)
-
   let status = 'upcoming'
-  let statusColor = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400'
-  let statusIcon = <Clock size={14} />
-  let statusText = t('upcoming')
-
-  if (now > endDate) {
-    status = 'ended'
-    statusColor = 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'
-    statusIcon = <AlertCircle size={14} />
-    statusText = t('ended')
-  } else if (now >= startDate && now <= endDate) {
-    status = 'ongoing'
-    statusColor = 'bg-primary/10 text-primary'
-    statusIcon = <CheckCircle size={14} />
-    statusText = t('ongoing')
-  }
 
   const handleShare = async () => {
     setIsSharing(true)
@@ -168,24 +162,17 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
       const data = await response.json()
 
       if (data.status === 'success') {
-        toast.success(
-          <div>
-            <div className="font-semibold">{t('claimSuccess')} 🎉</div>
-            <div className="text-xs mt-1 font-mono">{t('redeemCode')}: {data.data.redeem_code}</div>
-            <div className="text-xs mt-1">{t('quantity')}: {claimQty} {claimQty !== 1 ? t('slots') : t('slot')}</div>
-          </div>,
-          {
-            duration: 5000,
-            position: 'top-center',
-            icon: '🎟️',
-          }
-        )
+        // Tutup modal claim, buka modal success
         setClaimModal({ ...claimModal, isOpen: false })
+        setSuccessModal({
+          isOpen: true,
+          redeemCode: data.data.redeem_code,
+          qty: claimQty,
+          eventTitle: event.title
+        })
+        
+        // Refresh setelah 5 detik
         setTimeout(() => {
-          const ticketUrl = event.is_eduhub == '1' 
-            ? `${process.env.NEXT_PUBLIC_ASTA_URL}/event-checkout?id=${event.id_event}` 
-            : `${process.env.NEXT_PUBLIC_HY_URL}/event/ticket/${event.title_url}?mppcode=${data.data.redeem_code}`
-          window.open(ticketUrl, '_blank')
           router.refresh()
         }, 5000)
       } else {
@@ -214,43 +201,133 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
   const maxQty = selectedBenefit?.benefit.active_quota.available || 0
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-background to-secondary/20">
+    <div className="min-h-screen">
+      {successModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="mx-4 w-full max-w-lg overflow-hidden rounded-2xl bg-white shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+            {/* Success Header */}
+            <div className="relative border-b border-border p-6 text-center">
+              <div className="flex items-center justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                  <CheckCircle size={32} className="text-green-600" />
+                </div>
+              </div>
+              <div className="mt-2">
+                <h2 className="text-xl font-bold text-foreground">🎉 {t('claimSuccess')}</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {t('claimSuccessDesc')}
+                </p>
+              </div>
+            </div>
+
+            {/* Success Body */}
+            <div className="p-4 space-y-4">
+              {/* Event Info */}
+              <div className="rounded-lg bg-muted/30 p-4 text-center">
+                <p className="text-xs text-muted-foreground">{t('eventTitle')}</p>
+                <p className="text-sm font-semibold text-foreground">{successModal.eventTitle}</p>
+              </div>
+
+              {/* Redeem Code */}
+              <div className="rounded-lg bg-primary/5 border border-primary/20 p-4 text-center">
+                <p className="text-xs text-muted-foreground">{t('redeemCode')}</p>
+                <div className="mt-1 flex items-center justify-center gap-3">
+                  <code className="text-xl font-mono font-bold text-primary tracking-wider">
+                    {successModal.redeemCode}
+                  </code>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(successModal.redeemCode)
+                      toast.success(t('codeCopied'))
+                    }}
+                    className="rounded-lg p-1.5 hover:bg-primary/10 transition-colors"
+                  >
+                    <Copy size={16} className="text-primary" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Quantity */}
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <span>{t('quantity')}:</span>
+                <span className="font-semibold text-foreground">{successModal.qty}</span>
+                <span>{successModal.qty !== 1 ? t('slots') : t('slot')}</span>
+              </div>
+
+              {/* Warning */}
+              {/* <div className="rounded-lg border border-amber-200 bg-amber-50 p-3">
+                <p className="text-xs text-amber-700 text-center">
+                  💡 {t('successNote')}
+                </p>
+              </div> */}
+            </div>
+
+            {/* Success Footer */}
+            <div className="flex flex-col gap-2 border-t border-border p-4 sm:flex-row">
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  setSuccessModal({ ...successModal, isOpen: false })
+                }}
+              >
+                {t('close')}
+              </Button>
+              <Button
+                className="flex-1 gap-2"
+                onClick={() => {
+                  const ticketUrl = event.is_eduhub == '1' 
+                    ? `${process.env.NEXT_PUBLIC_ASTA_URL}/event-checkout?id=${event.id_event}` 
+                    : `${process.env.NEXT_PUBLIC_HY_URL}/event/ticket/${event.title_url}?mppcode=${successModal.redeemCode}`
+                  window.open(ticketUrl, '_blank')
+                  // setSuccessModal({ ...successModal, isOpen: false })
+                }}
+              >
+                <Ticket size={16} />
+                {t('getTicket')}
+                <ChevronRight size={16} />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Modal Claim */}
       {claimModal.isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+          <div className="mx-4 w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-5 border-b border-border">
+            <div className="flex items-center justify-between border-b border-border p-4 sm:p-5">
               <div className="flex items-center gap-2">
-                <Ticket size={20} className="text-primary" />
-                <h2 className="text-lg font-semibold text-foreground">{t('claimBenefit')}</h2>
+                <Ticket size={18} className="text-primary sm:size-5" />
+                <h2 className="text-base font-semibold text-foreground sm:text-lg">{t('claimBenefit')}</h2>
               </div>
               <button
                 onClick={() => setClaimModal({ ...claimModal, isOpen: false })}
-                className="p-1 rounded-lg hover:bg-muted transition-colors cursor-pointer"
+                className="cursor-pointer rounded-lg p-1 transition-colors hover:bg-muted"
               >
-                <X size={18} />
+                <X size={16} className="sm:size-4.5" />
               </button>
             </div>
 
             {/* Modal Body */}
-            <div className="p-5 space-y-4">
-              <div className="p-3 rounded-lg bg-primary/5 border border-primary/20">
-                <p className="text-xs text-muted-foreground">{t('benefit')}</p>
-                <p className="font-medium text-foreground">{claimModal.benefitName}</p>
+            <div className="space-y-3 p-4 sm:space-y-4 sm:p-5">
+              <div className="rounded-lg border border-primary/20 bg-primary/5 p-2 sm:p-3">
+                <p className="text-[10px] text-muted-foreground sm:text-xs">{t('benefit')}</p>
+                <p className="text-xs font-medium text-foreground sm:text-sm">{claimModal.benefitName}</p>
               </div>
 
               {/* Quantity Input */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">
+              <div className="space-y-1.5 sm:space-y-2">
+                <label className="text-xs font-medium text-foreground sm:text-sm">
                   {t('quantityToClaim')}
                 </label>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <Button
                     type="button"
                     variant="outline"
                     size="icon"
-                    className="h-10 w-10 bg-white"
+                    className="h-8 w-8 bg-white sm:h-10 sm:w-10"
                     onClick={() => setClaimQty(Math.max(1, claimQty - 1))}
                     disabled={claimQty <= 1}
                   >
@@ -265,19 +342,19 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                         setClaimQty(val)
                       }
                     }}
-                    className="w-20 h-10 text-center rounded-lg border border-border bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="h-8 w-16 rounded-lg border border-border bg-white text-center text-sm focus:outline-none focus:ring-2 focus:ring-primary sm:h-10 sm:w-20"
                   />
                   <Button
                     type="button"
                     variant="outline"
                     size="icon"
-                    className="h-10 w-10 bg-white"
+                    className="h-8 w-8 bg-white sm:h-10 sm:w-10"
                     onClick={() => setClaimQty(Math.min(claimModal.availableQuota, claimQty + 1))}
                     disabled={claimQty >= claimModal.availableQuota}
                   >
                     +
                   </Button>
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-[10px] text-muted-foreground sm:text-sm">
                     {t('available')}: {claimModal.availableQuota} {claimModal.availableQuota !== 1 ? t('slots') : t('slot')}
                   </span>
                 </div>
@@ -285,29 +362,29 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
 
               <input type="hidden" name="activeYear" value={claimModal.activeYear} />
 
-              <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800">
-                <p className="text-xs text-amber-700 dark:text-amber-400">
+              <div className="rounded-lg border border-amber-200 bg-amber-50 p-2 sm:p-3">
+                <p className="text-[10px] text-amber-700 sm:text-xs">
                   { claimQty > 1 ? t('warningNoteSingular', { qty: claimQty }) : t('warningNotePlural', { qty: claimQty }) }
                 </p>
               </div>
             </div>
 
             {/* Modal Footer */}
-            <div className="flex gap-3 p-5 border-t border-border">
+            <div className="flex gap-2 border-t border-border p-3 sm:gap-3 sm:p-5">
               <Button
                 variant="outline"
-                className="flex-1 cursor-pointer bg-gray-100"
+                className="flex-1 cursor-pointer bg-gray-100 text-xs md:text-sm"
                 onClick={() => setClaimModal({ ...claimModal, isOpen: false })}
               >
                 {t('cancel')}
               </Button>
               <Button
-                className="flex-1 gap-2 bg-linear-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 cursor-pointer"
+                className="flex-1 md:text-sm! text-xs!"
                 onClick={handleClaimSubmit}
                 disabled={isClaiming || claimQty < 1 || claimQty > claimModal.availableQuota}
               >
-                {isClaiming ? <Loader2 size={16} className="animate-spin" /> : <CheckCircle size={16} />}
                 {isClaiming ? t('processing') : (claimQty > 1 ? t('claimButtonPlural', { qty: claimQty }) : t('claimButtonSingular', { qty: claimQty }))}
+                {isClaiming ? <Loader2 size={14} className="animate-spin sm:size-4" /> : <CheckCircle size={14} className="sm:size-4" />}
               </Button>
             </div>
           </div>
@@ -316,90 +393,79 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
 
       {/* SECTION 1: BANNER IMAGE */}
       <div className="relative w-full bg-black">
-        <div className="relative w-full max-h-[60vh] max-[640px]:max-h-[40vh] overflow-hidden">
-          <img src={event.photoevent} alt={event.title} className="w-full h-auto object-cover opacity-90" style={{ maxHeight: '60vh', objectPosition: 'center' }} />
+        <div className="relative max-h-[40vh] w-full overflow-hidden sm:max-h-[50vh] md:max-h-[60vh]">
+          <img src={event.photoevent} alt={event.title} className="h-auto w-full object-cover opacity-90" style={{ maxHeight: '60vh', objectPosition: 'center' }} />
         </div>
 
-        <div className="absolute top-6 left-6 right-6 z-20 flex justify-between max-[640px]:top-3 max-[640px]:left-3 max-[640px]:right-3">
-          <Button variant="outline" size="sm" onClick={() => router.back()} className="gap-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-none shadow-lg md:text-xs text-[10px] max-[640px]:text-[8px] max-[640px]:h-7 max-[640px]:px-2 cursor-pointer">
-            <ArrowLeft size={16} className="max-[640px]:size-3" />
-            <span className="max-[640px]:hidden">{t('back')}</span>
+        <div className="absolute left-3 right-3 top-3 z-20 mx-auto flex max-w-6xl justify-between sm:left-4 sm:right-4 sm:top-4 md:left-6 md:right-6 md:top-6">
+          <Button variant="outline" size="sm" onClick={() => router.back()} className="btn-sm shadow-2xl">
+            <ArrowLeft size={14} className="sm:size-4" />
+            <span className="hidden sm:inline">{t('back')}</span>
           </Button>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={handleShare} disabled={isSharing} className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-none shadow-lg max-[640px]:h-7 max-[640px]:w-7 max-[640px]:p-0 cursor-pointer">
-              <Share2 size={16} className="max-[640px]:size-3" />
+          <div className="flex gap-1.5 sm:gap-2">
+            <Button variant="outline" size="sm" onClick={handleShare} disabled={isSharing} className="btn-sm shadow-2xl">
+              <Share2 size={14} className="sm:size-4" />
             </Button>
           </div>
         </div>
       </div>
 
       {/* SECTION 2: INFO PANEL */}
-      <div className="container mx-auto max-w-6xl px-4 -mt-8 md:-mt-12 relative z-10 max-[640px]:px-3 max-[640px]:-mt-6">
-        <Card className="p-6 md:p-8 border-border shadow-xl bg-card/95 backdrop-blur-sm max-[640px]:p-4">
-          <div className="flex flex-wrap items-center justify-between gap-4 capitalize">
-            <div className="flex flex-wrap items-center gap-3 max-[640px]:gap-1.5">
-              <Badge className={`${typeConfig.bgColor} ${typeConfig.color} border-0 px-3 py-1.5 md:text-xs text-[8px] max-[640px]:px-2 max-[640px]:py-0.5 max-[640px]:text-[6px]`}>
-                <EventTypeIcon size={14} className="mr-1 max-[640px]:size-2 max-[640px]:mr-0.5" />
-                {event.category}
-              </Badge>
-              <Badge className={`bg-primary/10 text-primary border-0 px-3 py-1.5 md:text-xs text-[8px] max-[640px]:px-2 max-[640px]:py-0.5 max-[640px]:text-[6px]`}>
-                <MapPin size={14} className="mr-1 max-[640px]:size-2 max-[640px]:mr-0.5" />
-                {event.city ? event.city : (event.province ? event.province : (event.location_place ? event.location_place : t('onlineEvent')))}
-              </Badge>
-              <Badge className={`${statusColor} border-0 px-3 py-1.5 md:text-xs text-[8px] gap-1.5 max-[640px]:px-2 max-[640px]:py-0.5 max-[640px]:text-[6px]`}>
-                {statusIcon}
-                {statusText}
-              </Badge>
-            </div>
-          </div>
-
-          <h1 className="text-xl md:text-3xl lg:text-4xl font-bold text-foreground mb-2 max-[640px]:text-base max-[640px]:mt-2">
-            {event.title}
-          </h1>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 max-[640px]:gap-2">
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 border border-border max-[640px]:p-2 max-[640px]:gap-2">
-              <div className="p-2 rounded-lg bg-primary/10 max-[640px]:p-1.5">
-                <CalendarDays size={18} className="text-primary max-[640px]:size-3.5" />
-              </div>
-              <div>
-                <p className="md:text-xs text-[10px] text-muted-foreground max-[640px]:text-[8px]">{t('date')}</p>
-                <p className="md:text-sm text-[12px] font-medium text-foreground max-[640px]:text-[9px]">
-                  {event.date_start_formatted || formatDate(event.date_start)}
-                  {event.date_start !== event.date_end && ` - ${event.date_end_formatted || formatDate(event.date_end)}`}
-                </p>
+      <div className="relative z-10 mx-auto -mt-6 max-w-6xl px-3 md:-mt-12">
+        <Card className="border-border bg-white/90 shadow-xl backdrop-blur-sm overflow-hidden">
+          <div className="md:px-8 px-4 space-y-2">
+            <div className="flex flex-wrap items-center justify-between gap-2 capitalize sm:gap-3">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <Badge className={`bg-primary/10 text-primary border-0 px-2 py-0.5 sm:px-2.5 md:px-3 md:py-1.5 md:text-[11px] text-[8px]`}>
+                  <EventTypeIcon size={12} className="mr-0.5 sm:mr-1 sm:size-3 md:size-3.5" />
+                  {event.category}
+                </Badge>
+                <Badge className={`bg-accent/10 text-accent border-0 px-2 py-0.5 sm:px-2.5 md:px-3 md:py-1.5 md:text-[11px] text-[8px]`}>
+                  {event.city ? <MapPin size={12} className="text-accent max-[640px]:size-3" /> : <Globe size={12} className="text-accent max-[640px]:size-3" />}
+                      {event.city?.toLocaleLowerCase() || t('onlineEvent')}
+                </Badge>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 border border-border max-[640px]:p-2 max-[640px]:gap-2">
-              <div className="p-2 rounded-lg bg-primary/10 max-[640px]:p-1.5">
-                <Timer size={18} className="text-primary max-[640px]:size-3.5" />
-              </div>
-              <div>
-                <p className="md:text-xs text-[10px] text-muted-foreground max-[640px]:text-[8px]">{t('time')}</p>
-                <p className="md:text-sm text-[12px] font-medium text-foreground max-[640px]:text-[9px]">
-                  {event.time_start === '00:00:00' && event.time_end === '00:00:00' ? t('asScheduled') : `${(event.time_start)} - ${(event.time_end)}`}
-                </p>
-                {event.time_start !== '00:00:00' && event.time_end !== '00:00:00' &&
-                  <p className="md:text-xs text-[10px] text-muted-foreground/70 max-[640px]:text-[7px]">{event.timezone}</p>
-                }
-              </div>
-            </div>
+            <h1 className="font-bold text-foreground md:text-3xl text-base md:mb-6 mb-4">
+              {event.title}
+            </h1>
 
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/30 border border-border max-[640px]:p-2 max-[640px]:gap-2">
-              <div className="p-2 rounded-lg bg-primary/10 max-[640px]:p-1.5">
-                <Building size={18} className="text-primary max-[640px]:size-3.5" />
-              </div>
-              <div>
-                <p className="md:text-xs text-[10px] text-muted-foreground max-[640px]:text-[8px]">{t('location')}</p>
-                <p className="md:text-sm text-[12px] font-medium text-foreground max-[640px]:text-[9px]">
-                  {event.location_place || t('onlineEvent')}
-                </p>
-                {event.location_address && (
-                  <p className="md:text-xs text-[10px] text-muted-foreground/70 truncate max-w-50 max-[640px]:text-[7px] max-[640px]:max-w-28">
-                    {event.location_address}
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3 lg:grid-cols-3 lg:gap-4">
+              <div className="flex items-center gap-2 rounded-xl border border-border bg-muted/30 p-2 sm:gap-2.5 sm:p-2.5 md:p-3">
+                <div className="rounded-lg bg-primary/10 p-1.5 sm:p-2">
+                  <CalendarDays size={14} className="text-primary sm:size-4 md:size-4.5" />
+                </div>
+                <div>
+                  <p className="md:text-xs text-[8px] text-muted-foreground">{t('date')}</p>
+                  <p className="md:text-sm text-[10px] font-medium text-foreground">
+                    {formatDateRange(event.date_start, event.date_end)}
                   </p>
-                )}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 rounded-xl border border-border bg-muted/30 p-2 sm:gap-2.5 sm:p-2.5 md:p-3">
+                <div className="rounded-lg bg-primary/10 p-1.5 sm:p-2">
+                  <Timer size={14} className="text-primary sm:size-4 md:size-4.5" />
+                </div>
+                <div>
+                  <p className="md:text-xs text-[8px] text-muted-foreground">{t('time')}</p>
+                  <p className="md:text-sm text-[10px] font-medium text-foreground">
+                    {event.time_start === '00:00:00' && event.time_end === '00:00:00' ? t('asScheduled') : `${(event.time_start)} - ${(event.time_end)}`}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 rounded-xl border border-border bg-muted/30 p-2 sm:gap-2.5 sm:p-2.5 md:p-3">
+                <div className="rounded-lg bg-primary/10 p-1.5 sm:p-2">
+                  <Building size={14} className="text-primary sm:size-4 md:size-4.5" />
+                </div>
+                <div>
+                  <p className="md:text-xs text-[8px] text-muted-foreground">{t('location')}</p>
+                  <p className="md:text-sm text-[10px] font-medium text-foreground">
+                    {event.city || event.location_place|| t('onlineEvent')}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -407,65 +473,71 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto max-w-6xl px-4 py-8 md:py-12 max-[640px]:px-3 max-[640px]:py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-[640px]:gap-6">
+      <div className="mx-auto max-w-6xl px-3 py-6 sm:px-4 sm:py-8 md:py-12">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
           {/* Left Column - Main Content */}
-          <div className="lg:col-span-2 space-y-8 max-[640px]:space-y-6">
-            <Card className="p-6 md:p-8 border-border max-[640px]:p-4">
+          <div className="space-y-6 lg:col-span-2 lg:space-y-8">
+            <Card className="border-border bg-white p-4 shadow-sm sm:p-5 md:p-6">
               <div
-                className="prose prose-sm dark:prose-invert max-w-none w-full prose-p:text-sm max-[640px]:prose-p:text-xs"
+                className="prose prose-sm max-w-none dark:prose-invert prose-p:text-sm sm:prose-p:text-base"
                 dangerouslySetInnerHTML={{ __html: decodedHtml || '' }}
               />
             </Card>
           </div>
 
           {/* Right Column - Sidebar */}
-          <div className="space-y-6 max-[640px]:space-y-4">
-            <Card className="p-6 border-border sticky top-24 max-[640px]:p-4">
-              <div className="text-center mb-6 max-[640px]:mb-4">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-3 max-[640px]:w-12 max-[640px]:h-12 max-[640px]:mb-2">
-                  <Ticket size={28} className="text-primary max-[640px]:size-5" />
+          <div className="space-y-4">
+            <Card className="sticky top-24 border-border bg-white p-4 shadow-sm sm:p-5 md:p-6">
+              <div className=" text-center">
+                <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 sm:mb-2.5 sm:h-14 sm:w-14 md:h-16 md:w-16">
+                  <Ticket size={20} className="text-primary sm:size-6 md:size-7" />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground max-[640px]:text-base">{t('readyToJoin')}</h3>
-                <p className="text-sm text-muted-foreground mt-1 max-[640px]:text-xs">
+                <h3 className="text-base font-semibold text-foreground sm:text-lg">{t('readyToJoin')}</h3>
+                <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
                   {hasBenefit?.hasBenefit ? t('useBenefit') : t('secureSpot')}
                 </p>
               </div>
 
               {/* Price */}
               {!hasBenefit?.hasBenefit && (
-                <div className="text-center mb-6 max-[640px]:mb-4">
+                <div className="text-center">
                   {!isFree ? (
                     <>
-                      <span className="text-3xl font-bold text-foreground max-[640px]:text-2xl">
+                      <span className="text-2xl font-bold text-foreground">
                         {new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(price)}
                       </span>
-                      <span className="text-muted-foreground max-[640px]:text-xs"> / {t('person')}</span>
+                      <span className="text-xs text-muted-foreground"> / {t('person')}</span>
                     </>
                   ) : (
-                    <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 max-[640px]:text-xl">-</span>
+                    <span className="text-xl font-bold text-primary/80">-</span>
                   )}
                 </div>
               )}
 
               {/* Benefit Info */}
               {hasBenefit?.hasBenefit && hasBenefit.benefits && (
-                <div className="mb-6 p-3 rounded-lg bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 max-[640px]:p-2 max-[640px]:mb-4">
-                  <div className="flex items-center gap-2 mb-2 max-[640px]:gap-1 max-[640px]:mb-1">
-                    <CheckCircle size={16} className="text-green-600 dark:text-green-400 max-[640px]:size-3.5" />
-                    <span className="text-sm font-semibold text-green-700 dark:text-green-400 max-[640px]:text-xs">
+                <div className="rounded-lg border border-primary-200 bg-primary/5 p-2 sm:p-3">
+                  <div className="mb-1 flex items-center gap-1.5 sm:mb-2 sm:gap-2">
+                    <CheckCircle size={14} className="text-primary sm:size-4" />
+                    <span className="text-xs font-semibold text-primary sm:text-sm">
                       {t('benefitAvailable')}
                     </span>
                   </div>
-                  <p className="text-xs text-green-600 dark:text-green-400 mb-2 max-[640px]:text-[10px]">
+                  <p className="mb-1.5 text-[10px] text-muted-foreground sm:mb-2 sm:text-xs">
                     {t('useBenefitToClaim')}
                   </p>
                   {hasBenefit.benefits.map((b, idx) => {
                     const remainingQuota = b.benefit.active_quota.available ?? 0
+                    const cleanName = b.benefit.name.replace(/^\d+\.\s*/, '')
                     return (
-                      <div key={idx} className="text-xs text-green-600 dark:text-green-400 max-[640px]:text-[10px]">
-                        <span className="font-medium">✨ {b.benefit.name}</span>
-                        <span className="ml-2">({remainingQuota} {remainingQuota !== 1 ? t('slotsLeft') : t('slotLeft')})</span>
+                      <div key={idx} className="flex items-start gap-1.5 text-[10px]  sm:gap-2 sm:text-xs">
+                        <Dot size={16} className="mt-0.5 shrink-0 text-primary sm:mt-0 sm:size-3" />
+                        <div className="min-w-0 flex-1">
+                          <span className="font-medium">{cleanName}</span>
+                          <span className="ml-1.5 sm:ml-2 text-accent">
+                            ({remainingQuota} {remainingQuota !== 1 ? t('slotsLeft') : t('slotLeft')})
+                          </span>
+                        </div>
                       </div>
                     )
                   })}
@@ -473,45 +545,35 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
               )}
 
               {/* Event Details */}
-              <div className="space-y-3 mb-6 max-[640px]:space-y-2 max-[640px]:mb-4">
-                <div className="flex items-center gap-3 text-sm max-[640px:gap-2 max-[640px]:text-xs">
-                  <Calendar size={16} className="text-primary shrink-0 max-[640px]:size-3.5" />
-                  <span className="text-muted-foreground">
-                    {formatDate(event.date_start)}
+              <div className="space-y-3 border-t border-border pt-3">
+                <div className="flex items-center gap-2 text-xs sm:gap-2.5">
+                  <Calendar size={14} className="shrink-0 text-primary sm:size-4" />
+                  <span className="text-muted-foreground text-xs">
+                    {formatDateRange(event.date_start, event.date_start)}
                   </span>
                 </div>
-                <div className="flex items-center gap-3 text-sm max-[640px:gap-2 max-[640px]:text-xs">
-                  <MapPin size={16} className="text-primary shrink-0 max-[640px]:size-3.5" />
+                <div className="flex items-center gap-2 text-xs sm:gap-2.5">
+                  <MapPin size={14} className="shrink-0 text-primary sm:size-4" />
                   <div>
-                    <span className="text-muted-foreground truncate block">
-                      {event.location_place || t('onlineEvent')}
+                    <span className="block truncate text-muted-foreground text-xs">
+                      {event.location_place || event.location_address || t('onlineEvent')}
                     </span>
-                    {event.location_address && (
-                      <p className="text-xs text-muted-foreground/70 truncate max-w-50 max-[640px]:text-[9px] max-[640px]:max-w-32">
-                        {event.location_address}
-                      </p>
-                    )}
                   </div>
                 </div>
               </div>
 
               {/* Action Button */}
               {hasBenefit?.hasBenefit && hasBenefit.benefits ? (
-                <div className="space-y-3 max-[640px]:space-y-2">
+                <div className="space-y-3 border-b border-border pb-2">
                   <Select
                     value={selectedBenefitId || 'none'}
                     onValueChange={(value) => setSelectedBenefitId(value === 'none' ? '' : value)}
                   >
-                    <SelectTrigger className="w-full p-2 rounded-lg border border-border bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary max-[640px]:text-xs max-[640px]:p-1.5">
+                    <SelectTrigger className="w-full rounded-lg border border-border bg-white p-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-primary sm:p-2">
                       <SelectValue placeholder={t('selectBenefit')} />
                     </SelectTrigger>
-                    <SelectContent 
-                      className="rounded-lg border border-border bg-white shadow-lg"
-                      style={{ width: 'auto', minWidth: '200px', maxWidth: '400px' }}
-                      // atau pake className:
-                      // className="rounded-lg border border-border bg-white shadow-lg w-auto min-w-[200px] max-w-[400px]"
-                    >
-                      <SelectItem value="none" className="cursor-pointer hover:bg-primary/10">
+                    <SelectContent className="rounded-lg border border-border bg-white shadow-lg">
+                      <SelectItem value="none" className="cursor-pointer text-xs hover:bg-primary/10">
                         {t('selectBenefit')}
                       </SelectItem>
                       {hasBenefit.benefits.map((b, idx) => {
@@ -520,7 +582,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                           <SelectItem 
                             key={idx} 
                             value={b.benefit.id}
-                            className="cursor-pointer hover:bg-primary/10"
+                            className="cursor-pointer text-xs hover:bg-primary/10"
                           >
                             {b.benefit.name} ({remainingQuota} {remainingQuota !== 1 ? t('slotsLeft') : t('slotLeft')})
                           </SelectItem>
@@ -529,17 +591,15 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                     </SelectContent>
                   </Select>
                   <Button
-                    size="lg"
-                    className="w-full bg-linear-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 gap-2 max-[640px:text-xs max-[640px]:py-2 max-[640px]:h-auto cursor-pointer"
+                    className='w-full md:btn-primary md:text-sm! text-xs!'
                     disabled={status === 'ended' || event.sales_active !== 'active' || !selectedBenefitId || maxQty === 0}
                     onClick={handleOpenClaimModal}
                   >
-                    <CheckCircle size={16} className="max-[640px]:size-3.5" />
                     {t('claimWithBenefit')}
-                    <ChevronRight size={16} className="max-[640px]:size-3.5" />
+                    <ChevronRight size={14} className="sm:size-4" />
                   </Button>
                   {selectedBenefitId && maxQty === 0 && (
-                    <p className="text-center text-xs text-red-500 max-[640px]:text-[10px]">
+                    <p className="text-center text-[10px] text-destructive sm:text-xs">
                       {t('noSlotsAvailable')}
                     </p>
                   )}
@@ -547,7 +607,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
               ) : (
                 <Button
                   size="lg"
-                  className="w-full bg-linear-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary gap-2 max-[640px:text-xs max-[640px]:py-2 max-[640px]:h-auto"
+                  className="w-full gap-1.5 bg-linear-to-r from-primary to-primary/80 text-xs hover:from-primary/90 hover:to-primary/70 sm:gap-2 sm:text-sm cursor-pointer"
                   disabled={status === 'ended' || event.sales_active !== 'active'}
                   onClick={() => {
                     if (event.order_link) {
@@ -561,30 +621,30 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                       ? t('registrationClosed')
                       : t('registerNow')
                   }
-                  <ChevronRight size={16} className="max-[640px]:size-3.5" />
+                  <ChevronRight size={14} className="sm:size-4" />
                 </Button>
               )}
 
               {/* Contact Info */}
-              <div className="mt-4 pt-4 border-t border-border max-[640px]:mt-3 max-[640px]:pt-3">
-                <p className="text-center text-xs text-muted-foreground mb-3 max-[640px]:text-[10px] max-[640px]:mb-2">
+              <div>
+                <p className="text-center text-[11px] text-muted-foreground">
                   {t('haveQuestions')}
                 </p>
-                <div className="flex flex-col gap-2 max-[640px]:gap-1.5">
+                <div className="flex flex-col">
                   <a href="mailto:contact@mentarigroups.com"
-                    className="flex items-center justify-center gap-2 p-2 rounded-lg bg-muted/50 hover:bg-primary/10 transition-colors group max-[640px]:p-1.5">
-                    <Mail size={14} className="text-primary group-hover:scale-110 transition-transform max-[640px]:size-3" />
-                    <span className="text-sm text-foreground group-hover:text-primary transition-colors max-[640px]:text-[10px]">
+                    className="group flex items-center justify-center gap-1.5 rounded-lg bg-muted/50 p-1.5 transition-colors hover:bg-primary/10">
+                    <Mail size={12} className="text-primary transition-transform group-hover:scale-110 sm:size-3.5" />
+                    <span className="text-[10px] text-primary/70 transition-colors group-hover:text-primary sm:text-xs">
                       contact@mentarigroups.com
                     </span>
                   </a>
-                  <a href="https://wa.me/628558881948" target="_blank" rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 p-2 rounded-lg bg-muted/50 hover:bg-green-50 dark:hover:bg-green-950/30 transition-colors group max-[640px]:p-1.5">
-                    <MessageCircle size={14} className="text-green-500 group-hover:scale-110 transition-transform max-[640px]:size-3" />
-                    <span className="text-sm text-foreground group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors max-[640px]:text-[10px]">
+                  {/* <a href="https://wa.me/628558881948" target="_blank" rel="noopener noreferrer"
+                    className="group flex items-center justify-center gap-1.5 rounded-lg bg-muted/50 p-1.5 transition-colors hover:bg-primary/10">
+                    <MessageCircle size={12} className="text-primary transition-transform group-hover:scale-110 sm:size-3.5" />
+                    <span className="text-[10px] text-foreground transition-colors group-hover:text-primary sm:text-xs">
                       +62 855-8881-948
                     </span>
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </Card>

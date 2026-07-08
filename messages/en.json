@@ -11,6 +11,11 @@
     "heroTitleHighlight": "Easy in One Platform",
     "heroDescription": "Access all your partnership benefits, register for exclusive events, and track your partnership progress all in this dashboard.",
     "viewEvents": "Find Events",
+    "eventLabel": "TRAINING EVENTS",
+    "ctaTitle": "Interested in this event?",
+    "ctaDescription": "Register your school now and take advantage of the opportunity to grow together with experts.",
+    "eventTitle1": "Events & Trainings",
+    "eventTitle2": "Happening Now",
     "cardTitle": "Mentari Partner Dashboard",
     "cardTotalBenefit": "Total Benefits",
     "cardProgramsAvailable": "Programs Available",
@@ -25,7 +30,7 @@
     "browseEvents": "Browse Events",
     "featuredEvents": "Featured Events",
     "featuredEventsDesc": "Events you might be interested in",
-    "viewAllEvents": "View All Events",
+    "viewAllEvents": "VIEW ALL EVENTS",
     "quickActions": "Quick Actions",
     "quickActionsDesc": "Shortcuts to help you get things done",
     "claimBenefits": "Claim Benefits",
@@ -36,21 +41,6 @@
     "accountSettingsDesc": "Manage your profile",
     "helpTitle": "Need Help?",
     "helpDescription": "Get the most out of your partnership benefits",
-     "agreementRenewal": {
-      "title": "Agreement Renewal",
-      "subtitle": "Mentari Group Partnership Agreement",
-      "active": "Active",
-      "endsOn": "ends on",
-      "description": "The Partnership Agreement with Mentari Group will end on 11 Jun 2029. To continue the partnership, we provide an automatic renewal option. Press the \"Automatic Renewal\" button in Mentari Premium Partner.",
-      "consultantHelp": "If you have questions or need further explanation,",
-      "consultantAvailable": "our Education Consultant is ready to help and can be contacted",
-      "gratitude": "We hope that the partnership established so far can continue. Thank you for your trust and support.",
-      "autoRenew": "Automatic Renewal",
-      "contactConsultant": "Contact Consultant",
-      "processing": "Processing...",
-      "renewed": "Renewed Successfully!",
-      "successMessage": "Agreement has been automatically renewed. We will send confirmation to your email."
-    },
     "tour": {
       "welcome": {
         "title": "🌟 Welcome to Mentari Partner!",
@@ -97,6 +87,17 @@
         "content": "Find guides, FAQs, or contact support team if you have questions."
       }
     }
+  },
+  "hero": {
+    "welcome": "WELCOME",
+    "userName": "user name here",
+    "title1": "Manage Benefits,",
+    "title2": "Join Trainings,",
+    "title3": "Enhance Potential.",
+    "description": "An exclusive platform for schools to access various benefits, find the best training, and participate in relevant events for educational advancement.",
+    "ctaPrimary": "VIEW BENEFITS",
+    "ctaSecondary": "HOW IT WORKS",
+    "imageAlt": "Hero Illustration"
   },
   "Help": {
     "title": "Need Help?",
@@ -155,6 +156,9 @@
     "forEducators": "for Indonesian educators",
     "allRightsReserved": "All rights reserved."
   },
+  "Login": {
+    "allRightsReserved": "All rights reserved."
+  },
   "Event": {
     "starts": "Starts",
     "endsAt": "Ends at",
@@ -164,14 +168,16 @@
     "checkDetails": "Check event details for more information."
   },
   "Events": {
-    "pageTitle": "Events & Competitions",
-    "pageDescription": "Explore and register for upcoming events, competitions, and training programs",
+    "pageTitle": "Training & Events",
+    "pageDescription": "Find exciting training, competitions, and events to enhance your educational potential.",
     "upcomingBadge": "Upcoming Events",
     "filters": "Filters",
     "category": "Category",
+    "activity": "Activity",
     "subject": "Subject",
     "city": "City",
     "allCategories": "All Categories",
+    "allActivities": "All Activities",
     "allSubjects": "All Subjects",
     "allCities": "All Cities",
     "resetAll": "Reset all filters",
@@ -186,19 +192,21 @@
     "active": "Active:",
     "clearAll": "Clear all",
     "filter": "Filter",
-    "searchPlaceholder": "Search events..."
+    "searchPlaceholder": "Search training and events..."
   },
   "Subjects": {
     "english": "English",
     "mathematics": "Mathematics",
     "science": "Science",
     "indonesian": "Bahasa Indonesia",
-    "mandarin": "Mandarin"
+    "mandarin": "Mandarin",
+    "characterBuilding": "Character Building"
   },
   "common": {
     "schoolAccount": "School Account",
     "logout": "Logout",
-    "language": "Language"
+    "language": "Language",
+    "login": "Login"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -206,8 +214,8 @@
     "events": "Events",
     "settings": "Settings",
     "documents": "Documents",
-    "profile": "Profile",
-    "videoTutorial": "Video Tutorial",
+    "overview": "Overview",
+    "helpCenter": "Help Center",
     "about": "About",
     "faq": "FAQ"
   },
@@ -255,10 +263,18 @@
     "claimFailed": "Failed to claim benefit",
     "claimError": "Error claiming benefit. Please try again.",
     "claimForEvent": "Claim for event:",
-    "linkCopied": "Link copied to clipboard!"
+    "linkCopied": "Link copied to clipboard!",
+    "claimSuccessDesc": "Benefit successfully claimed! Save the following redeem code.",
+    "eventTitle": "Event",
+    "codeCopied": "Code copied!",
+    "successNote": "This redeem code will be used to access the event. Do not share it with others.",
+    "goToBenefits": "Go to Benefits",
+    "getTicket": "Get Ticket",
+    "close": "Close"
   },
   "Benefits": {
-    "title": "All Benefits",
+    "title1": "All",
+    "title2": "Benefits",
     "description": "Available benefits from your partnership packages. Click on any claimable benefit to view details.",
     "failedToLoad": "Failed to load benefits",
     "filterByPK": "Filter by PK:",
@@ -282,7 +298,48 @@
     "subject": "Subject",
     "slots": "slots",
     "noBenefitsFound": "No benefits found matching your search.",
-    "noBenefitsAvailable": "No benefits available."
+    "noBenefitsAvailable": "No benefits available.",
+    "clearFilters": "Clear Filters",
+    "show": "Show",
+    "ofPKs": "of {total} programs",
+    "previous": "Previous",
+    "next": "Next",
+    "showingPKRange": "Showing {start} - {end} of {total} programs ({benefits} benefits)",
+    "searchResults": "{count} benefits found",
+    "showingPKs": "Showing {pkCount} programs with {benefitCount} benefits",
+    "benefitName": "Benefit Name",
+    "type": "Type",
+    "subBenefit": "Sub Benefit",
+    "quota": "Quota",
+    "detail": "Detail",
+    "view": "View",
+    "viewDetail": "View Detail",
+    "benefits": "Benefits",
+    "ctaTitle": "Can't find the benefit you're looking for?",
+    "ctaDescription": "Contact our team for more information about benefits and how to claim.",
+    "ctaButton": "Contact Us",
+    "reportLabel": "Progress Report",
+    "reportTitle": "Benefit Summary Report",
+    "reportDescription": "Select Program to View Benefit Report",
+    "programList": "Program List",
+    "programs": "Programs",
+    "selectProgram": "Select Program",
+    "quotaUsage": "Quota Usage",
+    "used": "Used",
+    "from": "from",
+    "totalQuota": "Total Quota",
+    "remaining": "Remaining",
+    "percentage": "Percentage",
+    "noProgramsAvailable": "No program data available",
+    "noBenefitsData": "No benefits data available",
+    "selectAnotherProgram": "Please select another program",
+    "showingBenefitsFrom": "Showing {count} benefits from {program}",
+    "available": "Available",
+    "partial": "Partial",
+    "full": "Full",
+    "ctaTitle2": "Having difficulties?",
+    "ctaDescription2": "Access our help center for support.",
+    "ctaButton2": "Contact Us"
   },
   "BenefitDetailPage": {
     "benefitNotFound": "Benefit Not Found",
@@ -292,10 +349,10 @@
     "goHome": "Go Home",
     "somethingWentWrong": "Something Went Wrong",
     "errorDesc": "We encountered an error while loading this benefit. Please try again later.",
-    "backToBenefits": "Back to Benefits"
+    "backToBenefits": "Back"
   },
   "BenefitDetail": {
-    "backToBenefits": "Back to Benefits",
+    "backToBenefits": "Back",
     "expired": "Expired",
     "availableSlots": "Available Slots",
     "validUntil": "Valid Until",
@@ -309,6 +366,8 @@
     "benefitUsed": "Benefit Used",
     "slots": "slots",
     "slot": "slot",
+    "units": "units",
+    "unit": "unit",
     "used": "used",
     "unused": "unused",
     "moveSlots": "Move {count} Slots",
@@ -450,7 +509,7 @@
     "failedToFetchUser": "Failed to fetch user data"
   },
   "Programs": {
-    "title": "Profiles",
+    "title": "Overview",
     "description": "List of Partnership Agreement",
     "active": "Active",
     "expired": "Expired",
@@ -461,7 +520,36 @@
     "failedToLoad": "Failed to load data",
     "noData": "No Profiles found",
     "noPIC": "No PIC assigned",
-    "noPICDetail": "No PIC details available for this partnership"
+    "noPICDetail": "No PIC details available for this partnership",
+    "programsCount": "Showing {count} of {total} Program",
+    "programsCount_plural": "{count} Programs",
+    "table": {
+      "program": "Program",
+      "pkNumber": "PK No.",
+      "period": "Period",
+      "pic": "PIC",
+      "status": "Status",
+      "action": "Action",
+      "contact": "Contact"
+    },
+    "renew": "Renew",
+    "detail": "Detail",
+    "renewal": {
+      "title": "List of Exclusive Partnership",
+      "program": "Program",
+      "endsOn": "Ends on",
+      "description": "Renew your partnership program to continue enjoying exclusive benefits.",
+      "benefit": "By renewing, you will retain access to all available benefits.",
+      "success": "Renewal Program Submission Successful!",
+      "cancel": "Cancel",
+      "processing": "Processing...",
+      "done": "Done!",
+      "renew": "Renew Now",
+      "successMessage": "Renewal Program Submission Successful!",
+      "consultantHelp": "If you have questions or need further explanation,",
+      "consultantAvailable": "our Education Consultant is ready to help and can be contacted",
+      "gratitude": "We hope the partnership has been fruitful so far. Thank you for your trust and support."
+    }
   },
   "OnboardingTour": {
     "back": "Back",
@@ -506,15 +594,32 @@
     }
   },
   "Tutorial": {
-    "title": "Help Center",
-    "description": "Complete guide to using the Mentari Partner platform",
-    "noVideos": "No tutorial videos available for this category yet"
+    "title1": "Help",
+    "title2": "Center",
+    "description": "Complete guide to using the Mentari Partner platform.",
+    "stillNeedHelp": "Still need help?",
+    "helpDescription": "Contact our team for more information.",
+    "contactUs": "Contact Us",
+    "allTutorials": "All Tutorials",
+    "stillHavingTrouble": "Still having trouble?",
+    "troubleDescription": "Our team is ready to help you use the Mentari Partner platform.",
+    "videoTutorials": "Video Tutorials",
+    "frequentlyAskedQuestions": "Frequently Asked Questions (FAQ)",
+    "all": "All",
+    "noFaqFound": "No questions found for this category",
+    "stillNeedHelpTitle": "Still need help?",
+    "stillNeedHelpDesc": "Our support team is ready to help you 24/7. Contact us via email or phone.",
+    "showingFaqs": "Showing {count} of {total} questions",
+    "searchFaq": "Search questions...",
+    "showMore": "Show More",
+    "showLess": "Show Less",
+    "tryDifferentCategory": "Try selecting another category"
   },
   "About": {
     "title": "About Mentari Partner",
     "description": "Partnership platform empowering schools with premium benefits, training, and educational resources.",
     "badge": "Mentari Partner",
-    "heroTitle": "About Mentari Partner",
+    "heroTitle": "About",
     "heroHighlight": "Mentari Partner",
     "heroDescription": "Partnership platform empowering schools with premium benefits, training, and educational resources to support the advancement of Indonesian education.",
     "missionTitle": "Our Mission",
@@ -579,21 +684,70 @@
     "sendResetLink": "Send Reset Link",
     "sending": "Sending...",
     "backToLogin": "Back to Login",
-    "secure": "Secure & Encrypted",
+    "secure": "Secure",
     "trusted": "Trusted",
-    "emailRequired": "Email is required",
-    "successMessage": "Password reset link has been sent to your email",
-    "errorMessage": "Failed to send reset link. Please try again.",
     "checkEmail": "Check Your Email",
-    "checkEmailDescription": "We've sent a password reset link to your email. The link will expire in 24 hours.",
+    "checkEmailDescription": "We have sent a password reset link to your email.",
     "sentTo": "Sent to",
     "resendHint": "Didn't receive the email?",
-    "tryAgain": "Try again"
+    "tryAgain": "Try again",
+    "emailRequired": "Email is required",
+    "successMessage": "Password reset link has been sent to your email",
+    "errorMessage": "Something went wrong. Please try again."
   },
   "EventNotFound": {
     "title": "Event Not Found",
     "description": "Sorry, the event you're looking for is not available or has been removed. Please check the link or explore other events.",
     "backToEvents": "Back to Events",
     "goToDashboard": "Go to Dashboard"
+  },
+  "SetupPassword": {
+    "loading": "Loading...",
+    "validating": "Validating your link...",
+    "title": "Set Up Your Password",
+    "description": "Create a strong password for your account",
+    "newPassword": "New Password",
+    "newPasswordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "setPassword": "Set Password",
+    "settingUp": "Setting up...",
+    "passwordsMatch": "Passwords match",
+    "terms": "By setting a password, you agree to our",
+    "termsLink": "Terms of Service",
+    "strength": {
+      "label": "Password strength:",
+      "enter": "Enter a password",
+      "weak": "Weak password",
+      "medium": "Medium password",
+      "strong": "Strong password"
+    },
+    "requirements": {
+      "length": "At least 8 characters",
+      "uppercase": "At least 1 uppercase letter",
+      "lowercase": "At least 1 lowercase letter",
+      "number": "At least 1 number",
+      "special": "At least 1 special character"
+    },
+    "invalid": {
+      "title": "Invalid Link",
+      "description": "This password setup link is invalid or has expired.",
+      "reasons": "Possible reasons:\n• The link has already been used\n• The link expired (valid for 24 hours)\n• The link was tampered with",
+      "goToLogin": "Go to Login"
+    },
+    "success": {
+      "title": "Password Set!",
+      "description": "Your password has been successfully set.",
+      "redirecting": "Redirecting to login page..."
+    },
+    "errors": {
+      "noToken": "No token provided. Please check your invitation link.",
+      "invalidToken": "Invalid or expired token",
+      "validationFailed": "Failed to validate token. Please try again.",
+      "weakPassword": "Please meet all password requirements below",
+      "passwordMismatch": "Passwords do not match",
+      "general": "Something went wrong. Please try again.",
+      "network": "Network error. Please try again."
+    }
   }
 }

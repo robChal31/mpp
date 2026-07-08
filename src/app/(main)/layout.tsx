@@ -4,7 +4,6 @@
 import React from "react"
 import { Navbar } from '@/components/navbar'
 import Footer from "@/components/footer"
-import BackgroundOrnament from "@/components/background-ornament"
 
 export default async function DashboardLayout({
   children,
@@ -13,14 +12,12 @@ export default async function DashboardLayout({
 }) {
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#FCF6E4]">
+    <div className="min-h-screen relative overflow-hidden bg-[#ffffff]">
       
-      <BackgroundOrnament />
+      {/* <BackgroundOrnament /> */}
       <Navbar />
       <main className="flex-1 relative z-10">
-        <div className="p-4 lg:p-8 max-w-7xl mx-auto">
-          {children}
-        </div>
+        {children}
       </main>
 
       <Footer />

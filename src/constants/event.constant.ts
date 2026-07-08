@@ -8,14 +8,15 @@ import {
   Ticket,
   CalendarDays,
   type LucideIcon,
-  PartyPopper
+  PartyPopper,
+  FlaskConical
 } from 'lucide-react'
 
 export const EVENT_TYPES: EventTypeConfig[] = [
   { 
     type: 'workshop', 
     label: 'Workshop', 
-    icon: Users, 
+    icon: FlaskConical, 
     color: 'text-emerald-500', 
     bgColor: 'bg-emerald-50 dark:bg-emerald-950/30',
     borderColor: 'border-emerald-200 dark:border-emerald-800',

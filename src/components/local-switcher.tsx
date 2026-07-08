@@ -42,11 +42,11 @@ export default function LocalSwitcher({ changeLocalAction }: LocalSwitcherProps)
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 disabled={isPending}
-                className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-muted/50 transition-all duration-200 text-sm text-gray-200 font-medium cursor-pointer"
+                className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-muted/50 transition-all duration-200 text-sm text-gray-500 font-medium cursor-pointer"
             >
                 <CountryFlag countryCode={currentLang.countryCode} svg style={{ width: '1.2em', height: '1.2em' }} />
                 <span className="hidden sm:inline">{currentLang.label}</span>
-                <ChevronDown size={12} className={`text-gray-200 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown size={12} className={`text-gray-500 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {isOpen && (

@@ -56,129 +56,146 @@ export default function AboutPage() {
   ]
 
   const offers = [
-    { icon: BookOpen, title: t('offer.benefits.title'), description: t('offer.benefits.description'), color: 'text-[#3279FF]', bg: 'bg-[#3279FF]/10' },
-    { icon: Users, title: t('offer.training.title'), description: t('offer.training.description'), color: 'text-[#FFB347]', bg: 'bg-[#FFB347]/10' },
-    { icon: Calendar, title: t('offer.events.title'), description: t('offer.events.description'), color: 'text-emerald-600', bg: 'bg-emerald-100' },
-    { icon: Shield, title: t('offer.certification.title'), description: t('offer.certification.description'), color: 'text-purple-600', bg: 'bg-purple-100' },
-    { icon: Sparkles, title: t('offer.competition.title'), description: t('offer.competition.description'), color: 'text-amber-600', bg: 'bg-amber-100' },
+    { icon: BookOpen, title: t('offer.benefits.title'), description: t('offer.benefits.description'), color: 'text-primary', bg: 'bg-primary/10' },
+    { icon: Users, title: t('offer.training.title'), description: t('offer.training.description'), color: 'text-secondary', bg: 'bg-secondary/10' },
+    { icon: Calendar, title: t('offer.events.title'), description: t('offer.events.description'), color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { icon: Shield, title: t('offer.certification.title'), description: t('offer.certification.description'), color: 'text-purple-600', bg: 'bg-purple-50' },
+    { icon: Sparkles, title: t('offer.competition.title'), description: t('offer.competition.description'), color: 'text-amber-600', bg: 'bg-amber-50' },
   ]
 
   return (
-    <div className="min-h-screen bg-[#FCF6E4]">
+    <div className="min-h-screen bg-background">
       
-      {/* Hero Section */}
-      <div className="relative overflow-hidden bg-linear-to-br from-[#3279FF] to-[#5e93ff] py-20">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(white 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-        <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-2xl" />
-        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-white/10 rounded-full blur-2xl" />
-        
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center text-white">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 mb-6">
-            <GraduationCap size={16} className="text-white" />
-            <span className="text-sm font-medium">{t('badge')}</span>
+      {/* Hero Section - Full height image with overlay text */}
+      <div className="relative bg-[#FEFDFC] w-full overflow-hidden">
+        {/* Background Image - Full height */}
+        <div 
+          className="absolute top-0  right-0 w-4/5 h-full bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('/illustrations/school.png')`,
+          }}
+        >
+          {/* Overlay gelap untuk text readability */}
+          <div className="absolute inset-0 bg-linear-to-r from-white/90 via-white/70 to-white/40 lg:from-white/80 lg:via-white/50 lg:to-transparent"></div>
+        </div>
+
+        {/* Content - Text di atas image */}
+        <div className="relative z-10 w-full flex items-center">
+          <div className="max-w-6xl mx-auto px-4 w-full py-12 md:py-16">
+            <div className="max-w-2xl">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/1 border border-primary/30 md:mb-2 mb-4">
+                <GraduationCap size={16} className="text-primary" />
+                <span className="text-xs sm:text-sm font-medium text-primary">{t('badge')}</span>
+              </div>
+              
+              {/* Title */}
+              <h1 className="text-3xl md:text-6xl font-bold text-foreground mb-3 sm:mb-4">
+                {t('heroTitle')} <br className="hidden sm:block" />
+                <span className="text-primary">{t('heroHighlight')}</span>
+              </h1>
+              
+              {/* Description */}
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+                {t('heroDescription')}
+              </p>
+            </div>
           </div>
-          
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            {t('heroTitle')} <span className="text-[#FFB347]">{t('heroHighlight')}</span>
-          </h1>
-          
-          <p className="text-white/80 text-lg max-w-2xl mx-auto leading-relaxed">
-            {t('heroDescription')}
-          </p>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-5xl mx-auto px-4 py-16">
+      <div className="max-w-5xl mx-auto md:px-8 md:pt-12 px-4">
         
         {/* Mission & Vision */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 rounded-xl bg-[#3279FF]/10 flex items-center justify-center mb-4">
-              <Target size={24} className="text-[#3279FF]" />
+        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-12 sm:mb-16">
+          <div className="bg-white rounded-2xl p-5 sm:p-6 md:p-8 shadow-sm border border-border hover:shadow-md transition-shadow">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3 sm:mb-4">
+              <Target size={20} className="text-primary sm:size-6" />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-3">{t('missionTitle')}</h2>
-            <p className="text-gray-600 leading-relaxed">{t('missionDescription')}</p>
+            <h2 className="text-lg sm:text-xl font-bold text-foreground mb-2 sm:mb-3">{t('missionTitle')}</h2>
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{t('missionDescription')}</p>
           </div>
           
-          <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-            <div className="w-12 h-12 rounded-xl bg-[#FFB347]/10 flex items-center justify-center mb-4">
-              <Globe size={24} className="text-[#FFB347]" />
+          <div className="bg-white rounded-2xl p-5 sm:p-6 md:p-8 shadow-sm border border-border hover:shadow-md transition-shadow">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-3 sm:mb-4">
+              <Globe size={20} className="text-secondary sm:size-6" />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-3">{t('visionTitle')}</h2>
-            <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+            <h2 className="text-lg sm:text-xl font-bold text-foreground mb-2 sm:mb-3">{t('visionTitle')}</h2>
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed whitespace-pre-line">
                 {t('visionDescription')}
             </p>
           </div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-12 sm:mb-16">
           {stats.map((stat, index) => {
             const Icon = stat.icon
             return (
-              <div key={index} className="bg-white rounded-xl p-6 text-center border border-gray-100 shadow-sm">
-                <div className="w-10 h-10 mx-auto rounded-lg bg-[#3279FF]/10 flex items-center justify-center mb-3">
-                  <Icon size={20} className="text-[#3279FF]" />
+              <div key={index} className="bg-white rounded-xl p-4 sm:p-6 text-center border border-border shadow-sm">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 mx-auto rounded-lg bg-primary/10 flex items-center justify-center mb-2 sm:mb-3">
+                  <Icon size={16} className="text-primary sm:size-5" />
                 </div>
-                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                <p className="text-sm text-gray-500">{stat.label}</p>
+                <p className="text-xl sm:text-2xl font-bold text-foreground">{stat.value}</p>
+                <p className="text-[10px] sm:text-sm text-muted-foreground">{stat.label}</p>
               </div>
             )
           })}
         </div>
 
         {/* Values */}
-        <div className="mb-16">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl font-bold text-gray-900">{t('valuesTitle')}</h2>
-            <div className="w-16 h-1 bg-linear-to-r from-[#3279FF] to-[#FFB347] rounded-full mx-auto mt-2" />
-            <p className="text-gray-500 text-sm mt-3 max-w-md mx-auto">{t('valuesSubtitle')}</p>
+        <div className="mb-12 sm:mb-16">
+          <div className="text-center mb-8 sm:mb-10">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">{t('valuesTitle')}</h2>
+            <div className="w-22 h-1 bg-linear-to-r from-primary to-secondary rounded-full mx-auto mt-2" />
+            <p className="text-sm text-muted-foreground mt-2 sm:mt-3 max-w-md mx-auto">{t('valuesSubtitle')}</p>
           </div>
           
-          <div className="grid md:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {values.map((value, index) => {
               const Icon = value.icon
               return (
-                <div key={index} className="bg-white rounded-xl p-6 text-center border border-gray-100 hover:border-[#3279FF]/30 hover:shadow-md transition-all">
-                  <div className="w-12 h-12 mx-auto rounded-full bg-linear-to-br from-[#3279FF]/10 to-[#FFB347]/10 flex items-center justify-center mb-4">
-                    <Icon size={22} className="text-[#3279FF]" />
+                <div key={index} className="bg-white rounded-xl p-4 sm:p-6 text-center border border-border hover:border-primary/30 hover:shadow-md transition-all">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto rounded-full bg-linear-to-br from-primary/10 to-secondary/10 flex items-center justify-center mb-3 sm:mb-4">
+                    <Icon size={18} className="text-primary sm:size-5.5" />
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-2">{value.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{value.description}</p>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-
-        {/* What We Offer */}
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 rounded-xl bg-[#3279FF]/10">
-              <Gift size={22} className="text-[#3279FF]" />
-            </div>
-            <h2 className="text-xl font-bold text-gray-900">{t('offerTitle')}</h2>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-5">
-            {offers.map((offer, index) => {
-              const Icon = offer.icon
-              return (
-                <div key={index} className="flex items-start gap-3">
-                  <div className={`w-8 h-8 rounded-full ${offer.bg} flex items-center justify-center shrink-0 mt-0.5`}>
-                    <Icon size={14} className={offer.color} />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-800">{offer.title}</h4>
-                    <p className="text-sm text-gray-500">{offer.description}</p>
-                  </div>
+                  <h3 className="text-sm sm:text-base font-semibold text-foreground mb-1.5 sm:mb-2">{value.title}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{value.description}</p>
                 </div>
               )
             })}
           </div>
         </div>
         
+      </div>
+
+      <div className="bg-primary/10 md:px-8 md:py-12 p-4">
+         <div className="max-w-6xl mx-auto">
+          <div className="bg-white rounded-2xl p-5 sm:p-6 md:p-8 shadow-sm border border-border">
+            <div className="flex flex-col items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground">{t('offerTitle')}</h2>
+              <div className="w-22 h-1 bg-linear-to-r from-primary to-secondary rounded-full mx-auto" />
+            </div>
+            
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+              {offers.map((offer, index) => {
+                const Icon = offer.icon
+                return (
+                  <div key={index} className="flex items-start gap-2.5 sm:gap-3">
+                    <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full ${offer.bg} flex items-center justify-center shrink-0 mt-0.5`}>
+                      <Icon size={12} className={offer.color + ' sm:size-3.5'} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm sm:text-base font-semibold text-foreground">{offer.title}</h4>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{offer.description}</p>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
