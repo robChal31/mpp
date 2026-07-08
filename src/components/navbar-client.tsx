@@ -79,18 +79,15 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r from-primary/60 via-primary to-primary/60" />
       
       <div className={`max-w-6xl mx-auto ${isOpen ? 'fixed inset-x-0 top-0 bg-white border-b border-primary' : ''}`}>
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-18">
           {/* Logo and Brand */}
-          <div className="flex items-center gap-8">
+          <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2 group shrink-0">
-              <div className="relative w-32 h-32 transition-transform duration-300 group-hover:scale-105">
-                <Image
+              <div className="relative w-32 h-18 transition-transform duration-300 group-hover:scale-105">
+                <img
                   src="/compro.png"
                   alt="Mentari Partner Logo"
-                  fill
-                  sizes=''
-                  className="object-contain"
-                  priority
+                  className="object-contain w-full h-full"
                 />
               </div>
             </Link>

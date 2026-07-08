@@ -52,7 +52,7 @@ export default function LoginPage() {
         />
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-linear-to-b from-primary/50 via-primary/30 to-primary/5" />
+        <div className="absolute inset-0 bg-linear-to-b from-primary/40 via-primary/20 to-primary/5" />
 
         {/* Grid Pattern */}
         <div
@@ -147,15 +147,14 @@ export default function LoginPage() {
           <div className="max-w-sm mx-auto w-full">
             {/* Logo Mobile */}
             <div className="flex flex-col items-center mb-8">
-              <Image 
+              <img 
                 src="/compro.png" 
                 alt="Mentari Partner" 
-                width={160} 
-                height={160} 
-                className="object-contain"
-                priority
+                width={250} 
+                height={250} 
+                className="object-contain md:w-72 md:h-64"
               />
-              <div className="-mt-4 h-1 w-20 rounded-full bg-linear-to-r from-primary to-secondary" />
+              <div className="-mt-10 md:-mt-18 h-1 w-20 rounded-full bg-linear-to-r from-primary to-secondary md:w-30" />
             </div>
             
             <div className="mb-4 border-b border-primary/30 pb-1">
