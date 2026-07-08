@@ -97,7 +97,8 @@
     "description": "Platform eksklusif untuk sekolah dalam mengakses berbagai manfaat, menemukan pelatihan terbaik, dan berpartisipasi dalam event yang relevan untuk kemajuan pendidikan.",
     "ctaPrimary": "LIHAT MANFAAT",
     "ctaSecondary": "CARA KERJA",
-    "imageAlt": "Ilustrasi Hero"
+    "imageAlt": "Ilustrasi Hero",
+    "educators": "Pendidik"
   },
   "Help": {
     "title": "Butuh Bantuan?",

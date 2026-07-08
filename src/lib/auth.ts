@@ -14,7 +14,8 @@ export async function getCurrentUser() {
     return {
       id: payload.id as string,
       email: payload.email as string,
-      role: payload.role as string
+      role: payload.role as string,
+      name: payload.name as string
     }
   } catch {
     return null

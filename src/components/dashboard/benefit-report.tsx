@@ -340,21 +340,21 @@ export function BenefitReport() {
             </div>
 
             {/* Table */}
-            <div className="overflow-hidden rounded-xl border border-border bg-white shadow-sm">
+            <div className="overflow-hidden rounded-lg border border-border bg-white shadow-sm">
                 <div className="overflow-x-auto">
                     <table className="w-full text-[10px] sm:text-sm">
                         <thead>
-                            <tr className="border-b border-border bg-linear-to-r from-primary/5 to-secondary/5">
-                                <th className="min-w-25 w-3/5 px-2 py-2 text-left text-[9px] font-semibold text-foreground/70 sm:min-w-40 sm:px-4 sm:py-3 sm:text-xs">
+                            <tr className="border-b border-border bg-primary text-white">
+                                <th className="min-w-25 w-3/5 px-2 py-2 text-left text-[9px] font-semibold sm:min-w-40 sm:px-4 sm:py-3 sm:text-xs">
                                     {t('benefitName')}
                                 </th>
-                                <th className="px-2 py-2 text-center text-[9px] font-semibold text-foreground/70 sm:px-4 sm:py-3 sm:text-xs">
+                                <th className="px-2 py-2 text-center text-[9px] font-semibold sm:px-4 sm:py-3 sm:text-xs">
                                     {t('totalQuota')}
                                 </th>
-                                <th className="px-2 py-2 text-center text-[9px] font-semibold text-foreground/70 sm:px-4 sm:py-3 sm:text-xs">
+                                <th className="px-2 py-2 text-center text-[9px] font-semibold sm:px-4 sm:py-3 sm:text-xs">
                                     {t('remaining')}
                                 </th>
-                                <th className="px-2 py-2 text-center text-[9px] font-semibold text-foreground/70 sm:px-4 sm:py-3 sm:text-xs">
+                                <th className="px-2 py-2 text-center text-[9px] font-semibold sm:px-4 sm:py-3 sm:text-xs">
                                     {t('percentage')}
                                 </th>
                             </tr>

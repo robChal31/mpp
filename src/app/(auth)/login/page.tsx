@@ -52,7 +52,7 @@ export default function LoginPage() {
         />
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-linear-to-b from-primary/80 via-primary/60 to-primary/20" />
+        <div className="absolute inset-0 bg-linear-to-b from-primary/50 via-primary/30 to-primary/5" />
 
         {/* Grid Pattern */}
         <div
@@ -72,24 +72,25 @@ export default function LoginPage() {
 
         {/* Content */}
         <div className="relative z-10 flex h-full w-full flex-col justify-center px-16">
-          <div className="mb-6 flex items-center gap-5">
+          <div className="flex items-center gap-5 backdrop-blur-xs p-2">
             <div>
-              <p className="text-xl font-semibold uppercase tracking-[0.35em] text-secondary">
+              <p className="text-2xl font-bold uppercase tracking-[0.25em] text-accent">
                 Welcome to
               </p>
-              <h1 className="text-6xl font-black leading-none text-white">
+              <h1 className="text-7xl mb-4 font-black leading-none tracking-[0.05em] text-white">
                 Mentari Partner
               </h1>
+              <p className="max-w-lg text-xl leading-8 text-muted/90">
+                Manage partnership benefits, school programs, events, and educational
+                resources in one modern platform.
+              </p>
             </div>
           </div>
 
-          <p className="max-w-lg text-lg leading-8 text-white/80">
-            Manage partnership benefits, school programs, events, and educational
-            resources in one modern platform.
-          </p>
+
 
           {/* Stats */}
-          <div className="mt-12 flex gap-4">
+          {/* <div className="mt-12 flex gap-4">
             <div className="rounded-3xl border border-white/10 bg-white/10 px-6 py-5 backdrop-blur-xl">
               <p className="text-3xl font-bold text-white">200+</p>
               <p className="text-sm text-white/60">Partner Schools</p>
@@ -102,12 +103,12 @@ export default function LoginPage() {
               <p className="text-3xl font-bold text-white">100+</p>
               <p className="text-sm text-white/60">Events</p>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Bottom Wave */}
         <svg
-          className="absolute -bottom-12 left-0 w-full h-70"
+          className="absolute -bottom-12 left-0 w-full h-70 opacity-75"
           viewBox="0 0 1440 280"
           preserveAspectRatio="none"
         >

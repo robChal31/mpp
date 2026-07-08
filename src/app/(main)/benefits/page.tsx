@@ -517,17 +517,17 @@ export default function BenefitsPage() {
 
                     {/* Benefits Rows - Table */}
                     {isGroupExpanded && (
-                      <div className="overflow-x-auto px-2">
+                      <div className="overflow-x-auto">
                         <table className="w-full text-xs sm:text-sm min-w-123 sm:min-w-150">
                           <thead>
-                            <tr className="bg-muted/30 border-b border-border">
+                            <tr className="bg-primary border-b border-border">
                               {/* <th className="text-left text-[10px] sm:text-xs font-medium text-muted-foreground px-2 sm:px-4 py-1.5 sm:py-2 w-8 sm:w-12">#</th> */}
-                              <th className="text-left text-[10px] sm:text-xs font-medium text-muted-foreground px-2 sm:px-4 py-1.5 sm:py-2 min-w-20 sm:min-w-30">{t('benefitName')}</th>
-                              <th className="text-left text-[10px] sm:text-xs font-medium text-muted-foreground px-2 sm:px-4 py-1.5 sm:py-2 hidden md:table-cell">{t('type')}</th>
-                              {/* <th className="text-left text-[10px] sm:text-xs font-medium text-muted-foreground px-2 sm:px-4 py-1.5 sm:py-2 hidden lg:table-cell">{t('subBenefit')}</th> */}
-                              <th className="text-left text-[10px] sm:text-xs font-medium text-muted-foreground px-2 sm:px-4 py-1.5 sm:py-2 hidden md:table-cell">{t('totalQuota')}</th>
-                              <th className="text-left text-[10px] sm:text-xs font-medium text-muted-foreground px-2 sm:px-4 py-1.5 sm:py-2 hidden md:table-cell">{t('remaining')}</th>
-                              <th className="text-center text-[10px] sm:text-xs font-medium text-muted-foreground px-2 sm:px-4 py-1.5 sm:py-2">{t('detail')}</th>
+                              <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 min-w-20 sm:min-w-30">{t('benefitName')}</th>
+                              <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 hidden md:table-cell">{t('type')}</th>
+                              {/* <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 hidden lg:table-cell">{t('subBenefit')}</th> */}
+                              <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 hidden md:table-cell">{t('totalQuota')}</th>
+                              <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 hidden md:table-cell">{t('remaining')}</th>
+                              <th className="text-center text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2">{t('detail')}</th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-border">
@@ -554,7 +554,7 @@ export default function BenefitsPage() {
                                     </div>
                                   </td>
                                   <td className="px-2 sm:px-4 py-1.5 sm:py-3 hidden md:table-cell">
-                                    <Badge className="text-[11px]! sm:text-[10px] bg-accent/10 text-accent border-gray-50 px-1.5 sm:px-2 py-0 sm:py-1">
+                                    <Badge className="text-[9px] bg-accent/10 text-accent border-gray-50 px-1.5 sm:px-2 py-0 sm:py-1">
                                       {benefit.subbenefit || '-'}
                                     </Badge>
                                   </td>
@@ -578,7 +578,7 @@ export default function BenefitsPage() {
                                       <Button 
                                         variant="ghost" 
                                         size="sm" 
-                                        className="h-6 sm:h-7 text-[10px] sm:text-xs text-primary hover:text-primary-dark hover:bg-primary/10"
+                                        className="h-6 sm:h-7 md:text-[11px] text-[10px] text-primary hover:text-primary-dark hover:bg-primary/10"
                                       >
                                         <span className="md:hidden inline">{t('view')}</span>
                                         <span className="md:inline hidden">{t('viewDetail')}</span>

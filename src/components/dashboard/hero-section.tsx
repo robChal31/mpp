@@ -1,10 +1,15 @@
+"use client"
+
 import { ArrowRight, PlayCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  user: { name: string; email: string; role: string } | null
+}
+const HeroSection = ({ user }: HeroSectionProps) => {
   const t = useTranslations('hero');
-
+  const userName = user ? user.name : t('userName');
   return (
     <div className="md:pt-8 px-6 bg-white md:bg-transparent relative overflow-hidden md:mb-8 mb-6">
       {/* Decorative Elements - Background */}
@@ -43,7 +48,7 @@ const HeroSection = () => {
         </div>
 
         {/* Decorative Line - Bottom Left */}
-        <div className="absolute bottom-0 left-20 opacity-10 hidden lg:block">
+        {/* <div className="absolute bottom-0 left-20 opacity-10 hidden lg:block">
           <svg width="160" height="60" viewBox="0 0 160 60" fill="none">
             <path 
               d="M0 30 L80 30 L120 60" 
@@ -57,18 +62,18 @@ const HeroSection = () => {
               strokeDasharray="4 6"
             />
           </svg>
-        </div>
+        </div> */}
 
         {/* Desktop: Flex row dengan gambar di kanan */}
         <div className="hidden md:flex flex-row items-center gap-12 relative">
           {/* Left Side - Text Content */}
           <div className="flex-1 relative">
             {/* Decorative small line before title */}
-            <div className="absolute -left-6 top-4 w-4 h-0.5 bg-secondary rounded-full"></div>
+            {/* <div className="absolute -left-6 top-4 w-4 h-0.5 bg-secondary rounded-full"></div> */}
             
             {/* SELAMAT DATANG */}
             <h1 className="text-2xl md:text-3xl font-bold text-primary mb-2">
-              {t('welcome')}, <span className="text-foreground italic">{'Frank'}</span>
+              {t('welcome')}, <span className="text-foreground italic">{userName}</span>
             </h1>
             
             {/* Decorative underline */}
@@ -103,13 +108,13 @@ const HeroSection = () => {
             </div>
 
             {/* Decorative small lines - bottom */}
-            <div className="absolute -bottom-2 left-32 opacity-20 hidden xl:block">
+            {/* <div className="absolute -bottom-2 left-32 opacity-20 hidden xl:block">
               <svg width="60" height="20" viewBox="0 0 60 20" fill="none">
                 <line x1="0" y1="10" x2="20" y2="10" stroke="#97262C" strokeWidth="1.5"/>
                 <line x1="25" y1="10" x2="45" y2="10" stroke="#FF9025" strokeWidth="1.5" strokeDasharray="3 4"/>
                 <circle cx="55" cy="10" r="2" fill="#97262C" opacity="0.3"/>
               </svg>
-            </div>
+            </div> */}
           </div>
 
           {/* Right Side - Image with subtle blending */}

@@ -305,30 +305,30 @@ export default function DocumentPage() {
       </div>
 
       {/* Table - dengan horizontal scroll di mobile */}
-      <div className="overflow-hidden rounded-xl border border-border bg-white shadow-sm">
+      <div className="overflow-hidden rounded-sm border border-border bg-white shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full min-w-175 sm:min-w-full text-sm">
             <thead>
-              <tr className="border-b border-border bg-linear-to-r from-primary/5 to-secondary/5">
-                <th className="px-2 py-2 text-left text-[10px] font-semibold text-foreground/70 sm:px-3 sm:py-3 md:text-xs min-w-30">
+              <tr className="border-b border-border bg-primary/90">
+                <th className="px-2 py-2 text-left text-[10px] font-semibold text-white sm:px-3 sm:py-3 md:text-xs min-w-30">
                   {t('table.program')}
                 </th>
-                <th className="px-2 py-2 text-left text-[10px] font-semibold text-foreground/70 sm:px-3 md:text-xs min-w-22.5">
+                <th className="px-2 py-2 text-left text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-22.5">
                   {t('table.pkNumber')}
                 </th>
-                <th className="px-2 py-2 text-left text-[10px] font-semibold text-foreground/70 sm:px-3 md:text-xs min-w-45">
+                <th className="px-2 py-2 text-left text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-45">
                   {t('table.period')}
                 </th>
-                <th className="px-2 py-2 text-left text-[10px] font-semibold text-foreground/70 sm:px-3 md:text-xs min-w-30">
+                <th className="px-2 py-2 text-left text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-30">
                   {t('table.pic')}
                 </th>
-                <th className="px-2 py-2 text-left text-[10px] font-semibold text-foreground/70 sm:px-3 md:text-xs min-w-40">
+                <th className="px-2 py-2 text-left text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-40">
                   {t('table.contact')}
                 </th>
-                <th className="px-2 py-2 text-center text-[10px] font-semibold text-foreground/70 sm:px-3 md:text-xs min-w-20">
+                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-20">
                   {t('table.status')}
                 </th>
-                <th className="px-2 py-2 text-right text-[10px] font-semibold text-foreground/70 sm:px-3 md:text-xs min-w-20">
+                <th className="px-2 py-2 text-right text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-20">
                   {t('table.action')}
                 </th>
               </tr>
