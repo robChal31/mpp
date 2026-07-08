@@ -213,7 +213,7 @@ export default function LoginPage() {
               </div>
 
               {/* Remember Me */}
-              <div className="flex items-center gap-2">
+              {/* <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setRememberMe(!rememberMe)}
@@ -226,7 +226,7 @@ export default function LoginPage() {
                 <label className="text-sm text-muted-foreground cursor-pointer" onClick={() => setRememberMe(!rememberMe)}>
                   Remember me
                 </label>
-              </div>
+              </div> */}
 
               <Button 
                 type="submit" 
