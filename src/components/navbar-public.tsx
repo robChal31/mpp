@@ -49,8 +49,8 @@ export function NavbarPublic({ changeLocalAction }: NavbarPublicProps) {
       <div className={`max-w-6xl mx-auto ${isOpen ? 'fixed inset-x-0 top-0 bg-white border-b border-primary' : ''}`}>
         <div className="flex items-center justify-between h-18">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group shrink-0">
-            <div className="relative transition-transform duration-300 group-hover:scale-105 md:w-44 h-18">
+          <Link href="/" className="flex items-center gap-2 group shrink-0 px-4">
+            <div className="relative transition-transform duration-300 group-hover:scale-105 md:w-22 w-24 h-18">
               <img
                 src="/compro.png"
                 alt="Mentari Partner Logo"

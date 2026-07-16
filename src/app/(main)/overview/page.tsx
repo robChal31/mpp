@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { formatDate } from '@/lib/utils/date'
 import { sanitizeDisplay } from '@/lib/utils/sanitize-string'
+import { PKDocument } from '@/types/benefit/benefit.type'
 import {
   Building2,
   Calendar,
@@ -24,24 +25,6 @@ import {
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
-
-interface PKDocument {
-  id: string
-  name: string
-  pk: {
-    no_pk: string
-    id_draft: string
-    start_at: string
-    expired_at: string
-    status: 'active' | 'expired'
-  }
-  pic: {
-    name: string
-    position: string
-    email: string
-    phone: string
-  }
-}
 
 interface RenewalModalProps {
   isOpen: boolean
@@ -206,7 +189,7 @@ export default function DocumentPage() {
         headers: { 'Content-Type': 'application/json' },
       })
       const data = await res.json()
-      
+
       if (data.status === 'error') {
         toast.error(data.message || t('failedToLoad'))
         setPkDocuments([])
@@ -310,25 +293,25 @@ export default function DocumentPage() {
           <table className="w-full min-w-175 sm:min-w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-primary/90">
-                <th className="px-2 py-2 text-left text-[10px] font-semibold text-white sm:px-3 sm:py-3 md:text-xs min-w-30">
+                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 sm:py-3 md:text-xs min-w-30">
                   {t('table.program')}
                 </th>
-                <th className="px-2 py-2 text-left text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-22.5">
+                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-22.5">
                   {t('table.pkNumber')}
                 </th>
-                <th className="px-2 py-2 text-left text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-45">
+                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-45">
                   {t('table.period')}
                 </th>
-                <th className="px-2 py-2 text-left text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-30">
+                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-30">
                   {t('table.pic')}
                 </th>
-                <th className="px-2 py-2 text-left text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-40">
+                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-40">
                   {t('table.contact')}
                 </th>
                 <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-20">
                   {t('table.status')}
                 </th>
-                <th className="px-2 py-2 text-right text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-20">
+                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-20">
                   {t('table.action')}
                 </th>
               </tr>
@@ -347,7 +330,7 @@ export default function DocumentPage() {
                     <td className="px-2 py-2 sm:px-3 sm:py-3">
                       <div>
                         <p className="line-clamp-2 text-[10px] font-medium text-foreground md:text-[11px] capitalize">
-                          {sanitizeDisplay(program.name) || program.name}
+                          {sanitizeDisplay(program.program_category) || program.name}
                         </p>
                       </div>
                     </td>
@@ -361,7 +344,7 @@ export default function DocumentPage() {
                         <Calendar size={10} className="shrink-0 text-primary sm:size-3" />
                         <span>{formatDate(program.pk.start_at)}</span>
                         <span className="text-muted-foreground/50">→</span>
-                        <Clock size={10} className="shrink-0 text-secondary sm:size-3" />
+                        {/* <Clock size={10} className="shrink-0 text-secondary sm:size-3" /> */}
                         <span>{formatDate(program.pk.expired_at)}</span>
                       </div>
                     </td>

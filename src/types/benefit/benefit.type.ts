@@ -251,6 +251,7 @@ export interface ReclaimBenefitResult {
 export interface PKDocument {
   id: string
   name: string
+  program_category: string
   pk: {
     no_pk: string
     id_draft: string

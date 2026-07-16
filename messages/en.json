@@ -12,10 +12,9 @@
     "heroDescription": "Access all your partnership benefits, register for exclusive events, and track your partnership progress all in this dashboard.",
     "viewEvents": "Find Events",
     "eventLabel": "TRAINING EVENTS",
-    "ctaTitle": "Interested in this event?",
-    "ctaDescription": "Register your school now and take advantage of the opportunity to grow together with experts.",
-    "eventTitle1": "Events & Trainings",
-    "eventTitle2": "Happening Now",
+    "ctaTitle": "Register Your School Now",
+    "ctaDescription": "Find events, trainings, and competitions to support your school development.",
+    "eventTitle": "Upcoming Events & Trainings",
     "cardTitle": "Mentari Partner Dashboard",
     "cardTotalBenefit": "Total Benefits",
     "cardProgramsAvailable": "Programs Available",
@@ -91,10 +90,10 @@
   "hero": {
     "welcome": "WELCOME",
     "userName": "user name here",
-    "title1": "Manage Benefits,",
-    "title2": "Join Trainings,",
-    "title3": "Enhance Potential.",
-    "description": "An exclusive platform for schools to access various benefits, find the best training, and participate in relevant events for educational advancement.",
+    "title1": "Access Programs",
+    "title2": "for Supporting",
+    "title3": "School Development",
+    "description": "Programs, events, and services for supporting your school development now available on one platform.",
     "ctaPrimary": "VIEW BENEFITS",
     "ctaSecondary": "HOW IT WORKS",
     "imageAlt": "Hero Illustration",
@@ -274,12 +273,12 @@
     "close": "Close"
   },
   "Benefits": {
-    "title1": "All",
-    "title2": "Benefits",
-    "description": "Available benefits from your partnership packages. Click on any claimable benefit to view details.",
+    "title1": "List of",
+    "title2": "Benefit Programs",
+    "description": "All the benefits included in your school's partnership program. \n Select a program to view its detailed benefits and terms of use",
     "failedToLoad": "Failed to load benefits",
     "filterByPK": "Filter by PK:",
-    "filterByProgram": "Filter by Program:",
+    "filterByProgram": "Select by Program:",
     "allPKs": "All PKs",
     "allPrograms": "All Programs",
     "searchBenefits": "Search benefits...",
@@ -320,20 +319,20 @@
     "ctaDescription": "Contact our team for more information about benefits and how to claim.",
     "ctaButton": "Contact Us",
     "reportLabel": "Progress Report",
-    "reportTitle": "Benefit Summary Report",
-    "reportDescription": "Select Program to View Benefit Report",
+    "reportTitle": "Summary of Benefit Usage",
+    "reportDescription": "Select Program to View Benefit Usage and Progress Report",
     "programList": "Program List",
     "programs": "Programs",
     "selectProgram": "Select Program",
     "quotaUsage": "Quota Usage",
     "used": "Used",
     "from": "from",
-    "totalQuota": "Total Quota",
+    "totalQuota": "Quota",
     "remaining": "Remaining",
-    "percentage": "Percentage",
+    "percentage": "Usage",
     "noProgramsAvailable": "No program data available",
     "noBenefitsData": "No benefits data available",
-    "selectAnotherProgram": "Please select another program",
+    "selectAnotherProgram": "Please select a program",
     "showingBenefitsFrom": "Showing {count} benefits from {program}",
     "available": "Available",
     "partial": "Partial",
@@ -511,7 +510,7 @@
   },
   "Programs": {
     "title": "Overview",
-    "description": "List of Partnership Agreement",
+    "description": "List of all your exclusive partnership programs",
     "active": "Active",
     "expired": "Expired",
     "pic": "PIC",
@@ -526,7 +525,7 @@
     "programsCount_plural": "{count} Programs",
     "table": {
       "program": "Program",
-      "pkNumber": "PK No.",
+      "pkNumber": "Reference",
       "period": "Period",
       "pic": "PIC",
       "status": "Status",
@@ -614,7 +613,71 @@
     "searchFaq": "Search questions...",
     "showMore": "Show More",
     "showLess": "Show Less",
-    "tryDifferentCategory": "Try selecting another category"
+    "tryDifferentCategory": "Try selecting another category",
+    "category": {
+      "access": "Account Access",
+      "benefits": "Benefits",
+      "events": "Events",
+      "programs": "Programs",
+      "account": "Account"
+    },
+    "faqCategory": {
+      "general": "General",
+      "account": "Account",
+      "benefits": "Benefits",
+      "events": "Events",
+      "programs": "Programs"
+    },
+    "faq": {
+      "login": {
+        "question": "How to login to the platform?",
+        "answer": "You can login using your registered email and password. If you forgot your password, click 'Forgot Password' on the login page."
+      },
+      "resetPassword": {
+        "question": "How to reset password?",
+        "answer": "Click 'Forgot Password' on the login page, enter your registered email, and follow the instructions sent to your email."
+      },
+      "claimBenefit": {
+        "question": "How to claim a benefit?",
+        "answer": "Select the benefit you want to claim, choose an available event, and follow the claim process."
+      },
+      "availableBenefits": {
+        "question": "What benefits are available?",
+        "answer": "Benefits include teacher training, seminars, workshops, resource access, and various other development programs."
+      },
+      "registerEvent": {
+        "question": "How to register for an event?",
+        "answer": "Find available events on the Events page, select the desired event, and follow the registration process."
+      },
+      "viewPrograms": {
+        "question": "How to view programs and documents?",
+        "answer": "Access the Programs page to view the list of partnership programs and available documents."
+      },
+      "manageAccount": {
+        "question": "How to manage school account?",
+        "answer": "You can manage your school profile and account information through the Settings or Profile menu."
+      },
+      "whatIsMentari": {
+        "question": "What is Mentari Partner?",
+        "answer": "Mentari Partner is a partnership platform that provides various benefits, training, and events for educational development."
+      },
+      "contactSupport": {
+        "question": "How to contact support?",
+        "answer": "You can contact the support team via email at support@mentarigroups.com or by phone at +62 855-8881-948."
+      },
+      "programDuration": {
+        "question": "How long is the partnership program duration?",
+        "answer": "The partnership program duration varies depending on the selected package. Check details on the Programs page."
+      },
+      "eventFee": {
+        "question": "Are there additional fees for events?",
+        "answer": "Event fees vary depending on the event type. However, for partners with benefits, some events can be attended for free or with subsidized fees."
+      },
+      "viewBenefits": {
+        "question": "How to view available benefits?",
+        "answer": "You can view the list of available benefits through the Benefits page on the dashboard."
+      }
+    }
   },
   "About": {
     "title": "About Mentari Partner",

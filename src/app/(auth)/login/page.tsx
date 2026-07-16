@@ -40,132 +40,53 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen max-h-screen flex overflow-hidden">
-      
-      {/* LEFT SIDE - Brand Panel */}
-      <div className="hidden lg:flex relative w-[55%] overflow-hidden bg-primary">
-        {/* Background Image */}
-        <img
-          src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1400&h=1600&fit=crop&crop=center"
-          className="absolute inset-0 h-full w-full object-cover"
-          alt=""
-        />
+    <div className="relative min-h-screen flex flex-col lg:flex-row overflow-hidden bg-[url(/illustrations/login-banner.png)] bg-cover bg-no-repeat">
 
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-linear-to-b from-primary/40 via-primary/20 to-primary/5" />
+      <div className="absolute inset-0 w-full h-full bg-linear-to-r from-primary/40 via-primary/10 to-primary/5" />
 
-        {/* Grid Pattern */}
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(255,255,255,.15) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,.15) 1px, transparent 1px)
-            `,
-            backgroundSize: "40px 40px",
-          }}
-        />
-
-        {/* Decorative Blobs */}
-        <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-secondary/30 blur-[120px]" />
-        <div className="absolute -bottom-40 -left-32 h-112.5 w-112.5 rounded-full bg-white/10 blur-[140px]" />
-
-        {/* Content */}
-        <div className="relative z-10 flex h-full w-full flex-col justify-center px-16">
+      {/* LEFT SIDE - Brand Panel (Desktop Only) */}
+      <div className="hidden lg:flex w-[55%] justify-center items-center overflow-hidden">
+        <div className="z-10 flex h-full w-full flex-col justify-end max-h-9/12 px-16">
           <div className="flex items-center gap-5 backdrop-blur-xs p-2">
             <div>
-              <p className="text-2xl font-bold uppercase tracking-[0.25em] text-accent">
+              <p className="text-4xl font-medium uppercase tracking-[0.15em] text-white">
                 Welcome to
               </p>
               <h1 className="text-7xl mb-4 font-black leading-none tracking-[0.05em] text-white">
                 Mentari Partner
               </h1>
-              <p className="max-w-lg text-xl leading-8 text-muted/90">
+              <p className="max-w-lg text-xl leading-8 text-white">
                 Manage partnership benefits, school programs, events, and educational
                 resources in one modern platform.
               </p>
             </div>
           </div>
-
-
-
-          {/* Stats */}
-          {/* <div className="mt-12 flex gap-4">
-            <div className="rounded-3xl border border-white/10 bg-white/10 px-6 py-5 backdrop-blur-xl">
-              <p className="text-3xl font-bold text-white">200+</p>
-              <p className="text-sm text-white/60">Partner Schools</p>
-            </div>
-            <div className="rounded-3xl border border-white/10 bg-white/10 px-6 py-5 backdrop-blur-xl">
-              <p className="text-3xl font-bold text-white">5K+</p>
-              <p className="text-sm text-white/60">Students</p>
-            </div>
-            <div className="rounded-3xl border border-white/10 bg-white/10 px-6 py-5 backdrop-blur-xl">
-              <p className="text-3xl font-bold text-white">100+</p>
-              <p className="text-sm text-white/60">Events</p>
-            </div>
-          </div> */}
         </div>
-
-        {/* Bottom Wave */}
-        <svg
-          className="absolute -bottom-12 left-0 w-full h-70 opacity-75"
-          viewBox="0 0 1440 280"
-          preserveAspectRatio="none"
-        >
-          <path
-            fill="#97262C"
-            d="
-              M0,140
-              C120,90
-              250,40
-              360,100
-              C500,190
-              610,195
-              720,195
-              C830,195
-              940,170
-              1080,100
-              C1190,40
-              1320,30
-              1440,90
-              L1440,280
-              L0,280
-              Z
-            "
-          />
-        </svg>
       </div>
 
       {/* RIGHT SIDE - Login Form */}
-      <div className="w-full md:w-[45%] p-6 md:p-8 flex flex-col relative md:bg-secondary/5 bg-secondary/15">
-        {/* Logo Desktop */}
-        {/* <div className="md:flex hidden">
-          <img src="/compro.png" alt="Mentari Partner" width={150} height={150} className="object-contain" />
-        </div> */}
-
-        <div className="flex-1 flex flex-col justify-center">
-          <div className="max-w-sm mx-auto w-full">
-            {/* Logo Mobile */}
-            <div className="flex flex-col items-center mb-8">
+      <div className="flex-1 lg:w-[45%] p-4 sm:p-6 md:p-8 flex items-center justify-center relative z-10">
+        <div className="w-full max-w-md mx-auto bg-amber-50/95 backdrop-blur-sm p-5 sm:p-6 md:p-8 rounded-2xl shadow-lg border border-white/20 xl:min-h-8/12 md:h-10/12 flex flex-col justify-between">
+          <div className="w-full">
+            {/* Logo */}
+            <div className="flex flex-col items-center py-4 sm:py-6">
               <img 
-                src="/compro.png" 
+                src="/compro2.png" 
                 alt="Mentari Partner" 
-                width={250} 
-                height={250} 
-                className="object-contain md:w-72 md:h-64"
+                className="object-contain w-32 sm:w-40 md:w-48 h-auto"
               />
-              <div className="-mt-10 md:-mt-18 h-1 w-20 rounded-full bg-linear-to-r from-primary to-secondary md:w-30" />
             </div>
             
-            <div className="mb-4 border-b border-primary/30 pb-1">
-              <h2 className="text-2xl font-bold text-primary">Sign In</h2>
-              <p className="text-muted-foreground/70 text-sm mt-1">
+            <div className="mb-6 text-center flex flex-col justify-center items-center gap-2">
+              <h2 className="text-lg sm:text-xl font-bold text-primary">SIGN IN</h2>
+              <div className="h-0.5 rounded-full bg-linear-to-r from-primary to-secondary w-24 sm:w-32" />
+              <p className="text-muted-foreground/70 text-xs sm:text-sm mt-1">
                 Access your partnership dashboard
               </p>
             </div>
 
-            <form onSubmit={handleLogin} className="space-y-5">
-              <div className="space-y-2">
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-1.5">
                 <label className="block text-sm font-medium text-foreground">
                   Email Address
                 </label>
@@ -176,13 +97,13 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="w-full border-border focus:border-primary focus:ring-primary rounded-xl py-2.5 pl-10 bg-muted"
+                    className="w-full border-border focus:border-primary focus:ring-primary rounded-xl py-2.5 pl-10 bg-muted text-sm"
                   />
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">@</span>
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <label className="block text-sm font-medium text-foreground">
                     Password
@@ -198,7 +119,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full px-10 border-border focus:border-primary focus:ring-primary rounded-xl py-2.5 bg-muted"
+                    className="w-full px-10 border-border focus:border-primary focus:ring-primary rounded-xl py-2.5 bg-muted text-sm"
                   />
                   <button
                     type="button"
@@ -211,25 +132,10 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              {/* Remember Me */}
-              {/* <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setRememberMe(!rememberMe)}
-                  className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
-                    rememberMe ? 'bg-primary border-primary' : 'border-accent'
-                  }`}
-                >
-                  {rememberMe && <CheckCircle size={12} className="text-white" />}
-                </button>
-                <label className="text-sm text-muted-foreground cursor-pointer" onClick={() => setRememberMe(!rememberMe)}>
-                  Remember me
-                </label>
-              </div> */}
-
               <Button 
-                type="submit" 
-                className="w-full bg-primary hover:bg-primary-dark text-white font-semibold gap-2 rounded-xl py-6 text-base transition-all duration-300 hover:shadow-lg"
+                type="submit"
+                variant="default"
+                className="w-full mt-2"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -239,33 +145,33 @@ export default function LoginPage() {
                   </div>
                 ) : (
                   <>
-                    Sign In
+                    SIGN IN
                     <ArrowRight size={16} />
                   </>
                 )}
               </Button>
             </form>
           </div>
-        </div>
 
-        {/* Footer - Unified untuk semua device */}
-        <div className="mt-auto pt-4 border-t border-border">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-3">
-            <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 text-xs text-muted-foreground">
-              <Link href="/help-center" className="flex items-center gap-1.5 hover:text-primary transition-colors group">
-                <CircleHelp size={13} className="group-hover:scale-110 transition-transform" />
-                <span>Pusat Bantuan</span>
-              </Link>
-              <span className="w-px h-3 bg-border hidden xs:block" />
-              <Link href="/about" className="flex items-center gap-1.5 hover:text-primary transition-colors group">
-                <Info size={13} className="group-hover:scale-110 transition-transform" />
-                <span>About</span>
-              </Link>
-              <span className="w-px h-3 bg-border hidden xs:block" />
+          {/* Footer */}
+          <div className="mt-6 pt-4 border-t border-border">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 text-xs text-muted-foreground">
+                <Link href="/help-center" className="flex items-center gap-1.5 hover:text-primary transition-colors group">
+                  <CircleHelp size={13} className="group-hover:scale-110 transition-transform text-primary" />
+                  <span>Help Center</span>
+                </Link>
+                <span className="w-px h-3 bg-border hidden xs:block" />
+                <Link href="/about" className="flex items-center gap-1.5 hover:text-primary transition-colors group">
+                  <Info size={13} className="group-hover:scale-110 transition-transform text-primary" />
+                  <span>About</span>
+                </Link>
+                <span className="w-px h-3 bg-border hidden xs:block" />
+              </div>
+              <p className="text-[10px] md:text-xs text-muted-foreground">
+                © {currentYear} Mentari Partner
+              </p>
             </div>
-            <p className="text-[10px] md:text-xs text-muted-foreground">
-              © {currentYear} Mentari Partner. {t('allRightsReserved')}
-            </p>
           </div>
         </div>
       </div>

@@ -52,6 +52,11 @@ export function formatDateRange(startDate: string, endDate: string, locale: stri
     
     const months = monthNames[locale as keyof typeof monthNames] || monthNames.id
     
+    // 🔥 Jika tanggal mulai dan tanggal akhir SAMA (1 hari)
+    if (startDate === endDate || (startDay === endDay && startMonth === endMonth && startYear === endYear)) {
+        return `${startDay} ${months[startMonth]} ${startYear}`
+    }
+    
     // Jika sama tahun dan sama bulan
     if (startYear === endYear && startMonth === endMonth) {
         return `${startDay} - ${endDay} ${months[startMonth]} ${startYear}`

@@ -202,17 +202,18 @@ export default function ForgotPasswordPage() {
 
           {/* Trust badge */}
           <div className="mt-6 pt-4 border-t border-border">
-            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1.5">
-                <Shield size={12} className="text-primary" />
-                <span>{t('secure')}</span>
+            <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 text-xs text-muted-foreground">
+                <Link href="/help-center" className="flex items-center gap-1.5 hover:text-primary transition-colors group">
+                  <CircleHelp size={13} className="group-hover:scale-110 transition-transform text-primary" />
+                  <span>Help Center</span>
+                </Link>
+                <span className="w-px h-3 bg-border hidden xs:block" />
+                <Link href="/about" className="flex items-center gap-1.5 hover:text-primary transition-colors group">
+                  <Info size={13} className="group-hover:scale-110 transition-transform text-primary" />
+                  <span>About</span>
+                </Link>
+                <span className="w-px h-3 bg-border hidden xs:block" />
               </div>
-              <div className="w-px h-3 bg-border" />
-              <div className="flex items-center gap-1.5">
-                <GraduationCap size={12} className="text-primary" />
-                <span>{t('trusted')}</span>
-              </div>
-            </div>
           </div>
         </Card>
 

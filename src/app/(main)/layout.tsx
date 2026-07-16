@@ -12,7 +12,7 @@ export default async function DashboardLayout({
 }) {
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#ffffff]">
+    <div className="min-h-screen flex flex-col relative overflow-hidden bg-[#ffffff]">
       
       {/* <BackgroundOrnament /> */}
       <Navbar />

@@ -9,23 +9,25 @@ const FeaturedEvents = () => {
     const t = useTranslations('Dashboard')
     return (
         <div className="bg-white md:bg-primary/2 my-4 py-4 md:px-2 px-4">
-            <div id="dashboard-featured-events" className="max-w-6xl mx-auto space-y-6  ">
+            <div id="dashboard-featured-events" className="max-w-7xl mx-auto space-y-6  ">
                 
                 {/* Header Section - Following image design */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     {/* Left side - Title with line */}
                     <div className="space-y-0.5">
-                        <div className="flex items-center gap-3">
+                        {/* <div className="flex items-center gap-3">
                             <p className="text-xs font-bold text-primary tracking-widest uppercase">
                                 {t('eventLabel')}
                             </p>
                             <div className="w-16 h-0.5 bg-linear-to-r from-primary to-secondary rounded-full"></div>
+                        </div> */}
+                         <div className="flex items-center gap-3">
+                            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary leading-tight">
+                                {t('eventTitle')}
+                            </h2>
+                            <div className="w-16 h-0.5 bg-linear-to-r from-primary to-secondary rounded-full"></div>
                         </div>
-                        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground leading-tight">
-                            {t('eventTitle1')}
-                            <br />
-                            {t('eventTitle2')}
-                        </h2>
+                        
                     </div>
                     
                     {/* Right side - View All Button */}

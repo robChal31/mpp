@@ -288,12 +288,11 @@ export default function EventsPage() {
             </div>
           </div>
           
-          {/* Ilustrasi Benefits - Kanan dengan overlay */}
           <div className="pointer-events-none absolute right-4 md:top-1/2 top-1/7 -translate-y-1/2 max-[640px]:right-2">
             <div className="relative">
               <div className="absolute inset-0 md:bg-linear-to-l from-white via-white/60 to-transparent bg-transparent"></div>
               <img 
-                src="/illustrations/benefits.png" 
+                src="/illustrations/trophy2.png" 
                 alt="benefits" 
                 className="relative h-auto w-32 md:opacity-20 opacity-40 max-[640px]:w-20 md:w-42 lg:w-52"
               />

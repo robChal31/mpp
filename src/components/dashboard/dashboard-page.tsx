@@ -63,7 +63,7 @@ const DashboardPage = ({ user }: DashboardPageProps) => {
       <HeroSection user={user} />
 
       <BenefitReport />
-      <hr className='md:my-1 md:py-1 border-border max-w-6xl mx-auto'/>
+      <hr className='md:my-1 md:py-1 border-border max-w-7xl mx-auto'/>
       
       {/* Featured Events Section */}
       <FeaturedEvents />

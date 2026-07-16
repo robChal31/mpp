@@ -57,7 +57,6 @@ export function BenefitReport() {
     const [reportData, setReportData] = useState<BenefitGroupByPK[]>([])
     const [loading, setLoading] = useState(true)
     const t = useTranslations('Benefits')
-
     const selectedPkData = reportData.find((p) => p.pkId === selectedPk)
     const selectedPkName = selectedPkData?.pkName || ''
     const filteredData = selectedPkData?.benefits || []
@@ -74,6 +73,7 @@ export function BenefitReport() {
                     method: 'POST',
                 })
                 const data = await res.json()
+                console.log('data: ', data)
                 if (data.status === 'error') {
                     toast.error(data.message || t('failedToLoad'))
                     setListPrograms([])
@@ -167,9 +167,9 @@ export function BenefitReport() {
                     setReportData(reportDataArray)
                     setListPrograms(programArray)
 
-                    if (programArray.length > 0 && !selectedPk) {
-                        setSelectedPk(programArray[0].id)
-                    }
+                    // if (programArray.length > 0 && !selectedPk) {
+                    //     setSelectedPk(programArray[0].id)
+                    // }
                 }
             } catch (err) {
                 console.error(err)
@@ -201,18 +201,21 @@ export function BenefitReport() {
     }
 
     return (
-        <div className="mx-auto max-w-6xl space-y-4 px-3 sm:space-y-5 sm:px-4 md:px-0">
+        <div className="mx-auto max-w-7xl space-y-4 sm:space-y-5 px-4 md:px-0">
             {/* Header */}
             <div className="space-y-0.5">
-                <div className="flex items-center gap-3">
+                {/* <div className="flex items-center gap-3">
                     <p className="text-xs font-bold tracking-widest text-primary uppercase">
                         {t('reportLabel')}
                     </p>
                     <div className="h-0.5 w-12 rounded-full bg-linear-to-r from-primary to-secondary sm:w-16" />
+                </div> */}
+                <div className="flex items-center gap-3">
+                    <h2 className="text-xl font-bold leading-tight text-primary sm:text-2xl lg:text-3xl">
+                        {t('reportTitle')}
+                    </h2>
+                    <div className="h-0.5 w-12 rounded-full bg-linear-to-r from-primary to-secondary sm:w-16" />
                 </div>
-                <h2 className="text-xl font-bold leading-tight text-foreground sm:text-2xl lg:text-3xl">
-                    {t('reportTitle')}
-                </h2>
                 <p className="text-xs text-muted-foreground sm:text-sm">{t('reportDescription')}</p>
             </div>
 
@@ -313,102 +316,118 @@ export function BenefitReport() {
                     </p>
                 </div>
             </div>
-
-            {/* Progress Bar */}
-            <div className="rounded-xl border border-border bg-linear-to-r from-primary/5 to-secondary/5 p-3 sm:p-4">
-                <div className="mb-2 flex flex-col gap-1 xs:flex-row xs:items-center xs:justify-between">
-                    <div className="flex items-center gap-2">
-                        <Activity size={14} className="text-primary" />
-                        <span className="text-xs font-medium text-foreground">{t('quotaUsage')}</span>
+            
+            {selectedPk ? (
+                <>
+                    {/* Progress Bar */}
+                    <div className="rounded-xl border border-border bg-linear-to-r from-primary/5 to-secondary/5 p-3 sm:p-4">
+                        <div className="mb-2 flex flex-col gap-1 xs:flex-row xs:items-center xs:justify-between">
+                            <div className="flex items-center gap-2">
+                                <Activity size={14} className="text-primary" />
+                                <span className="text-xs font-medium text-foreground">{t('quotaUsage')}</span>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2 text-xs">
+                                <span className="text-muted-foreground">
+                                    <span className="font-medium text-foreground">{usedQuota}</span> <span>{t('used')} </span>
+                                    {t('from')} <span className="font-medium text-foreground">{totalQuota}</span>
+                                </span>
+                                <span className="font-bold text-secondary">{overallPercentage % 1 === 0 ? overallPercentage : overallPercentage.toFixed(1)}%</span>
+                            </div>
+                        </div>
+                        <div className="h-2 w-full overflow-hidden rounded-full bg-primary/20 sm:h-2.5">
+                            <div
+                                className="h-full rounded-full bg-primary transition-all duration-700"
+                                style={{ width: `${Math.min(overallPercentage, 100)}%` }}
+                            />
+                        </div>
                     </div>
-                    <div className="flex flex-wrap items-center gap-2 text-xs">
-                        <span className="text-muted-foreground">
-                            <span className="font-medium text-foreground">{usedQuota}</span> {t('used')}
-                        </span>
-                        <span className="text-muted-foreground">
-                            {t('from')} <span className="font-medium text-foreground">{totalQuota}</span>
-                        </span>
-                        <span className="font-bold text-primary">{overallPercentage.toFixed(1)}%</span>
-                    </div>
-                </div>
-                <div className="h-2 w-full overflow-hidden rounded-full bg-primary/20 sm:h-2.5">
-                    <div
-                        className="h-full rounded-full bg-primary transition-all duration-700"
-                        style={{ width: `${Math.min(overallPercentage, 100)}%` }}
-                    />
-                </div>
-            </div>
 
-            {/* Table */}
-            <div className="overflow-hidden rounded-lg border border-border bg-white shadow-sm">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-[10px] sm:text-sm">
-                        <thead>
-                            <tr className="border-b border-border bg-primary text-white">
-                                <th className="min-w-25 w-3/5 px-2 py-2 text-left text-[9px] font-semibold sm:min-w-40 sm:px-4 sm:py-3 sm:text-xs">
-                                    {t('benefitName')}
-                                </th>
-                                <th className="px-2 py-2 text-center text-[9px] font-semibold sm:px-4 sm:py-3 sm:text-xs">
-                                    {t('totalQuota')}
-                                </th>
-                                <th className="px-2 py-2 text-center text-[9px] font-semibold sm:px-4 sm:py-3 sm:text-xs">
-                                    {t('remaining')}
-                                </th>
-                                <th className="px-2 py-2 text-center text-[9px] font-semibold sm:px-4 sm:py-3 sm:text-xs">
-                                    {t('percentage')}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border">
-                            {filteredData.length > 0 ? (
-                                filteredData.map((data, index) => (
-                                    <tr
-                                        key={data.id_benefit_list}
-                                        className={`transition-colors hover:bg-muted/20 ${
-                                            index % 2 === 0 ? 'bg-white' : 'bg-muted/5'
-                                        }`}
-                                    >
-                                        <td className="px-2 py-2 sm:px-4 sm:py-3">
-                                            <Link 
-                                                href={`/benefits/${encodeId(Number(data.id_benefit_list))}`} 
-                                                className="flex items-center gap-1.5 sm:gap-2 hover:gap-3 group/linktd"
-                                            >
-                                                <Dot size={14} className="text-primary md:inline hidden transition-transform duration-300 group-hover/linktd:scale-110" />
-                                                <span className="group-hover/linktd:text-primary group-hover/linktd:scale-[1.02] group-hover/linktd:translate-x-0.5 transition-all duration-300 line-clamp-3 text-[9px] font-medium text-foreground sm:text-sm">
-                                                    {data.benefit_name}
-                                                </span>
-                                            </Link>
-                                        </td>
-                                        <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
-                                            {data.total_quota}
-                                        </td>
-                                        <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
-                                            {data.remaining_quota}
-                                        </td>
-                                        <td className="px-2 py-2 text-center sm:px-4 sm:py-3">
-                                            <div className="flex items-center justify-center gap-1 sm:gap-2">
-                                                <span className="text-[9px] font-medium text-primary sm:text-sm">
-                                                    {data.percentage.toFixed(1)}%
-                                                </span>
-                                            </div>
-                                        </td>
+                    {/* Table */}
+                    <div className="overflow-hidden rounded-lg border border-border bg-white shadow-sm">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-[10px] sm:text-sm">
+                                <thead>
+                                    <tr className="border-b border-border bg-primary text-white">
+                                        <th className="min-w-25 w-3/5 px-2 py-2 text-left text-[9px] font-semibold sm:min-w-40 sm:px-4 sm:py-3 sm:text-xs">
+                                            {t('benefitName')}
+                                        </th>
+                                        <th className="px-2 py-2 text-center text-[9px] font-semibold sm:px-4 sm:py-3 sm:text-xs">
+                                            {t('totalQuota')}
+                                        </th>
+                                        <th className="px-2 py-2 text-center text-[9px] font-semibold sm:px-4 sm:py-3 sm:text-xs">
+                                            {t('used')}
+                                        </th>
+                                        <th className="px-2 py-2 text-center text-[9px] font-semibold sm:px-4 sm:py-3 sm:text-xs">
+                                            {t('remaining')}
+                                        </th>
+                                        <th className="px-2 py-2 text-center text-[9px] font-semibold sm:px-4 sm:py-3 sm:text-xs">
+                                            {t('percentage')}
+                                        </th>
                                     </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan={4} className="px-2 py-8 text-center text-muted-foreground sm:px-4 sm:py-12">
-                                        <FileText size={24} className="mx-auto mb-2 text-muted-foreground/20 sm:mb-3 sm:text-[36px]" />
-                                        <p className="text-[10px] font-medium sm:text-sm">{t('noBenefitsData')}</p>
-                                        <p className="mt-1 text-[9px] text-muted-foreground/70 sm:text-xs">
-                                            {t('selectAnotherProgram')}
-                                        </p>
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                                </thead>
+                                <tbody className="divide-y divide-border">
+                                    {filteredData.length > 0 ? (
+                                        filteredData.map((data, index) => (
+                                            <tr
+                                                key={data.id_benefit_list}
+                                                className={`transition-colors hover:bg-muted/20 ${
+                                                    index % 2 === 0 ? 'bg-white' : 'bg-muted/5'
+                                                }`}
+                                            >
+                                                <td className="px-2 py-2 sm:px-4 sm:py-3">
+                                                    <Link 
+                                                        href={`/benefits/${encodeId(Number(data.id_benefit_list))}`} 
+                                                        className="flex items-center gap-1.5 sm:gap-2 hover:gap-3 group/linktd"
+                                                    >
+                                                        <span className="group-hover/linktd:text-primary group-hover/linktd:scale-[1.02] group-hover/linktd:translate-x-0.5 transition-all duration-300 line-clamp-3 text-[9px] font-medium text-foreground sm:text-sm">
+                                                            {data.benefit_name}
+                                                        </span>
+                                                    </Link>
+                                                </td>
+                                                <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
+                                                    {data.total_quota}
+                                                </td>
+                                                <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
+                                                    {data.used_quota}
+                                                </td>
+                                                <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
+                                                    {data.remaining_quota}
+                                                </td>
+                                                <td className="px-2 py-2 text-center sm:px-4 sm:py-3">
+                                                    <div className="flex items-center justify-center gap-1 sm:gap-2">
+                                                        <span className="text-[9px] font-medium text-secondary sm:text-sm">
+                                                            {data.percentage % 1 === 0 ? data.percentage : data.percentage.toFixed(1)}%
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan={4} className="px-2 py-8 text-center text-muted-foreground sm:px-4 sm:py-12">
+                                                <FileText size={24} className="mx-auto mb-2 text-muted-foreground/20 sm:mb-3 sm:text-[36px]" />
+                                                <p className="text-[10px] font-medium sm:text-sm">{t('noBenefitsData')}</p>
+                                                <p className="mt-1 text-[9px] text-muted-foreground/70 sm:text-xs">
+                                                    {t('selectAnotherProgram')}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <div className="flex flex-col items-center justify-center gap-2 md:py-12 my-6">
+                    <FileText size={24} className="mx-auto mb-2 text-muted-foreground/20 sm:mb-3 sm:text-[36px]" />
+                    <p className="text-[10px] font-medium sm:text-sm">{t('noBenefitsData')}</p>
+                    <p className="mt-1 text-[9px] text-muted-foreground/70 sm:text-xs">
+                        {t('selectAnotherProgram')}
+                    </p>
                 </div>
-            </div>
+            )}
+
 
             {/* Footer */}
             <div className="flex flex-wrap items-center justify-between gap-1 px-1 text-[8px] text-muted-foreground sm:gap-2 sm:text-[10px]">

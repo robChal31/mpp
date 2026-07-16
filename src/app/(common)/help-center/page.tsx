@@ -44,6 +44,13 @@ interface VideoTutorial {
   videoId: string
 }
 
+interface FAQData {
+  id: string
+  questionKey: string
+  answerKey: string
+  category: 'general' | 'account' | 'benefits' | 'events' | 'programs'
+}
+
 interface FAQItem {
   id: string
   question: string
@@ -64,112 +71,52 @@ const tutorialData: VideoTutorial[] = [
   { id: '10', title: 'Cara Mengelola Akun Sekolah', description: 'Kelola profil dan informasi akun sekolah Anda.', category: 'account', duration: '2:00', thumbnail: '', videoUrl: 'https://www.youtube.com/embed/k4wRpxdgo6o', videoId: 'k4wRpxdgo6o' },
 ]
 
-const faqData: FAQItem[] = [
-  {
-    id: '1',
-    question: 'Bagaimana cara login ke platform?',
-    answer: 'Anda dapat login menggunakan email dan password yang sudah terdaftar. Jika lupa password, klik "Lupa Password" pada halaman login.',
-    category: 'account'
-  },
-  {
-    id: '2',
-    question: 'Bagaimana cara reset password?',
-    answer: 'Klik "Lupa Password" pada halaman login, masukkan email terdaftar, dan ikuti instruksi yang dikirim ke email Anda.',
-    category: 'account'
-  },
-  {
-    id: '3',
-    question: 'Bagaimana cara mengklaim benefit?',
-    answer: 'Pilih benefit yang ingin diklaim, pilih event yang tersedia, dan ikuti proses klaim hingga selesai.',
-    category: 'benefits'
-  },
-  {
-    id: '4',
-    question: 'Apa saja benefit yang tersedia?',
-    answer: 'Benefit meliputi pelatihan guru, seminar, workshop, akses resources, dan berbagai program pengembangan lainnya.',
-    category: 'benefits'
-  },
-  {
-    id: '5',
-    question: 'Bagaimana cara mendaftar event?',
-    answer: 'Cari event yang tersedia di halaman Event, pilih event yang diinginkan, dan ikuti proses pendaftaran.',
-    category: 'events'
-  },
-  {
-    id: '6',
-    question: 'Bagaimana cara melihat program dan dokumen?',
-    answer: 'Akses halaman Program untuk melihat daftar program kemitraan dan dokumen yang tersedia.',
-    category: 'programs'
-  },
-  {
-    id: '7',
-    question: 'Bagaimana cara mengelola akun sekolah?',
-    answer: 'Anda dapat mengelola profil dan informasi akun sekolah melalui menu Pengaturan atau Profil.',
-    category: 'account'
-  },
-  {
-    id: '8',
-    question: 'Apa itu Mentari Partner?',
-    answer: 'Mentari Partner adalah platform kemitraan yang menyediakan berbagai benefit, pelatihan, dan event untuk pengembangan pendidikan.',
-    category: 'general'
-  },
-  {
-    id: '9',
-    question: 'Bagaimana cara menghubungi support?',
-    answer: 'Anda dapat menghubungi tim support melalui email support@mentarigroups.com atau telepon +62 855-8881-948.',
-    category: 'general'
-  },
-  {
-    id: '10',
-    question: 'Berapa lama durasi program kemitraan?',
-    answer: 'Durasi program kemitraan bervariasi sesuai dengan paket yang dipilih. Cek detail di halaman Program.',
-    category: 'programs'
-  },
-  {
-    id: '11',
-    question: 'Apakah ada biaya tambahan untuk mengikuti event?',
-    answer: 'Biaya event bervariasi tergantung jenis event. Namun, untuk mitra yang memiliki benefit, beberapa event dapat diikuti secara gratis atau dengan biaya subsidi.',
-    category: 'events'
-  },
-  {
-    id: '12',
-    question: 'Bagaimana cara melihat benefit yang tersedia?',
-    answer: 'Anda dapat melihat daftar benefit yang tersedia melalui halaman Benefit di dashboard.',
-    category: 'benefits'
-  }
+const faqData: FAQData[] = [
+  { id: '1', questionKey: 'faq.login.question', answerKey: 'faq.login.answer', category: 'account' },
+  { id: '2', questionKey: 'faq.resetPassword.question', answerKey: 'faq.resetPassword.answer', category: 'account' },
+  { id: '3', questionKey: 'faq.claimBenefit.question', answerKey: 'faq.claimBenefit.answer', category: 'benefits' },
+  { id: '4', questionKey: 'faq.availableBenefits.question', answerKey: 'faq.availableBenefits.answer', category: 'benefits' },
+  { id: '5', questionKey: 'faq.registerEvent.question', answerKey: 'faq.registerEvent.answer', category: 'events' },
+  { id: '6', questionKey: 'faq.viewPrograms.question', answerKey: 'faq.viewPrograms.answer', category: 'programs' },
+  { id: '7', questionKey: 'faq.manageAccount.question', answerKey: 'faq.manageAccount.answer', category: 'account' },
+  { id: '8', questionKey: 'faq.whatIsMentari.question', answerKey: 'faq.whatIsMentari.answer', category: 'general' },
+  { id: '9', questionKey: 'faq.contactSupport.question', answerKey: 'faq.contactSupport.answer', category: 'general' },
+  { id: '10', questionKey: 'faq.programDuration.question', answerKey: 'faq.programDuration.answer', category: 'programs' },
+  { id: '11', questionKey: 'faq.eventFee.question', answerKey: 'faq.eventFee.answer', category: 'events' },
+  { id: '12', questionKey: 'faq.viewBenefits.question', answerKey: 'faq.viewBenefits.answer', category: 'benefits' },
 ]
 
 const categoryConfig = {
   'access': { 
-    label: 'Akses Akun', 
+    labelKey: 'category.access', 
     icon: LogIn, 
     color: 'text-blue-600',
     bg: 'bg-blue-50',
     border: 'border-blue-200'
   },
   'benefits': { 
-    label: 'Benefit', 
+    labelKey: 'category.benefits', 
     icon: Gift, 
     color: 'text-primary',
     bg: 'bg-primary/10',
     border: 'border-primary/20'
   },
   'events': { 
-    label: 'Event', 
+    labelKey: 'category.events', 
     icon: Calendar, 
     color: 'text-secondary',
     bg: 'bg-secondary/10',
     border: 'border-secondary/20'
   },
   'programs': { 
-    label: 'Program', 
+    labelKey: 'category.programs', 
     icon: FileText, 
     color: 'text-emerald-600',
     bg: 'bg-emerald-50',
     border: 'border-emerald-200'
   },
   'account': { 
-    label: 'Akun', 
+    labelKey: 'category.account', 
     icon: User, 
     color: 'text-purple-600',
     bg: 'bg-purple-50',
@@ -178,11 +125,11 @@ const categoryConfig = {
 }
 
 const faqCategoryConfig = {
-  'general': { label: 'Umum', icon: HelpCircle },
-  'account': { label: 'Akun', icon: User },
-  'benefits': { label: 'Benefit', icon: Gift },
-  'events': { label: 'Event', icon: Calendar },
-  'programs': { label: 'Program', icon: FileText }
+  'general': { labelKey: 'faqCategory.general', icon: HelpCircle },
+  'account': { labelKey: 'faqCategory.account', icon: User },
+  'benefits': { labelKey: 'faqCategory.benefits', icon: Gift },
+  'events': { labelKey: 'faqCategory.events', icon: Calendar },
+  'programs': { labelKey: 'faqCategory.programs', icon: FileText }
 }
 
 export default function TutorialPage() {
@@ -196,9 +143,18 @@ export default function TutorialPage() {
   const [showAllFaq, setShowAllFaq] = useState(false)
 
   const filteredVideos = tutorialData.filter(v => v.category === selectedCategory)
+  
+  // Build FAQ items with translations
+  const faqItems: FAQItem[] = faqData.map(item => ({
+    id: item.id,
+    category: item.category,
+    question: t(item.questionKey),
+    answer: t(item.answerKey)
+  }))
+
   const filteredFaqs = faqCategory === 'all' 
-    ? faqData 
-    : faqData.filter(f => f.category === faqCategory)
+    ? faqItems 
+    : faqItems.filter(f => f.category === faqCategory)
 
   const getYouTubeThumbnail = (videoId: string) => {
     return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
@@ -216,10 +172,21 @@ export default function TutorialPage() {
     setExpandedFaq(expandedFaq === id ? null : id)
   }
 
+  // Helper untuk mendapatkan label kategori
+  const getCategoryLabel = (key: string) => {
+    const config = categoryConfig[key as keyof typeof categoryConfig]
+    return config ? t(config.labelKey) : key
+  }
+
+  const getFaqCategoryLabel = (key: string) => {
+    const config = faqCategoryConfig[key as keyof typeof faqCategoryConfig]
+    return config ? t(config.labelKey) : key
+  }
+
   return (
     <div className="min-h-screen">
       <div className="bg-primary/1">
-        <div className="mx-auto max-w-6xl p-4 md:p-8">
+        <div className="mx-auto max-w-6xl p-4">
           {/* Header */}
           <div className="md:py-8 md:pb-12 py-8 flex flex-col sm:flex-row items-center justify-between relative">
             <div className="flex-1 backdrop-blur-4xl md:backdrop-blur-none">
@@ -256,7 +223,7 @@ export default function TutorialPage() {
                   onClick={() => setIsSidebarOpen(!isSidebarOpen)}
                   className="flex w-full items-center justify-between rounded-lg border border-border bg-white p-3 text-sm font-medium text-foreground"
                 >
-                  <span>{categoryConfig[selectedCategory as keyof typeof categoryConfig]?.label}</span>
+                  <span>{getCategoryLabel(selectedCategory)}</span>
                   {isSidebarOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                 </button>
               </div>
@@ -282,7 +249,7 @@ export default function TutorialPage() {
                         }`}
                       >
                         <Icon size={16} className={isActive ? 'text-white' : 'text-muted-foreground'} />
-                        <span className="flex-1 text-left font-medium">{config.label}</span>
+                        <span className="flex-1 text-left font-medium">{t(config.labelKey)}</span>
                         <span className={`text-[10px] ${isActive ? 'text-white/70' : 'text-muted-foreground'}`}>
                           {count}
                         </span>
@@ -351,7 +318,7 @@ export default function TutorialPage() {
 
                           <div className="absolute bottom-3 left-3 rounded-lg bg-black/70 px-2.5 py-1 text-[10px] font-medium text-white backdrop-blur-sm sm:text-xs">
                             <Sparkles size={11} className="mr-1 inline" />
-                            {categoryConfig[selectedVideo.category as keyof typeof categoryConfig]?.label}
+                            {getCategoryLabel(selectedVideo.category)}
                           </div>
                         </>
                       ) : (
@@ -383,7 +350,7 @@ export default function TutorialPage() {
                       </p>
                       <div className="mt-3 flex flex-wrap items-center gap-2">
                         <Badge className={`bg-primary/10 text-primary border-0 text-[10px]`}>
-                          {categoryConfig[selectedVideo.category as keyof typeof categoryConfig]?.label}
+                          {getCategoryLabel(selectedVideo.category)}
                         </Badge>
                         <Badge className="bg-muted text-muted-foreground text-[10px] border-0">
                           <Clock size={10} className="mr-1" /> {selectedVideo.duration}
@@ -445,7 +412,7 @@ export default function TutorialPage() {
                               </p>
                               <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
                                 <Badge className={`bg-secondary/10 text-secondary border-0 text-[9px] px-1.5 py-0`}>
-                                  {config.label}
+                                  {t(config.labelKey)}
                                 </Badge>
                                 <span className="text-[9px] text-muted-foreground sm:text-[10px]">
                                   <Clock size={9} className="mr-0.5 inline" />
@@ -473,7 +440,6 @@ export default function TutorialPage() {
           </div>
         </div>
       </div>
-
 
       <div className="mx-auto max-w-6xl p-4 md:p-8">
         {/* ===== SECTION 2: FAQ ===== */}
@@ -509,7 +475,7 @@ export default function TutorialPage() {
                       : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
                 >
-                  {config.label}
+                  {t(config.labelKey)}
                 </button>
               ))}
             </div>
@@ -565,8 +531,8 @@ export default function TutorialPage() {
                           {faq.answer}
                         </p>
                         <div className="mt-2 flex items-center gap-2">
-                          <Badge className={`${faqCategoryConfig[faq.category as keyof typeof faqCategoryConfig]?.label === 'Umum' ? 'bg-muted text-muted-foreground' : 'bg-primary/10 text-primary'} border-0 text-[8px] px-1.5 py-0`}>
-                            {faqCategoryConfig[faq.category as keyof typeof faqCategoryConfig]?.label}
+                          <Badge className={`${t(config.labelKey) === 'Umum' ? 'bg-muted text-muted-foreground' : 'bg-primary/10 text-primary'} border-0 text-[8px] px-1.5 py-0`}>
+                            {t(config.labelKey)}
                           </Badge>
                         </div>
                       </div>

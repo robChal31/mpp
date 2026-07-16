@@ -11,10 +11,9 @@
     "featuredEventsDesc": "Acara yang mungkin Anda minati",
     "viewAllEvents": "LIHAT SEMUA ACARA",
     "eventLabel": "EVENT PELATIHAN",
-    "eventTitle1": "Event & Pelatihan",
-    "ctaTitle": "Tertarik dengan event ini?",
-    "ctaDescription": "Daftarkan sekolah Anda sekarang dan manfaatkan kesempatan untuk berkembang bersama para ahli.",
-    "eventTitle2": "Sedang Berlangsung",
+    "eventTitle": "Event & Pelatihan Mendatang",
+    "ctaTitle": "Daftarkan Sekolah Anda",
+    "ctaDescription": "Temukan berbagai event, pelatihan dan kompetisi untuk pengembangan sekolah Anda",
     "quickActions": "Aksi Cepat",
     "quickActionsDesc": "Pintasan untuk membantu Anda menyelesaikan tugas",
     "claimBenefits": "Klaim Manfaat",
@@ -91,10 +90,10 @@
   "hero": {
     "welcome": "Selamat Datang",
     "userName": "nanti nama user",
-    "title1": "Kelola Manfaat,",
-    "title2": "Ikuti Pelatihan,",
-    "title3": "Tingkatkan Potensi.",
-    "description": "Platform eksklusif untuk sekolah dalam mengakses berbagai manfaat, menemukan pelatihan terbaik, dan berpartisipasi dalam event yang relevan untuk kemajuan pendidikan.",
+    "title1": "Akses Program",
+    "title2": "untuk Mendukung",
+    "title3": "Pengembangan Sekolah",
+    "description": "Program, kegiatan, dan layanan untuk mendukung pengembangan sekolah Anda kini tersedia dalam satu platform.",
     "ctaPrimary": "LIHAT MANFAAT",
     "ctaSecondary": "CARA KERJA",
     "imageAlt": "Ilustrasi Hero",
@@ -273,12 +272,12 @@
     "close": "Tutup"
   },
   "Benefits": {
-    "title1": "Semua",
-    "title2": "Manfaat",
-    "description": "Manfaat yang tersedia dari paket kemitraan Anda. \n Klik pada manfaat yang dapat diklaim untuk melihat detail.",
+    "title1": "Daftar",
+    "title2": "Manfaat Program",
+    "description": "Seluruh manfaat yang termasuk dalam program kerjasama sekolah Anda. \n Pilih salah satu program untuk melihat rincian manfaat dan ketentuan penggunaannya.",
     "failedToLoad": "Gagal memuat manfaat",
     "filterByPK": "Filter berdasarkan PK:",
-    "filterByProgram": "Filter Program:",
+    "filterByProgram": "Pilih Program:",
     "allPKs": "Semua PK",
     "allPrograms": "Semua Program",
     "searchBenefits": "Cari manfaat...",
@@ -306,7 +305,7 @@
     "next": "Selanjutnya",
     "showingPKRange": "Menampilkan {start} - {end} dari {total} program ({benefits} manfaat)",
     "searchResults": "{count} manfaat ditemukan",
-    "showingPKs": "Menampilkan {pkCount} program dengan {benefitCount} manfaat",
+    "showingPKs": "Total {pkCount} program dengan {benefitCount} manfaat",
     "benefitName": "Nama Manfaat",
     "type": "Tipe",
     "subBenefit": "Sub Benefit",
@@ -318,21 +317,21 @@
     "ctaDescription": "Hubungi tim kami untuk informasi lebih lanjut mengenai manfaat dan cara klaim.",
     "ctaButton": "Hubungi Kami",
     "reportLabel": "Progress Report",
-    "reportTitle": "Laporan Rekapitulasi Manfaat",
-    "reportDescription": "Pilih Program Untuk Melihat Laporan Rekap Manfaat",
+    "reportTitle": "Ringkasan Penggunaan Manfaat",
+    "reportDescription": "Pilih program untuk melihat penggunaan manfaat dan progres pelaksanaannya.",
     "programList": "Daftar Program",
     "programs": "Program",
     "selectProgram": "Pilih Program",
     "quotaUsage": "Penggunaan Kuota",
     "used": "Terpakai",
     "from": "dari",
-    "totalQuota": "Total Kuota",
+    "totalQuota": "Kuota",
     "remaining": "Sisa",
-    "percentage": "Persentase",
+    "percentage": "Penggunaan",
     "noProgramsAvailable": "Belum ada data program",
     "noBenefitsData": "Tidak ada data manfaat",
-    "selectAnotherProgram": "Silakan pilih program lain",
-    "showingBenefitsFrom": "Menampilkan {count} manfaat dari {program}",
+    "selectAnotherProgram": "Silakan pilih program",
+    "showingBenefitsFrom": "Total {count} manfaat pada program {program}",
     "available": "Tersedia",
     "partial": "Terpakai",
     "full": "Penuh",
@@ -511,7 +510,7 @@
   },
   "Programs": {
     "title": "Overview",
-    "description": "Daftar Perjanjian Kerjasama",
+    "description": "Daftar seluruh program kerja sama sekolah Anda",
     "active": "Aktif",
     "expired": "Kadaluarsa",
     "pic": "PIC",
@@ -526,7 +525,7 @@
     "programsCount_plural": "{count} Program",
     "table": {
       "program": "Program",
-      "pkNumber": "No. PK",
+      "pkNumber": "Referensi",
       "period": "Periode",
       "pic": "PIC",
       "status": "Status",
@@ -614,7 +613,71 @@
     "searchFaq": "Cari pertanyaan...",
     "showMore": "Lihat Lainnya",
     "showLess": "Sembunyikan",
-    "tryDifferentCategory": "Coba pilih kategori lain"
+    "tryDifferentCategory": "Coba pilih kategori lain",
+     "category": {
+      "access": "Akses Akun",
+      "benefits": "Benefit",
+      "events": "Event",
+      "programs": "Program",
+      "account": "Akun"
+    },
+    "faqCategory": {
+      "general": "Umum",
+      "account": "Akun",
+      "benefits": "Benefit",
+      "events": "Event",
+      "programs": "Program"
+    },
+    "faq": {
+      "login": {
+        "question": "Bagaimana cara login ke platform?",
+        "answer": "Anda dapat login menggunakan email dan password yang sudah terdaftar. Jika lupa password, klik \"Lupa Password\" pada halaman login."
+      },
+      "resetPassword": {
+        "question": "Bagaimana cara reset password?",
+        "answer": "Klik \"Lupa Password\" pada halaman login, masukkan email terdaftar, dan ikuti instruksi yang dikirim ke email Anda."
+      },
+      "claimBenefit": {
+        "question": "Bagaimana cara mengklaim benefit?",
+        "answer": "Pilih benefit yang ingin diklaim, pilih event yang tersedia, dan ikuti proses klaim hingga selesai."
+      },
+      "availableBenefits": {
+        "question": "Apa saja benefit yang tersedia?",
+        "answer": "Benefit meliputi pelatihan guru, seminar, workshop, akses resources, dan berbagai program pengembangan lainnya."
+      },
+      "registerEvent": {
+        "question": "Bagaimana cara mendaftar event?",
+        "answer": "Cari event yang tersedia di halaman Event, pilih event yang diinginkan, dan ikuti proses pendaftaran."
+      },
+      "viewPrograms": {
+        "question": "Bagaimana cara melihat program dan dokumen?",
+        "answer": "Akses halaman Program untuk melihat daftar program kemitraan dan dokumen yang tersedia."
+      },
+      "manageAccount": {
+        "question": "Bagaimana cara mengelola akun sekolah?",
+        "answer": "Anda dapat mengelola profil dan informasi akun sekolah melalui menu Pengaturan atau Profil."
+      },
+      "whatIsMentari": {
+        "question": "Apa itu Mentari Partner?",
+        "answer": "Mentari Partner adalah platform kemitraan yang menyediakan berbagai benefit, pelatihan, dan event untuk pengembangan pendidikan."
+      },
+      "contactSupport": {
+        "question": "Bagaimana cara menghubungi support?",
+        "answer": "Anda dapat menghubungi tim support melalui email support@mentarigroups.com atau telepon +62 855-8881-948."
+      },
+      "programDuration": {
+        "question": "Berapa lama durasi program kemitraan?",
+        "answer": "Durasi program kemitraan bervariasi sesuai dengan paket yang dipilih. Cek detail di halaman Program."
+      },
+      "eventFee": {
+        "question": "Apakah ada biaya tambahan untuk mengikuti event?",
+        "answer": "Biaya event bervariasi tergantung jenis event. Namun, untuk mitra yang memiliki benefit, beberapa event dapat diikuti secara gratis atau dengan biaya subsidi."
+      },
+      "viewBenefits": {
+        "question": "Bagaimana cara melihat benefit yang tersedia?",
+        "answer": "Anda dapat melihat daftar benefit yang tersedia melalui halaman Benefit di dashboard."
+      }
+    }
   },
   "About": {
     "title": "Tentang Mentari Partner",

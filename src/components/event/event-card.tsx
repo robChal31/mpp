@@ -59,7 +59,7 @@ export function EventCard({ event }: { event: EventI }) {
                     </div>
 
                     {/* Location - Right Bottom */}
-                    <div className="absolute bottom-3 right-3 max-[640px]:bottom-2 max-[640px]:right-2">
+                    <div className="absolute top-3 right-3 max-[640px]:bottom-2 max-[640px]:right-2">
                         <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium bg-accent/80 text-white backdrop-blur-sm border border-white/10 max-[640px]:px-2 max-[640px]:py-1 max-[640px]:text-[9px]">
                             <Calendar size={12} />   
                             {formatDateRange(event.date_start, event.date_end)}
@@ -102,7 +102,7 @@ export function EventCard({ event }: { event: EventI }) {
                         
                         {/* Button - Inline with info */}
                         <Button 
-                            className="btn-primary shrink-0 group/btn rounded-lg text-[12px]! px-4! py-1.5! h-auto flex-1"
+                            className="btn-outline shrink-0 group/btn rounded-lg text-[12px]! px-4! py-1.5! h-auto flex-1"
                             onClick={(e) => {
                                 e.stopPropagation()
                                 router.push(`/events/${event.title_url}`)
