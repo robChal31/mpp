@@ -92,13 +92,13 @@ function RenewalModal({
           <div className="space-y-2 text-xs text-muted-foreground leading-relaxed sm:space-y-3 sm:text-sm">
             <div className="flex items-start gap-1.5 sm:gap-2">
               <Info size={14} className="mt-0.5 shrink-0 text-primary sm:size-4" />
-              <span>{t('renewal.description')}</span>
+              <span>{t('renewal.description1')} <strong>{programName}</strong> {t('renewal.description2')}</span>
             </div>
             
-            <div className="flex items-start gap-1.5 sm:gap-2">
+            {/* <div className="flex items-start gap-1.5 sm:gap-2">
               <Shield size={14} className="mt-0.5 shrink-0 text-primary sm:size-4" />
               <span>{t('renewal.benefit')}</span>
-            </div>
+            </div> */}
 
             <div className="flex flex-col items-center gap-2 rounded-lg border border-secondary/20 bg-secondary/5 p-2.5 sm:flex-row sm:gap-3 sm:p-3">
               <CircleHelpIcon size={20} className="text-primary sm:size-6.5" />
@@ -270,182 +270,179 @@ export default function DocumentPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-3 sm:px-4 py-4 sm:py-6 min-h-[85vh]">
-      {/* Header */}
-      <div className="md:mb-4 mb-1 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex-1">
-          <h1 className="text-xl font-bold text-primary sm:text-2xl lg:text-3xl">{t('title')}</h1>
-          <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm max-w-2xl">
-            {t('description')}
-          </p>
-        </div>
-        
-        <div className="md:mb-4 mb-1 flex flex-wrap items-center md:justify-end">
-          <p className="md:text-xs text-[10px] text-muted-foreground">
-            {t('programsCount', { count: pkDocuments.length, total: pkDocuments.length })}
-          </p>
-        </div>
-      </div>
+    <div className="md:min-h-[90vh]">
 
-      {/* Table - dengan horizontal scroll di mobile */}
-      <div className="overflow-hidden rounded-sm border border-border bg-white shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-175 sm:min-w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-primary/90">
-                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 sm:py-3 md:text-xs min-w-30">
-                  {t('table.program')}
-                </th>
-                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-22.5">
-                  {t('table.pkNumber')}
-                </th>
-                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-45">
-                  {t('table.period')}
-                </th>
-                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-30">
-                  {t('table.pic')}
-                </th>
-                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-40">
-                  {t('table.contact')}
-                </th>
-                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-20">
-                  {t('table.status')}
-                </th>
-                <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-20">
-                  {t('table.action')}
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border">
-              {pkDocuments.map((program) => {
-                const isActive = program.pk.status === 'active'
-                const programId = program.pk.id_draft
-                const cleanNoPk = program.pk.no_pk ? sanitizeDisplay(program.pk.no_pk) : ''
-                const hasPIC = program.pic?.name && program.pic.name !== '-'
-                const hasContact = (program.pic?.email && program.pic.email !== '-') || 
-                                   (program.pic?.phone && program.pic.phone !== '-' && program.pic.phone !== '0')
+      <div className="mx-auto max-w-6xl md:p-0 p-4 space-y-4">
+        <div className="flex md:min-h-[30vh] min-h-[15vh] items-center bg-[url(/illustrations/overview-banner.png)] bg-cover bg-center bg-no-repeat">
+          <div className="mx-auto w-full max-w-6xl px-4 ">
+            {/* Header */}
+            <h1 className="md:text-4xl text-2xl font-bold text-primary mb-2">{t('title')}</h1>
+            <p className="md:text-2xl text-sm md:text-muted-foreground md:backdrop-blur-none backdrop-blur-md max-w-2xl">
+              {t('description')}
+            </p>
+          </div>
+        </div>
 
-                return (
-                  <tr key={program.id} className="transition-colors hover:bg-muted/20">
-                    <td className="px-2 py-2 sm:px-3 sm:py-3">
-                      <div>
-                        <p className="line-clamp-2 text-[10px] font-medium text-foreground md:text-[11px] capitalize">
-                          {sanitizeDisplay(program.program_category) || program.name}
-                        </p>
-                      </div>
-                    </td>
-                    <td className="px-2 py-2 sm:px-3">
-                      <span className="font-mono text-[10px] text-muted-foreground md:text-[11px]">
-                        {cleanNoPk}
-                      </span>
-                    </td>
-                    <td className="px-2 py-2 sm:px-3">
-                      <div className="flex items-center gap-1 text-[10px] text-muted-foreground sm:gap-1.5 md:text-[11px]">
-                        <Calendar size={10} className="shrink-0 text-primary sm:size-3" />
-                        <span>{formatDate(program.pk.start_at)}</span>
-                        <span className="text-muted-foreground/50">→</span>
-                        {/* <Clock size={10} className="shrink-0 text-secondary sm:size-3" /> */}
-                        <span>{formatDate(program.pk.expired_at)}</span>
-                      </div>
-                    </td>
-                    <td className="px-2 py-2 sm:px-3">
-                      {hasPIC ? (
+        {/* Table - dengan horizontal scroll di mobile */}
+        <div className="overflow-hidden rounded-sm bg-white shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-175 sm:min-w-full text-sm">
+              <thead>
+                <tr className="border-b border-border bg-primary/90">
+                  <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 sm:py-3 md:text-xs min-w-30">
+                    {t('table.program')}
+                  </th>
+                  <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-22.5">
+                    {t('table.pkNumber')}
+                  </th>
+                  <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-45">
+                    {t('table.period')}
+                  </th>
+                  <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-30">
+                    {t('table.pic')}
+                  </th>
+                  <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-40">
+                    {t('table.contact')}
+                  </th>
+                  <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-20">
+                    {t('table.status')}
+                  </th>
+                  <th className="px-2 py-2 text-center text-[10px] font-semibold text-white sm:px-3 md:text-xs min-w-20">
+                    {t('table.action')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {pkDocuments.map((program) => {
+                  const isActive = program.pk.status === 'active'
+                  const programId = program.pk.id_draft
+                  const cleanNoPk = program.pk.no_pk ? sanitizeDisplay(program.pk.no_pk) : ''
+                  const hasPIC = program.pic?.name && program.pic.name !== '-'
+                  const hasContact = (program.pic?.email && program.pic.email !== '-') || 
+                                    (program.pic?.phone && program.pic.phone !== '-' && program.pic.phone !== '0')
+
+                  return (
+                    <tr key={program.id} className="transition-colors hover:bg-muted/20">
+                      <td className="px-2 py-2 sm:px-3 sm:py-3">
                         <div>
-                          <p className="text-[10px] font-medium text-foreground md:text-[11px]">
-                            {program.pic.name}
+                          <p className="line-clamp-2 text-[10px] font-medium text-foreground md:text-[11px] capitalize">
+                            {sanitizeDisplay(program.program_category) || program.name}
                           </p>
-                          {program.pic.position && program.pic.position !== '-' && (
-                            <p className="text-[10px] text-muted-foreground md:text-[11px]">
-                              {program.pic.position}
+                        </div>
+                      </td>
+                      <td className="px-2 py-2 sm:px-3">
+                        <span className="font-mono text-[10px] text-muted-foreground md:text-[11px]">
+                          {cleanNoPk}
+                        </span>
+                      </td>
+                      <td className="px-2 py-2 sm:px-3">
+                        <div className="flex items-center gap-1 text-[10px] text-muted-foreground sm:gap-1.5 md:text-[11px]">
+                          <Calendar size={10} className="shrink-0 text-primary sm:size-3" />
+                          <span>{formatDate(program.pk.start_at)}</span>
+                          <span className="text-muted-foreground/50">→</span>
+                          {/* <Clock size={10} className="shrink-0 text-secondary sm:size-3" /> */}
+                          <span>{formatDate(program.pk.expired_at)}</span>
+                        </div>
+                      </td>
+                      <td className="px-2 py-2 sm:px-3">
+                        {hasPIC ? (
+                          <div>
+                            <p className="text-[10px] font-medium text-foreground md:text-[11px]">
+                              {program.pic.name}
                             </p>
-                          )}
-                        </div>
-                      ) : (
-                        <span className="text-[10px] text-muted-foreground md:text-[11px]">-</span>
-                      )}
-                    </td>
-                    <td className="px-2 py-2 sm:px-3">
-                      {hasContact ? (
-                        <div className="flex flex-col gap-0.5 sm:gap-1">
-                          {program.pic.email && program.pic.email !== '-' && (
-                            <a
-                              href={`mailto:${program.pic.email}`}
-                              className="flex items-center gap-1 text-[10px] text-primary hover:underline transition-colors md:text-[11px]"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <Mail size={10} className="shrink-0 sm:size-3" />
-                              <span className="max-w-24 sm:max-w-32">{program.pic.email}</span>
-                            </a>
-                          )}
-                          {program.pic.phone && program.pic.phone !== '-' && program.pic.phone !== '0' && (
-                            <a
-                              href={`tel:${program.pic.phone}`}
-                              className="flex items-center gap-1 text-[10px] text-muted-foreground hover:text-primary transition-colors md:text-[11px]"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <Phone size={10} className="shrink-0 sm:size-3" />
-                              <span>{program.pic.phone}</span>
-                            </a>
-                          )}
-                        </div>
-                      ) : (
-                        <span className="text-[10px] text-muted-foreground md:text-[11px]">-</span>
-                      )}
-                    </td>
-                    <td className="px-2 py-2 text-center sm:px-3">
-                      <Badge 
-                        className={`text-[8px] font-semibold md:text-[9px] ${
-                          isActive 
-                            ? 'bg-green-100 text-green-700 border-green-200' 
-                            : 'bg-muted text-muted-foreground border-border'
-                        }`}
-                      >
-                        {isActive ? (
-                          <>
-                            <CheckCircle size={8} className="mr-0.5 sm:mr-1 sm:size-2.5" />
-                            {t('active')}
-                          </>
+                            {program.pic.position && program.pic.position !== '-' && (
+                              <p className="text-[10px] text-muted-foreground md:text-[11px]">
+                                {program.pic.position}
+                              </p>
+                            )}
+                          </div>
                         ) : (
-                          t('expired')
+                          <span className="text-[10px] text-muted-foreground md:text-[11px]">-</span>
                         )}
-                      </Badge>
-                    </td>
-                    <td className="px-2 py-2 text-right sm:px-3">
-                      <div className="flex items-center justify-end gap-1 sm:gap-1.5">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setRenewalModal({
-                            isOpen: true,
-                            programId: programId,
-                            programName: sanitizeDisplay(program.name) || program.name,
-                            endDate: formatDate(program.pk.expired_at)
-                          })}
-                          className="h-6 gap-0.5 px-1.5 text-[8px] text-primary hover:bg-primary/10 sm:h-7 sm:gap-1 sm:px-2 md:text-[9px]"
-                          disabled={isRenewing}
+                      </td>
+                      <td className="px-2 py-2 sm:px-3">
+                        {hasContact ? (
+                          <div className="flex flex-col gap-0.5 sm:gap-1">
+                            {program.pic.email && program.pic.email !== '-' && (
+                              <a
+                                href={`mailto:${program.pic.email}`}
+                                className="flex items-center gap-1 text-[10px] text-primary hover:underline transition-colors md:text-[11px]"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <Mail size={10} className="shrink-0 sm:size-3" />
+                                <span className="max-w-24 sm:max-w-32">{program.pic.email}</span>
+                              </a>
+                            )}
+                            {program.pic.phone && program.pic.phone !== '-' && program.pic.phone !== '0' && (
+                              <a
+                                href={`tel:${program.pic.phone}`}
+                                className="flex items-center gap-1 text-[10px] text-muted-foreground hover:text-primary transition-colors md:text-[11px]"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <Phone size={10} className="shrink-0 sm:size-3" />
+                                <span>{program.pic.phone}</span>
+                              </a>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-[10px] text-muted-foreground md:text-[11px]">-</span>
+                        )}
+                      </td>
+                      <td className="px-2 py-2 text-center sm:px-3">
+                        <Badge 
+                          className={`text-[8px] font-semibold md:text-[9px] ${
+                            isActive 
+                              ? 'bg-green-100 text-green-700 border-green-200' 
+                              : 'bg-muted text-muted-foreground border-border'
+                          }`}
                         >
-                          <RefreshCw size={10} className="sm:size-3" />
-                          <span className="md:text-xs md:inline hidden">{t('renew')}</span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                          {isActive ? (
+                            <>
+                              <CheckCircle size={8} className="mr-0.5 sm:mr-1 sm:size-2.5" />
+                              {t('active')}
+                            </>
+                          ) : (
+                            t('expired')
+                          )}
+                        </Badge>
+                      </td>
+                      <td className="px-2 py-2 text-right sm:px-3">
+                        <div className="flex items-center justify-end gap-1 sm:gap-1.5">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setRenewalModal({
+                              isOpen: true,
+                              programId: programId,
+                              programName: sanitizeDisplay(program.name) || program.name,
+                              endDate: formatDate(program.pk.expired_at)
+                            })}
+                            className="h-6 gap-0.5 px-1.5 text-[8px] text-primary hover:bg-primary/10 sm:h-7 sm:gap-1 sm:px-2 md:text-[9px]"
+                            disabled={isRenewing}
+                          >
+                            <RefreshCw size={10} className="sm:size-3" />
+                            <span className="md:text-xs md:inline hidden">{t('renew')}</span>
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
 
-      {/* Renewal Modal */}
-      <RenewalModal
-        isOpen={renewalModal.isOpen}
-        onClose={() => setRenewalModal({ ...renewalModal, isOpen: false })}
-        programName={renewalModal.programName}
-        endDate={renewalModal.endDate}
-        onRenew={() => handleRenew(renewalModal.programId)}
-        isRenewing={isRenewing}
-      />
+        {/* Renewal Modal */}
+        <RenewalModal
+          isOpen={renewalModal.isOpen}
+          onClose={() => setRenewalModal({ ...renewalModal, isOpen: false })}
+          programName={renewalModal.programName}
+          endDate={renewalModal.endDate}
+          onRenew={() => handleRenew(renewalModal.programId)}
+          isRenewing={isRenewing}
+        />
+      </div>
     </div>
   )
 }

@@ -32,8 +32,8 @@ export function BenefitCTA() {
         </div>
         
         {/* Right side - CTA Button */}
-        <Link href="/help" className="w-full shrink-0 sm:w-auto">
-          <Link href={"/help-center"} className="btn-sm btn-primary">
+        <Link href="/help" className="md:w-auto w-full shrink-0 sm:w-auto">
+          <Link href={"/help-center"} className="btn-sm btn-primary w-full">
             <span className="text-[11px] md:text-xs">{t('ctaButton2')}</span>
             <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
           </Link>

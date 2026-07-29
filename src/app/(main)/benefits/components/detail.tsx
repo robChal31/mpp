@@ -293,13 +293,13 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
           />
         </div>
       </div>
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto md:px-0 px-4">
         {/* ====== VIEW ONLY ====== */}
         {!isClaimable ? (
           <Card className="p-5">
-            <div className="flex items-center">
+            <div className="flex items-center py-1">
               <History size={18} className="text-primary mr-1" />
-              <h3 className="font-semibold text-gray-900">{t('usageHistory')}</h3>
+              <h3 className="font-semibold">{t('usageHistory')}</h3>
               {usages.length > 0 && (
                 <span className="ml-auto px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
                   {usages.length} {t('entries')}
@@ -325,8 +325,8 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                               <FileText size={16} className="text-gray-500" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="font-medium text-sm text-gray-800 line-clamp-2">
-                                {history.description?.split('\n')[0] || benefit.benefit_name || t('benefitUsed')}
+                              <p className="font-medium text-sm text-gray-800 line-clamp-6 whitespace-pre-line">
+                                {history.description}
                               </p>
                               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mt-1">
                                 <span className="flex items-center gap-1">
@@ -350,12 +350,19 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                 })}
               </div>
             ) : (
-              <div className="text-center py-10 text-muted-foreground">
-                <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-3">
-                  <History size={28} className="opacity-30" />
+              <div className="flex flex-col items-center justify-center gap-4 py-8 text-center">
+                {/* Icon dengan efek glow */}
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full bg-primary/5 blur-xl" />
+                  <div className="relative flex h-16 w-16 items-center justify-center rounded-full border border-primary/10 bg-linear-to-br from-white to-primary/5 shadow-sm">
+                    <History size={28} className="text-primary/40" />
+                  </div>
                 </div>
-                <p>{t('noUsageHistory')}</p>
-                <p className="text-xs mt-1">{t('historyWillAppear')}</p>
+                
+                <div className="space-y-1.5 max-w-xs">
+                  <p className="text-sm font-semibold text-foreground">{t('noUsageHistory')}</p>
+                  <p className="text-xs text-muted-foreground/60 leading-relaxed">{t('historyWillAppear')}</p>
+                </div>
               </div>
             )}
           </Card>
@@ -470,7 +477,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                         const isItemExpanded = expandedItems[history.id] || false
                         
                         const remainingUnused = qtyUsed - participants.length
-                        const canReclaim = remainingUnused > 0;
+                        const canReclaim = remainingUnused > 0 && !expired;
                         return (
                           <div className="rounded-lg border border-border" key={history.id}>
                             <div className="w-full flex items-center justify-between p-3 text-left max-[640px]:flex-col max-[640px]:items-start max-[640px]:gap-2">
@@ -753,8 +760,8 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
 
       {/* How to Claim Card - hanya untuk claimable */}
       {isClaimable && (
-        <div className="bg-primary/2 py-5">
-          <div className="max-w-4xl mx-auto space-y-2 animate-in fade-in zoom-in-95 duration-200">
+        <div className="bg-primary/2 py-5 md:px-2 px-4">
+          <div className="max-w-4xl mx-auto space-y-4 animate-in fade-in zoom-in-95 duration-200">
             <HowToClaim 
               totalQuota={totalQuota} 
               relatedEventsCount={relatedEvents.length}

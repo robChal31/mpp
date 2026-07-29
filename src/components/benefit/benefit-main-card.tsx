@@ -53,9 +53,9 @@ export function BenefitMainCard({ benefit, pk, totalQuota, expired }: BenefitMai
                 {sanitizeDisplay(benefit.benefit_name)}
               </h1>
               <div className="flex flex-wrap gap-1 sm:gap-2">
-                <span className="rounded-full font-semibold bg-accent/10 px-2 py-1 text-[8px] text-accent sm:px-3 sm:py-1.5 sm:text-[9px]">
+                {/* <span className="rounded-full font-semibold bg-accent/10 px-2 py-1 text-[8px] text-accent sm:px-3 sm:py-1.5 sm:text-[9px]">
                   {benefit.event_group_code}
-                </span>
+                </span> */}
                 {expired && (
                   <span className="whitespace-nowrap rounded-full bg-destructive/10 px-1.5 py-0.5 text-[10px] text-destructive sm:px-2 sm:py-0.5 sm:text-sm">
                     ⏰ {t('expired')}

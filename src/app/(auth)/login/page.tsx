@@ -47,7 +47,7 @@ export default function LoginPage() {
       {/* LEFT SIDE - Brand Panel (Desktop Only) */}
       <div className="hidden lg:flex w-[55%] justify-center items-center overflow-hidden">
         <div className="z-10 flex h-full w-full flex-col justify-end max-h-9/12 px-16">
-          <div className="flex items-center gap-5 backdrop-blur-xs p-2">
+          <div className="flex items-center gap-5 p-2">
             <div>
               <p className="text-4xl font-medium uppercase tracking-[0.15em] text-white">
                 Welcome to

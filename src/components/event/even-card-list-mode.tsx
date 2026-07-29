@@ -56,7 +56,7 @@ const EventCardListMode: React.FC<EventCardListModeProps> = ({
         <div className="relative overflow-hidden rounded-xl border border-border bg-white transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:-translate-y-0.5">
           <div className="flex flex-col md:flex-row">
             {/* Image Section - Lebih proporsional */}
-            <div className="relative h-52 shrink-0 overflow-hidden bg-gradient-to-br from-muted to-secondary/20 md:w-56 max-[640px]:h-44">
+            <div className="relative h-52 shrink-0 overflow-hidden bg-linear-to-br from-muted to-secondary/20 md:w-56 max-[640px]:h-44">
               {event.photoevent ? (
                 <>
                   <img
@@ -65,7 +65,7 @@ const EventCardListMode: React.FC<EventCardListModeProps> = ({
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 </>
               ) : (
                 <div className="flex h-full w-full items-center justify-center">

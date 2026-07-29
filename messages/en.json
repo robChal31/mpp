@@ -214,7 +214,7 @@
     "events": "Events",
     "settings": "Settings",
     "documents": "Documents",
-    "overview": "Overview",
+    "overview": "Program",
     "helpCenter": "Help Center",
     "about": "About",
     "faq": "FAQ"
@@ -254,8 +254,8 @@
     "processing": "Processing...",
     "claimButtonSingular": "Claim {qty} Slot",
     "claimButtonPlural": "Claim {qty} Slots",
-    "warningNoteSingular": "This claim will use {qty} slot ffrom your benefit quota. This action cannot be undone.",
-    "warningNotePlural": "This claim will use {qty} slots ffrom your benefit quota. This action cannot be undone.",
+    "warningNoteSingular": "This claim will use {qty} quota ffrom your benefit quota. This action cannot be undone.",
+    "warningNotePlural": "This claim will use {qty} quotas ffrom your benefit quota. This action cannot be undone.",
     "invalidQuantity": "Please enter a quantity between 1 and {max}",
     "claimSuccess": "Benefit Successfully Claimed!",
     "redeemCode": "Redeem Code",
@@ -264,7 +264,7 @@
     "claimError": "Error claiming benefit. Please try again.",
     "claimForEvent": "Claim for event:",
     "linkCopied": "Link copied to clipboard!",
-    "claimSuccessDesc": "Benefit successfully claimed! Save the following redeem code.",
+    "claimSuccessDesc": "Use the redeem code below for your registration",
     "eventTitle": "Event",
     "codeCopied": "Code copied!",
     "successNote": "This redeem code will be used to access the event. Do not share it with others.",
@@ -273,8 +273,8 @@
     "close": "Close"
   },
   "Benefits": {
-    "title1": "List of",
-    "title2": "Benefit Programs",
+    "title1": "Benefit",
+    "title2": "Programs",
     "description": "All the benefits included in your school's partnership program. \n Select a program to view its detailed benefits and terms of use",
     "failedToLoad": "Failed to load benefits",
     "filterByPK": "Filter by PK:",
@@ -331,7 +331,7 @@
     "remaining": "Remaining",
     "percentage": "Usage",
     "noProgramsAvailable": "No program data available",
-    "noBenefitsData": "No benefits data available",
+    "noBenefitsData": "No benefits data",
     "selectAnotherProgram": "Please select a program",
     "showingBenefitsFrom": "Showing {count} benefits from {program}",
     "available": "Available",
@@ -408,7 +408,7 @@
     "viewOnlyDescription": "This benefit is for information purposes only and cannot be claimed through this platform.",
     "informationOnly": "Information Only",
     "records": "records",
-    "entries": "entries",
+    "entries": "activities",
     "completed": "Completed",
     "tour": {
       "welcome": {
@@ -535,20 +535,21 @@
     "renew": "Renew",
     "detail": "Detail",
     "renewal": {
-      "title": "List of Exclusive Partnership",
+      "title": "List of Exclusive Partnerships",
       "program": "Program",
       "endsOn": "Ends on",
-      "description": "Renew your partnership program to continue enjoying exclusive benefits.",
+      "description1": "Renew your",
+      "description2": "program now to continue enjoying various exclusive benefits from Mentari Group.",
       "benefit": "By renewing, you will retain access to all available benefits.",
       "success": "Renewal Program Submission Successful!",
       "cancel": "Cancel",
       "processing": "Processing...",
       "done": "Done!",
       "renew": "Renew Now",
-      "successMessage": "Renewal Program Submission Successful!",
-      "consultantHelp": "If you have questions or need further explanation,",
-      "consultantAvailable": "our Education Consultant is ready to help and can be contacted",
-      "gratitude": "We hope the partnership has been fruitful so far. Thank you for your trust and support."
+      "successMessage": "Renewal Program Submission Successful",
+      "consultantHelp": "Need more information?",
+      "consultantAvailable": "Our Education Consultant is ready to help answer your questions.",
+      "gratitude": "We hope our partnership continues to thrive. Thank you for your trust and support."
     }
   },
   "OnboardingTour": {
@@ -628,6 +629,7 @@
       "events": "Events",
       "programs": "Programs"
     },
+
     "faq": {
       "login": {
         "question": "How to login to the platform?",
@@ -676,8 +678,17 @@
       "viewBenefits": {
         "question": "How to view available benefits?",
         "answer": "You can view the list of available benefits through the Benefits page on the dashboard."
+      },
+      "whoIsPIC": {
+        "question": "Who should be appointed as the Mentari Partner PIC at the school?",
+        "answer": "Schools appoint one person as the Mentari Partner PIC responsible for managing information and coordination related to school programs and benefits.\n\nThe PIC can come from those who understand school development needs, such as the Principal, Curriculum Coordinator, or Head of the relevant department.\n\nThe PIC will serve as the main liaison between the school and Mentari Group to ensure information about programs, benefits, and activities is well coordinated."
+      },
+      "getHelp": {
+        "question": "How to get help?",
+        "answer": "If you need assistance, please contact the Mentari Partner team through the contact information available on the Help page."
       }
     }
+
   },
   "About": {
     "title": "About Mentari Partner",

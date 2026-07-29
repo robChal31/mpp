@@ -213,7 +213,7 @@
     "events": "Event",
     "settings": "Pengaturan",
     "documents": "Dokumen",
-    "overview": "Overview",
+    "overview": "Program",
     "helpCenter": "Pusat Bantuan",
     "about": "Tentang",
     "faq": "FAQ"
@@ -234,11 +234,11 @@
     "person": "orang",
     "benefitAvailable": "Anda memiliki manfaat yang tersedia!",
     "useBenefitToClaim": "Gunakan manfaat Anda untuk mengklaim kode voucher",
-    "slotsLeft": "slot tersisa",
-    "slotLeft": "slot tersisa",
+    "slotsLeft": "kuota tersisa",
+    "slotLeft": "kuota tersisa",
     "selectBenefit": "Pilih manfaat yang akan digunakan...",
     "claimWithBenefit": "Klaim dengan Manfaat",
-    "noSlotsAvailable": "Tidak ada slot tersedia untuk manfaat ini",
+    "noSlotsAvailable": "Tidak ada kuota tersedia untuk manfaat ini",
     "registerNow": "Daftar Sekarang",
     "registrationClosed": "Pendaftaran Ditutup",
     "eventEnded": "Acara Berakhir",
@@ -247,14 +247,14 @@
     "benefit": "Manfaat",
     "quantityToClaim": "Jumlah yang Diklaim",
     "available": "Tersedia",
-    "slot": "slot",
-    "slots": "slot",
+    "slot": "kuota",
+    "slots": "kuota",
     "cancel": "Batal",
     "processing": "Memproses...",
-    "claimButtonSingular": "Klaim {qty} Slot",
-    "claimButtonPlural": "Klaim {qty} Slot",
-    "warningNoteSingular": "Tindakan ini akan menggunakan {qty} dari kuota manfaat Anda. Tindakan ini tidak dapat dibatalkan.",
-    "warningNotePlural": "Tindakan ini akan menggunakan {qty} dari kuota manfaat Anda. Tindakan ini tidak dapat dibatalkan.",
+    "claimButtonSingular": "Klaim {qty} Kuota",
+    "claimButtonPlural": "Klaim {qty} Kuota",
+    "warningNoteSingular": "{qty} kuota manfaat Anda akan digunakan. Penggunaan ini tidak dapat dibatalkan setelah klaim berhasil",
+    "warningNotePlural": "{qty} kuota manfaat Anda akan digunakan. Penggunaan ini tidak dapat dibatalkan setelah klaim berhasil",
     "invalidQuantity": "Harap masukkan jumlah antara 1 dan {max}",
     "claimSuccess": "Manfaat Berhasil Diklaim!",
     "redeemCode": "Kode Redeem",
@@ -263,7 +263,7 @@
     "claimError": "Terjadi kesalahan saat mengklaim manfaat. Silakan coba lagi.",
     "claimForEvent": "Klaim untuk acara:",
     "linkCopied": "Tautan disalin ke clipboard!",
-    "claimSuccessDesc": "Manfaat berhasil diklaim! Simpan kode redeem berikut.",
+    "claimSuccessDesc": "Gunakan kode voucher berikut untuk pendaftaran Anda",
     "eventTitle": "Event",
     "codeCopied": "Kode berhasil disalin!",
     "successNote": "Kode redeem ini akan digunakan untuk mengakses event. Jangan bagikan ke orang lain.",
@@ -272,8 +272,8 @@
     "close": "Tutup"
   },
   "Benefits": {
-    "title1": "Daftar",
-    "title2": "Manfaat Program",
+    "title1": "Manfaat",
+    "title2": "Program",
     "description": "Seluruh manfaat yang termasuk dalam program kerjasama sekolah Anda. \n Pilih salah satu program untuk melihat rincian manfaat dan ketentuan penggunaannya.",
     "failedToLoad": "Gagal memuat manfaat",
     "filterByPK": "Filter berdasarkan PK:",
@@ -295,7 +295,7 @@
     "claimable": "Dapat diklaim",
     "viewOnly": "Hanya dapat dilihat",
     "subject": "Subjek",
-    "slots": "slot",
+    "slots": "kuota",
     "noBenefitsFound": "Tidak ada manfaat yang ditemukan sesuai pencarian Anda.",
     "noBenefitsAvailable": "Tidak ada manfaat yang tersedia.",
     "clearFilters": "Hapus Filter",
@@ -353,7 +353,7 @@
   "BenefitDetail": {
     "backToBenefits": "Kembali",
     "expired": "Kadaluarsa",
-    "availableSlots": "Slot Tersedia",
+    "availableSlots": "Kuota Tersedia",
     "validUntil": "Berlaku Hingga",
     "events": "Acara",
     "usageHistory": "Riwayat Penggunaan",
@@ -363,13 +363,13 @@
     "checkBackLater": "Periksa kembali nanti untuk acara baru",
     "voucherCode": "Kode Voucher",
     "benefitUsed": "Manfaat Digunakan",
-    "slots": "slot",
-    "slot": "slot",
+    "slots": "kuota",
+    "slot": "kuota",
     "units": "unit",
     "unit": "unit",
     "used": "digunakan",
     "unused": "belum digunakan",
-    "moveSlots": "Pindahkan {count} Slot",
+    "moveSlots": "Pindahkan {count} Kuota",
     "move": "Pindah {count}",
     "participantsList": "📋 Daftar Peserta ({count} digunakan)",
     "noParticipantsUsed": "Belum ada peserta yang menggunakan.",
@@ -379,13 +379,13 @@
     "moveToAnotherEvent": "Pindah ke Acara Lain",
     "originalEvent": "Acara Asli",
     "unknown": "Tidak Diketahui",
-    "unusedSlots": "Slot yang belum digunakan",
+    "unusedSlots": "Kuota yang belum digunakan",
     "selectNewEvent": "Pilih Acara Baru",
     "noRelatedEvents": "Tidak ada acara yang tersedia untuk manfaat ini saat ini.",
     "quantityToMove": "Jumlah yang Dipindahkan (max: {max})",
     "available": "Tersedia",
-    "warningMoveMessageSingular": "Tindakan ini akan memindahkan {qty} slot dari acara lama ke acara baru. Voucher asli akan disesuaikan.",
-    "warningMoveMessagePlural": "Tindakan ini akan memindahkan {qty} slot dari acara lama ke acara baru. Voucher asli akan disesuaikan.",
+    "warningMoveMessageSingular": "Tindakan ini akan memindahkan {qty} kuota dari acara lama ke acara baru. Voucher asli akan disesuaikan.",
+    "warningMoveMessagePlural": "Tindakan ini akan memindahkan {qty} kuota dari acara lama ke acara baru. Voucher asli akan disesuaikan.",
     "selectNewEventError": "Silakan pilih acara baru",
     "invalidQuantity": "Jumlah harus antara 1 dan {max}",
     "moveSuccess": "Berhasil dipindahkan ke acara baru!",
@@ -407,7 +407,7 @@
     "viewOnlyDescription": "manfaat ini hanya dapat dilihat informasinya dan tidak dapat diklaim melalui platform ini.",
     "informationOnly": "Informasi Saja",
     "records": "catatan",
-    "entries": "entri",
+    "entries": "aktifitas",
     "completed": "Selesai",
     "tour": {
       "welcome": {
@@ -444,7 +444,7 @@
       },
       "historyItem": {
         "title": "📋 Riwayat Penggunaan",
-        "content": "Setiap riwayat menunjukkan kode voucher, jumlah slot, dan peserta. Klik panah kanan untuk lihat detail peserta."
+        "content": "Setiap riwayat menunjukkan kode voucher, jumlah kuota, dan peserta. Klik panah kanan untuk lihat detail peserta."
       },
       "howToClaim": {
         "title": "ℹ️ Cara Klaim Manfaat",
@@ -538,16 +538,17 @@
       "title": "Daftar Kerjasama Eksklusif",
       "program": "Program",
       "endsOn": "Berakhir pada",
-      "description": "Perpanjang program kemitraan Anda untuk terus menikmati berbagai manfaat eksklusif.",
-      "benefit": "Dengan memperpanjang, Anda akan tetap mendapatkan akses ke semua benefit yang tersedia.",
+      "description1": "Perpanjang program ",
+      "description2": "sekolah Anda sekarang, untuk terus menikmati berbagai manfaat eksklusif dari Mentari Group.",
+      "benefit": "Dengan memperpanjang, Anda akan tetap mendapatkan akses ke semua manfaat yang tersedia.",
       "success": "Pengajuan Perpanjangan Program Berhasil dikirim!",
       "cancel": "Batal",
       "processing": "Memproses...",
       "done": "Selesai!",
       "renew": "Perpanjang Sekarang",
       "successMessage": "Pengajuan Perpanjangan Program Berhasil dikirim",
-      "consultantHelp": "Jika Anda memiliki pertanyaan atau penjelasan yang perlu diketahui terlebih dahulu,",
-      "consultantAvailable": "Education Consultant kami siap membantu dan dapat dihubungi",
+      "consultantHelp": "Butuh informasi lebih lanjut?",
+      "consultantAvailable": "Education Consultant kami siap membantu menjawab pertanyaan Anda.",
       "gratitude": "Kami berharap kerja sama yang telah terjalin selama ini dapat terus berlanjut. Terima kasih atas kepercayaan dan dukungan Anda."
     }
   },
@@ -604,7 +605,7 @@
     "stillHavingTrouble": "Masih kesulitan?",
     "troubleDescription": "Tim kami siap membantu Anda dalam menggunakan platform Mentari Partner.",
     "videoTutorials": "Video Tutorial",
-    "frequentlyAskedQuestions": "Pertanyaan Umum (FAQ)",
+    "frequentlyAskedQuestions": "Pertanyaan Umum",
     "all": "Semua",
     "noFaqFound": "Belum ada pertanyaan untuk kategori ini",
     "stillNeedHelpTitle": "Masih butuh bantuan?",
@@ -616,7 +617,7 @@
     "tryDifferentCategory": "Coba pilih kategori lain",
      "category": {
       "access": "Akses Akun",
-      "benefits": "Benefit",
+      "benefits": "Manfaat",
       "events": "Event",
       "programs": "Program",
       "account": "Akun"
@@ -624,7 +625,7 @@
     "faqCategory": {
       "general": "Umum",
       "account": "Akun",
-      "benefits": "Benefit",
+      "benefits": "Manfaat",
       "events": "Event",
       "programs": "Program"
     },
@@ -638,12 +639,12 @@
         "answer": "Klik \"Lupa Password\" pada halaman login, masukkan email terdaftar, dan ikuti instruksi yang dikirim ke email Anda."
       },
       "claimBenefit": {
-        "question": "Bagaimana cara mengklaim benefit?",
-        "answer": "Pilih benefit yang ingin diklaim, pilih event yang tersedia, dan ikuti proses klaim hingga selesai."
+        "question": "Bagaimana cara mengklaim manfaat?",
+        "answer": "Pilih manfaat yang ingin diklaim, pilih event yang tersedia, dan ikuti proses klaim hingga selesai."
       },
       "availableBenefits": {
-        "question": "Apa saja benefit yang tersedia?",
-        "answer": "Benefit meliputi pelatihan guru, seminar, workshop, akses resources, dan berbagai program pengembangan lainnya."
+        "question": "Apa saja manfaat yang tersedia?",
+        "answer": "Manfaat meliputi pelatihan guru, seminar, workshop, akses resources, dan berbagai program pengembangan lainnya."
       },
       "registerEvent": {
         "question": "Bagaimana cara mendaftar event?",
@@ -659,7 +660,7 @@
       },
       "whatIsMentari": {
         "question": "Apa itu Mentari Partner?",
-        "answer": "Mentari Partner adalah platform kemitraan yang menyediakan berbagai benefit, pelatihan, dan event untuk pengembangan pendidikan."
+        "answer": "Mentari Partner adalah platform kemitraan yang menyediakan berbagai manfaat, pelatihan, dan event untuk pengembangan pendidikan."
       },
       "contactSupport": {
         "question": "Bagaimana cara menghubungi support?",
@@ -671,21 +672,29 @@
       },
       "eventFee": {
         "question": "Apakah ada biaya tambahan untuk mengikuti event?",
-        "answer": "Biaya event bervariasi tergantung jenis event. Namun, untuk mitra yang memiliki benefit, beberapa event dapat diikuti secara gratis atau dengan biaya subsidi."
+        "answer": "Biaya event bervariasi tergantung jenis event. Namun, untuk mitra yang memiliki manfaat, beberapa event dapat diikuti secara gratis atau dengan biaya subsidi."
       },
       "viewBenefits": {
-        "question": "Bagaimana cara melihat benefit yang tersedia?",
-        "answer": "Anda dapat melihat daftar benefit yang tersedia melalui halaman Benefit di dashboard."
+        "question": "Bagaimana cara melihat manfaat yang tersedia?",
+        "answer": "Anda dapat melihat daftar manfaat yang tersedia melalui halaman Manfaat di dashboard."
+      },
+      "whoIsPIC": {
+        "question": "Siapa yang sebaiknya ditunjuk sebagai PIC Mentari Partner di sekolah?",
+        "answer": "Sekolah menunjuk satu orang sebagai PIC Mentari Partner yang bertanggung jawab untuk mengelola informasi dan koordinasi terkait program dan manfaat sekolah.\n\nPIC dapat berasal dari pihak yang memahami kebutuhan pengembangan sekolah, seperti Kepala Sekolah, Koordinator Kurikulum, atau Kepala Departemen terkait.\n\nPIC akan menjadi penghubung utama antara sekolah dan Mentari Group untuk memastikan informasi mengenai program, manfaat, dan kegiatan dapat dikoordinasikan dengan baik."
+      },
+      "getHelp": {
+        "question": "Bagaimana cara mendapatkan bantuan?",
+        "answer": "Jika Anda membutuhkan bantuan, silakan hubungi tim Mentari Partner melalui informasi kontak yang tersedia di halaman Bantuan."
       }
     }
   },
   "About": {
     "title": "Tentang Mentari Partner",
-    "description": "Platform kemitraan yang memberdayakan sekolah dengan benefit premium, pelatihan, dan sumber daya pendidikan.",
+    "description": "Platform kemitraan yang memberdayakan sekolah dengan manfaat premium, pelatihan, dan sumber daya pendidikan.",
     "badge": "Mentari Partner",
     "heroTitle": "Tentang",
     "heroHighlight": "Mentari Partner",
-    "heroDescription": "Platform kemitraan yang memberdayakan sekolah dengan benefit premium, pelatihan, dan sumber daya pendidikan untuk mendukung kemajuan pendidikan Indonesia.",
+    "heroDescription": "Platform kemitraan yang memberdayakan sekolah dengan manfaat premium, pelatihan, dan sumber daya pendidikan untuk mendukung kemajuan pendidikan Indonesia.",
     "missionTitle": "Misi Kami",
     "missionDescription": "Menjadi kontributor aktif dalam pembangunan SDM yang unggul di Indonesia untuk bisa berdiri sejajar dengan bangsa-bangsa terkemuka di dunia melalui jalur pendidikan",
     "visionTitle": "Visi Kami",
@@ -719,8 +728,8 @@
     "offerTitle": "Apa yang Kami Tawarkan",
     "offer": {
       "benefits": {
-        "title": "Benefit Premium",
-        "description": "Akses ke berbagai benefit eksklusif untuk mitra"
+        "title": "Manfaat Premium",
+        "description": "Akses ke berbagai manfaat eksklusif untuk mitra"
       },
       "training": {
         "title": "Pelatihan & Workshop",

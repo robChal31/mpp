@@ -259,49 +259,20 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-6xl mx-auto px-4 max-[640px]:px-3 py-8 max-[640px]:py-6">
-        {/* Header */}
-        <div className="relative mb-8 text-center max-[640px]:mb-6">
-          {/* Decorative badge */}
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-primary max-[640px]:mb-3 max-[640px]:px-3">
-            <Calendar size={16} className="max-[640px]:size-4" />
-            <span className="text-sm font-medium max-[640px]:text-xs">{t('upcomingBadge')}</span>
-          </div>
-          
-          {/* Title & Description */}
-          <h1 className="mb-4 text-3xl font-bold text-foreground max-[640px]:mb-2 max-[640px]:text-2xl md:text-4xl">
-            {t('pageTitle')}
-          </h1>
-          <p className="mx-auto max-w-2xl text-base text-muted-foreground max-[640px]:text-sm">
-            {t('pageDescription')}
-          </p>
-          
-          {/* Ilustrasi Date - Kiri dengan overlay */}
-          <div className="pointer-events-none absolute left-4 md:top-1/2 top-1/7 -translate-y-1/2 max-[640px]:left-2">
-            <div className="relative">
-              <div className="absolute inset-0 md:bg-linear-to-r from-white via-white/60 to-transparent bg-transparent"></div>
-              <img 
-                src="/illustrations/date.png" 
-                alt="date" 
-                className="relative h-auto w-32 md:opacity-20 opacity-40 max-[640px]:w-20 md:w-42 lg:w-52"
-              />
-            </div>
-          </div>
-          
-          <div className="pointer-events-none absolute right-4 md:top-1/2 top-1/7 -translate-y-1/2 max-[640px]:right-2">
-            <div className="relative">
-              <div className="absolute inset-0 md:bg-linear-to-l from-white via-white/60 to-transparent bg-transparent"></div>
-              <img 
-                src="/illustrations/trophy2.png" 
-                alt="benefits" 
-                className="relative h-auto w-32 md:opacity-20 opacity-40 max-[640px]:w-20 md:w-42 lg:w-52"
-              />
-            </div>
+      <div className="mx-auto max-w-6xl md:p-0 p-4 space-y-4">
+      {/* Header */}
+        <div className="flex md:min-h-[30vh] min-h-[15vh] items-center bg-[url(/illustrations/event-banner.png)] bg-cover bg-center bg-no-repeat">
+          <div className="mx-auto w-full max-w-6xl px-4 ">
+            {/* Header */}
+              <h1 className="md:text-4xl text-2xl font-bold text-primary mb-2">{t('pageTitle')}</h1>
+              <p className="md:text-2xl text-sm md:text-muted-foreground md:backdrop-blur-none backdrop-blur-md max-w-2xl">
+                {t('pageDescription')}
+              </p>
           </div>
         </div>
-
+     
         {/* Main Content Area - Sidebar layout */}
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-6 md:px-2">
           {/* Desktop Sidebar Filter */}
           <aside className="hidden lg:block lg:w-60 shrink-0">
             <div className="sticky top-24 bg-card rounded-xl border border-border p-4">

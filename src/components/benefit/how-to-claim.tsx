@@ -15,7 +15,7 @@ export function HowToClaim({ totalQuota, relatedEventsCount, expired = false }: 
 
   if (expired) {
     return (
-      <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-4">
+      <div className="rounded-xl border border-destructive/20 p-4">
         <div className="flex items-center gap-3">
           <div className="text-2xl">⏰</div>
           <div>

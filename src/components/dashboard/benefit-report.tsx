@@ -73,7 +73,6 @@ export function BenefitReport() {
                     method: 'POST',
                 })
                 const data = await res.json()
-                console.log('data: ', data)
                 if (data.status === 'error') {
                     toast.error(data.message || t('failedToLoad'))
                     setListPrograms([])
@@ -419,12 +418,14 @@ export function BenefitReport() {
                     </div>
                 </>
             ) : (
-                <div className="flex flex-col items-center justify-center gap-2 md:py-12 my-6">
-                    <FileText size={24} className="mx-auto mb-2 text-muted-foreground/20 sm:mb-3 sm:text-[36px]" />
-                    <p className="text-[10px] font-medium sm:text-sm">{t('noBenefitsData')}</p>
-                    <p className="mt-1 text-[9px] text-muted-foreground/70 sm:text-xs">
-                        {t('selectAnotherProgram')}
-                    </p>
+                <div className="flex flex-col items-center justify-center gap-3 py-8">
+                    <div className="rounded-full bg-secondary/20 p-4">
+                        <FileText size={32} className="text-secondary/90" />
+                    </div>
+                    <div className="text-center space-y-1">
+                        <p className="text-sm font-medium text-foreground">{t('noBenefitsData')}</p>
+                        <p className="text-xs text-muted-foreground/70">{t('selectAnotherProgram')}</p>
+                    </div>
                 </div>
             )}
 

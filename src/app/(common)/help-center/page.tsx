@@ -72,20 +72,23 @@ const tutorialData: VideoTutorial[] = [
 ]
 
 const faqData: FAQData[] = [
-  { id: '1', questionKey: 'faq.login.question', answerKey: 'faq.login.answer', category: 'account' },
-  { id: '2', questionKey: 'faq.resetPassword.question', answerKey: 'faq.resetPassword.answer', category: 'account' },
-  { id: '3', questionKey: 'faq.claimBenefit.question', answerKey: 'faq.claimBenefit.answer', category: 'benefits' },
-  { id: '4', questionKey: 'faq.availableBenefits.question', answerKey: 'faq.availableBenefits.answer', category: 'benefits' },
-  { id: '5', questionKey: 'faq.registerEvent.question', answerKey: 'faq.registerEvent.answer', category: 'events' },
-  { id: '6', questionKey: 'faq.viewPrograms.question', answerKey: 'faq.viewPrograms.answer', category: 'programs' },
-  { id: '7', questionKey: 'faq.manageAccount.question', answerKey: 'faq.manageAccount.answer', category: 'account' },
-  { id: '8', questionKey: 'faq.whatIsMentari.question', answerKey: 'faq.whatIsMentari.answer', category: 'general' },
-  { id: '9', questionKey: 'faq.contactSupport.question', answerKey: 'faq.contactSupport.answer', category: 'general' },
-  { id: '10', questionKey: 'faq.programDuration.question', answerKey: 'faq.programDuration.answer', category: 'programs' },
-  { id: '11', questionKey: 'faq.eventFee.question', answerKey: 'faq.eventFee.answer', category: 'events' },
-  { id: '12', questionKey: 'faq.viewBenefits.question', answerKey: 'faq.viewBenefits.answer', category: 'benefits' },
+  { id: '1', questionKey: 'faq.whatIsMentari.question', answerKey: 'faq.whatIsMentari.answer', category: 'general' },
+  { id: '2', questionKey: 'faq.whoIsPIC.question', answerKey: 'faq.whoIsPIC.answer', category: 'general' },
+  { id: '3', questionKey: 'faq.getHelp.question', answerKey: 'faq.getHelp.answer', category: 'general' },
+  { id: '4', questionKey: 'faq.login.question', answerKey: 'faq.login.answer', category: 'account' },
+  { id: '5', questionKey: 'faq.resetPassword.question', answerKey: 'faq.resetPassword.answer', category: 'account' },
+  { id: '6', questionKey: 'faq.claimBenefit.question', answerKey: 'faq.claimBenefit.answer', category: 'benefits' },
+  { id: '7', questionKey: 'faq.availableBenefits.question', answerKey: 'faq.availableBenefits.answer', category: 'benefits' },
+  { id: '8', questionKey: 'faq.registerEvent.question', answerKey: 'faq.registerEvent.answer', category: 'events' },
+  { id: '9', questionKey: 'faq.viewPrograms.question', answerKey: 'faq.viewPrograms.answer', category: 'programs' },
+  { id: '10', questionKey: 'faq.manageAccount.question', answerKey: 'faq.manageAccount.answer', category: 'account' },
+  { id: '11', questionKey: 'faq.contactSupport.question', answerKey: 'faq.contactSupport.answer', category: 'general' },
+  { id: '12', questionKey: 'faq.programDuration.question', answerKey: 'faq.programDuration.answer', category: 'programs' },
+  { id: '13', questionKey: 'faq.eventFee.question', answerKey: 'faq.eventFee.answer', category: 'events' },
+  { id: '14', questionKey: 'faq.viewBenefits.question', answerKey: 'faq.viewBenefits.answer', category: 'benefits' },
 ]
 
+// categoryConfig - TETAP (tidak berubah)
 const categoryConfig = {
   'access': { 
     labelKey: 'category.access', 
@@ -124,6 +127,7 @@ const categoryConfig = {
   }
 }
 
+// faqCategoryConfig - TETAP (tidak berubah)
 const faqCategoryConfig = {
   'general': { labelKey: 'faqCategory.general', icon: HelpCircle },
   'account': { labelKey: 'faqCategory.account', icon: User },
@@ -186,23 +190,15 @@ export default function TutorialPage() {
   return (
     <div className="min-h-screen">
       <div className="bg-primary/1">
-        <div className="mx-auto max-w-6xl p-4">
+        <div className="mx-auto max-w-6xl md:p-0 p-4">
           {/* Header */}
-          <div className="md:py-8 md:pb-12 py-8 flex flex-col sm:flex-row items-center justify-between relative">
-            <div className="flex-1 backdrop-blur-4xl md:backdrop-blur-none">
-              <h1 className="text-2xl sm:text-3xl font-bold text-foreground"><span>{t('title1')}</span> <span className="text-primary">{t('title2')}</span></h1>
-              <p className="text-sm sm:text-md text-muted-foreground mt-1 whitespace-pre-line max-w-2xl">
+          <div className="flex md:min-h-[30vh] min-h-[15vh] items-center bg-[url(/illustrations/help-center-banner.png)] bg-cover bg-center bg-no-repeat">
+            <div className="mx-auto w-full max-w-6xl px-4 ">
+              {/* Header */}
+              <h1 className="md:text-4xl text-2xl font-bold text-foreground mb-2"><span>{t('title1')}</span> <span className="text-primary">{t('title2')}</span></h1>
+              <p className="md:text-xl text-sm md:text-muted-foreground md:backdrop-blur-none backdrop-blur-md max-w-2xl">
                 {t('description')}
               </p>
-            </div>
-            
-            {/* Ilustrasi - absolute di pojok kanan */}
-            <div className="absolute right-10 md:top-1/2 top-1/2 -translate-y-1/2 md:block pointer-events-none md:opacity-60 opacity-60">
-              <img 
-                src="/illustrations/help-center.png" 
-                alt="benefits" 
-                className="w-42 md:w-96 h-auto md:opacity-40 opacity-50 object-cover"
-              />
             </div>
           </div>
 
@@ -574,7 +570,7 @@ export default function TutorialPage() {
 
         {/* Bottom CTA */}
         <div className="relative md:mt-6 mt-2 overflow-hidden rounded-2xl bg-linear-to-r from-primary/5 via-primary/10 to-secondary/5 border border-border p-4 sm:p-6">
-          <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
+          <div className="flex flex-col items-center gap-3 md:flex-row md:justify-between md:text-left">
             <div className="flex items-center gap-4">
               <Headset size={32} className="text-primary" />
               <div className="">
@@ -586,15 +582,17 @@ export default function TutorialPage() {
                 </p>
               </div>
             </div>
-            <Button 
-              className="gap-2 bg-primary text-white hover:bg-primary/80 shrink-0"
-              asChild
-            >
+            <div className="w-full md:w-auto flex items-center justify-center">
+              <Button 
+                className="gap-2 bg-primary text-white hover:bg-primary/80 shrink-0 w-full"
+                asChild
+              >
               <a href="mailto:support@mentarigroups.com">
                 <MessageCircle size={16} />
                 {t('contactUs')}
               </a>
             </Button>
+            </div>
           </div>
         </div>
       </div>

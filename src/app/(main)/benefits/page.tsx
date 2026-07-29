@@ -68,7 +68,6 @@ export default function BenefitsPage() {
           method: 'POST',
         })
         const data = await res.json()
-        console.log('data', data)
         if (data.status === 'error') {
           toast.error(data.message || t('failedToLoad'))
           setBenefitGroups([])
@@ -278,14 +277,15 @@ export default function BenefitsPage() {
 
   return (
     <div className="min-h-[80vh]">
-      <div className="px-3 sm:px-4 py-4 sm:py-6 max-w-6xl mx-auto">
+      <div className="mx-auto max-w-6xl md:p-0 p-4 space-y-4">
         <OnBoardingTour pageName='benefits' steps={steps} />
         
         {/* Header */}
-        <div className="mb-4 sm:mb-6 py-4 sm:py-6 flex flex-col sm:flex-row items-center justify-between relative">
-          <div className="flex-1 backdrop-blur-4xl md:backdrop-blur-none">
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground"><span>{t('title1')}</span> <span className="text-primary">{t('title2')}</span></h1>
-            <p className="text-sm sm:text-md text-muted-foreground mt-1 whitespace-pre-line max-w-2xl">
+        <div className="flex md:min-h-[30vh] min-h-[15vh] items-center bg-[url(/illustrations/benefit-banner.png)] bg-cover bg-center bg-no-repeat">
+          <div className="mx-auto w-full max-w-6xl px-4 ">
+            {/* Header */}
+            <h1 className="md:text-4xl text-2xl font-bold md:text-muted-foreground mb-2"><span>{t('title1')}</span> <span className="text-primary">{t('title2')}</span></h1>
+            <p className="md:text-xl text-sm max-w-2xl md:backdrop-blur-none backdrop-blur-md">
               {t('description')}
             </p>
           </div>

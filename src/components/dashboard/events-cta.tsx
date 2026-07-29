@@ -15,7 +15,7 @@ export function EventsCTA() {
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-2xl"></div>
             <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-secondary/5 rounded-full blur-2xl"></div>
             
-            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 {/* Left side - Text */}
                 <div className="flex items-start md:gap-5 gap-3 sm:items-center">
                     <CalendarHeart size={32} className="text-primary shrink-0 mt-0.5 sm:mt-0" />
@@ -30,8 +30,8 @@ export function EventsCTA() {
                 </div>
                 
                 {/* Right side - CTA Button */}
-                <Link href="/events" className="shrink-0 w-full sm:w-auto">
-                    <Link href="/events" className='btn-sm btn-primary' >
+                <Link href="/events" className="w-full md:w-auto flex items-center justify-center">
+                    <Link href="/events" className='btn-sm btn-primary w-full' >
                         <span className="md:text-xs text-[11px]">{t('viewAllEvents')}</span>
                         <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                     </Link>
