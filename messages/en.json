@@ -354,6 +354,7 @@
   "BenefitDetail": {
     "backToBenefits": "Back",
     "expired": "Expired",
+    "active": "Active",
     "availableSlots": "Available Slots",
     "validUntil": "Valid Until",
     "events": "Events",

@@ -13,7 +13,7 @@ const HeroSection = ({ user }: HeroSectionProps) => {
   const userName = user ? user.name : t('userName');
 
   return (
-    <div className="px-6 bg-white md:bg-transparent relative overflow-hidden md:mb-8 mb-6">
+    <div className="px-6 bg-white md:bg-primary/5 relative overflow-hidden md:mb-8 mb-6">
       {/* Decorative Elements - Background */}
       {/* <div className="absolute inset-0 bg-linear-to-t from-primary/10 via-primary/5 to-black/1" /> */}
 

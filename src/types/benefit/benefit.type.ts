@@ -14,6 +14,7 @@ export interface FlattenedBenefit {
   pk: PK
   subject_benefit: string
   subbenefit_group: string
+  countable: number
   active_quota: ActiveQuota
 }
 
@@ -83,6 +84,7 @@ export interface BenefitItem {
   redeemable: boolean;
   quota: BenefitQuota;
   active_quota: ActiveQuota;
+  countable: number;
 }
 
 export interface PKInfo {
@@ -169,7 +171,8 @@ export interface BenefitDetailI {
   subject_benefit: string;
   quota: BenefitQuota;
   active_quota: ActiveQuota;
-  event_group_code: string
+  event_group_code: string;
+  countable: number
 }
 
 export interface PKData {

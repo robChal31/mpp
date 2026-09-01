@@ -272,7 +272,7 @@ export default function DocumentPage() {
   return (
     <div className="md:min-h-[90vh]">
 
-      <div className="mx-auto max-w-6xl md:p-0 p-4 space-y-4">
+      <div className="mx-auto max-w-6xl">
         <div className="flex md:min-h-[30vh] min-h-[15vh] items-center bg-[url(/illustrations/overview-banner.png)] bg-cover bg-center bg-no-repeat">
           <div className="mx-auto w-full max-w-6xl px-4 ">
             {/* Header */}
@@ -282,7 +282,9 @@ export default function DocumentPage() {
             </p>
           </div>
         </div>
+      </div>
 
+      <div className="mx-auto max-w-6xl md:p-0 p-4 space-y-4">
         {/* Table - dengan horizontal scroll di mobile */}
         <div className="overflow-hidden rounded-sm bg-white shadow-sm">
           <div className="overflow-x-auto">

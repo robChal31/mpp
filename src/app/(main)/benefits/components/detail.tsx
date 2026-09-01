@@ -64,10 +64,6 @@ interface ReclaimModalData {
   usedQty: number
 }
 
-const isExpired = (expiredAt: string) => {
-  return new Date(expiredAt) < new Date()
-}
-
 export default function BenefitDetail({ data }: BenefitDetailProps) {
   const t = useTranslations('BenefitDetail')
   const { benefit, pk, usages } = data;
@@ -78,7 +74,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
   const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({})
   const [selectedEvent, setSelectedEvent] = useState<EventByRedeemCodeI | null>(null)
   
-  const expired = isExpired(pk.expired_at)
+  const expired = benefit.active_quota.is_expired
   const totalQuota = benefit.active_quota?.available || 0;
 
   // Cek apakah benefit ini claimable atau view only
@@ -268,7 +264,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
       placement: "top",
     },
   ], [t])
-
+  
   return (
     <div className="space-y-4 min-h-[calc(90vh)]">
       <OnBoardingTour pageName='claim-benefits' steps={steps} />

@@ -259,8 +259,9 @@ export default function EventsPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="mx-auto max-w-6xl md:p-0 p-4 space-y-4">
-      {/* Header */}
+
+      <div className="mx-auto max-w-6xl">
+        {/* Header */}
         <div className="flex md:min-h-[30vh] min-h-[15vh] items-center bg-[url(/illustrations/event-banner.png)] bg-cover bg-center bg-no-repeat">
           <div className="mx-auto w-full max-w-6xl px-4 ">
             {/* Header */}
@@ -270,6 +271,8 @@ export default function EventsPage() {
               </p>
           </div>
         </div>
+      </div>
+      <div className="mx-auto max-w-6xl md:p-0 p-4 space-y-4">
      
         {/* Main Content Area - Sidebar layout */}
         <div className="flex flex-col lg:flex-row gap-6 md:px-2">

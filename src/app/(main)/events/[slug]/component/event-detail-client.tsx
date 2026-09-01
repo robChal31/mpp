@@ -1,41 +1,9 @@
 // app/events/[id]/event-detail-client.tsx
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import {
-  Calendar,
-  MapPin,
-  Clock,
-  ArrowLeft,
-  Share2,
-  Bookmark,
-  CheckCircle,
-  AlertCircle,
-  ChevronRight,
-  Ticket,
-  CalendarDays,
-  Timer,
-  Mail,
-  MessageCircle,
-  Building,
-  X,
-  Loader2,
-  Circle,
-  Globe,
-  Dot,
-  Copy
-} from 'lucide-react'
-import { EventI, EventCategory } from '@/types/event/event.types'
-import { formatDate, formatDateRange } from '@/lib/utils/date'
-import { getEventTypeConfig, getEventTypeIcon } from '@/constants/event.constant'
-import he from 'he'
-import { CheckBenefitByEventGroupResult } from '@/types/benefit/benefit.type'
-import { toast } from 'sonner'
-import { useTranslations } from 'next-intl'
 import {
   Select,
   SelectContent,
@@ -43,6 +11,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { getEventTypeIcon } from '@/constants/event.constant'
+import { formatDateRange } from '@/lib/utils/date'
+import { CheckBenefitByEventGroupResult } from '@/types/benefit/benefit.type'
+import { EventCategory, EventI } from '@/types/event/event.types'
+import he from 'he'
+import {
+  ArrowLeft,
+  Building,
+  Calendar,
+  CalendarDays,
+  CheckCircle,
+  ChevronRight,
+  Copy,
+  Dot,
+  Globe,
+  Loader2,
+  Mail,
+  MapPin,
+  Share2,
+  Ticket,
+  Timer,
+  X
+} from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 interface EventDetailClientProps {
   event: EventI
@@ -59,10 +54,11 @@ interface ClaimModalData {
   activeYear: number
 }
 
-export default function EventDetailClient({ event, hasBenefit }: EventDetailClientProps) {
+export default function EventDetailClient({ event, hasBenefit: initialHasBenefit }: EventDetailClientProps) {
   const t = useTranslations('EventDetail')
   const router = useRouter()
   const [isSharing, setIsSharing] = useState(false)
+  const [hasBenefit, setHasBenefit] = useState<CheckBenefitByEventGroupResult>(initialHasBenefit)
   const [isClaiming, setIsClaiming] = useState(false)
   const [selectedBenefitId, setSelectedBenefitId] = useState<string>('')
   const [claimModal, setClaimModal] = useState<ClaimModalData>({
@@ -161,7 +157,28 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
 
       const data = await response.json()
 
-      if (data.status === 'success') {
+      if (data.status === 'success' && hasBenefit && hasBenefit.benefits) {
+        const updatedBenefits = hasBenefit.benefits.map(b => {
+          if (b.benefit.id === claimModal.benefitId) {
+            return {
+              ...b,
+              benefit: {
+                ...b.benefit,
+                active_quota: {
+                  ...b.benefit.active_quota,
+                  available: b.benefit.active_quota.available - claimQty
+                }
+              }
+            }
+          }
+          return b
+        })
+
+        setHasBenefit({
+          ...hasBenefit,
+          benefits: updatedBenefits
+        })
+
         // Tutup modal claim, buka modal success
         setClaimModal({ ...claimModal, isOpen: false })
         setSuccessModal({
@@ -189,13 +206,15 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
       })
     } finally {
       setIsClaiming(false)
+      setSelectedBenefitId('')
     }
   }
 
   const decodedHtml = he
     .decode(he.decode(event.description || ''))
     .replace(/<p>(&nbsp;|\s)*<\/p>/g, '')
-
+    .replace(/\n/g, '<br />')
+    
   // Get selected benefit available quota
   const selectedBenefit = hasBenefit?.benefits?.find(b => b.benefit.id === selectedBenefitId)
   const maxQty = selectedBenefit?.benefit.active_quota.available || 0
@@ -277,7 +296,7 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
                 className="flex-1 gap-2"
                 onClick={() => {
                   const ticketUrl = event.is_eduhub == '1' 
-                    ? `${process.env.NEXT_PUBLIC_ASTA_URL}/event-checkout?id=${event.id_event}` 
+                    ? `${process.env.NEXT_PUBLIC_ASTA_URL}/event-checkout?id=${event.id_event}&code=${successModal.redeemCode}&quota=${successModal.qty}` 
                     : `${process.env.NEXT_PUBLIC_HY_URL}/event/ticket/${event.title_url}?mppcode=${successModal.redeemCode}`
                   window.open(ticketUrl, '_blank')
                   // setSuccessModal({ ...successModal, isOpen: false })
@@ -392,18 +411,24 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
       )}
 
       {/* SECTION 1: BANNER IMAGE */}
-      <div className="relative w-full bg-black">
-        <div className="relative max-h-[40vh] w-full overflow-hidden sm:max-h-[50vh] md:max-h-[60vh]">
-          <img src={event.photoevent} alt={event.title} className="h-auto w-full object-cover opacity-90" style={{ maxHeight: '60vh', objectPosition: 'center' }} />
-        </div>
+      <div className="relative w-full">
+        {event.is_eduhub == '0' ? (
+          <div className="relative max-h-[40vh] w-full overflow-hidden sm:max-h-[50vh] md:max-h-[60vh]">
+            <img src={event.photoevent} alt={event.title} className="h-auto w-full object-cover opacity-90" style={{ maxHeight: '60vh', objectPosition: 'center' }} />
+          </div>
+        ) : (
+          <div className="relative flex justify-center items-center max-h-[20vh] w-full overflow-hidden sm:max-h-[30vh] md:max-h-[40vh] md:h-[30vh] h-[20vh] gap-2 bg-primary/10">
+              <img src={'/illustrations/event-placeholder.png'} alt={event.title} className="h-auto w-full object-cover opacity-90" style={{ maxHeight: '60vh', objectPosition: 'center' }} />
+          </div>
+        )}
 
         <div className="absolute left-3 right-3 top-3 z-20 mx-auto flex max-w-6xl justify-between sm:left-4 sm:right-4 sm:top-4 md:left-6 md:right-6 md:top-6">
-          <Button variant="outline" size="sm" onClick={() => router.back()} className="btn-sm shadow-2xl">
+          <Button variant="outline" size="sm" onClick={() => router.back()} className="btn-outline-secondary btn-sm shadow-2xl">
             <ArrowLeft size={14} className="sm:size-4" />
             <span className="hidden sm:inline">{t('back')}</span>
           </Button>
           <div className="flex gap-1.5 sm:gap-2">
-            <Button variant="outline" size="sm" onClick={handleShare} disabled={isSharing} className="btn-sm shadow-2xl">
+            <Button size="sm" onClick={handleShare} disabled={isSharing} className="btn-accent btn-sm shadow-2xl">
               <Share2 size={14} className="sm:size-4" />
             </Button>
           </div>
@@ -477,9 +502,14 @@ export default function EventDetailClient({ event, hasBenefit }: EventDetailClie
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
           {/* Left Column - Main Content */}
           <div className="space-y-6 lg:col-span-2 lg:space-y-8">
-            <Card className="border-border bg-white p-4 shadow-sm sm:p-5 md:p-6">
+            <Card className="border-border bg-white shadow-sm md:p-6 p-4 overflow-hidden">
+              {event.is_eduhub == '1' && (
+                <>
+                  <img src={`${event.photoevent}`} alt={event.title} className="w-full h-auto rounded-lg mb-4" />
+                </>
+              )}
               <div
-                className="prose prose-sm max-w-none dark:prose-invert prose-p:text-sm sm:prose-p:text-base"
+                className="prose prose-sm max-w-none dark:prose-invert prose-p:text-sm sm:prose-p:text-base [&_img]:w-full [&_img]:h-auto [&_img]:max-w-full [&_img]:rounded-lg [&_a]:block [&_a]:w-full [&_a]:no-underline"
                 dangerouslySetInnerHTML={{ __html: decodedHtml || '' }}
               />
             </Card>

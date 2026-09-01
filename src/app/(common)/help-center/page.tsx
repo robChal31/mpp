@@ -190,7 +190,8 @@ export default function TutorialPage() {
   return (
     <div className="min-h-screen">
       <div className="bg-primary/1">
-        <div className="mx-auto max-w-6xl md:p-0 p-4">
+
+        <div className="mx-auto max-w-6xl">
           {/* Header */}
           <div className="flex md:min-h-[30vh] min-h-[15vh] items-center bg-[url(/illustrations/help-center-banner.png)] bg-cover bg-center bg-no-repeat">
             <div className="mx-auto w-full max-w-6xl px-4 ">
@@ -201,7 +202,9 @@ export default function TutorialPage() {
               </p>
             </div>
           </div>
+        </div>
 
+        <div className="mx-auto max-w-6xl md:p-0 p-4">
           {/* ===== SECTION 1: VIDEO TUTORIAL ===== */}
           <div className="mb-10 md:pb-10 pb-4">
             <div className="mb-4 flex items-center gap-2 border-b border-primary/10 pb-2">

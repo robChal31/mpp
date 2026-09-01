@@ -5,28 +5,20 @@ import { BenefitsCTA } from '@/components/benefit/benefits-cta'
 import OnBoardingTour from '@/components/OnboardingTour'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { formatDate } from '@/lib/utils/date'
 import { encodeId } from '@/lib/utils/hash'
 import { sanitizeDisplay } from '@/lib/utils/sanitize-string'
 import { BenefitGroupV2, FlattenedBenefit, PK } from '@/types/benefit/benefit.type'
 import {
+  Check,
   ChevronDown,
+  ChevronRight,
   ChevronUp,
-  Clock,
   Eye,
   FileText,
   Loader2,
   Search,
-  X,
-  Check,
-  ChevronRight
+  X
 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
@@ -34,7 +26,14 @@ import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 
 const isExpired = (expiredAt: string) => {
-  return new Date(expiredAt) < new Date()
+  // Reset ke 00:00:00
+  const expired = new Date(expiredAt)
+  expired.setHours(0, 0, 0, 0)
+  
+  const now = new Date()
+  now.setHours(0, 0, 0, 0)
+  
+  return expired < now
 }
 
 interface BenefitGroupByPK {
@@ -97,7 +96,8 @@ export default function BenefitsPage() {
                 packageId: pkg.benefit_id,
                 pk: pk,
                 subject_benefit: benefit.subject_benefit,
-                subbenefit_group: benefit.subbenefit_group
+                subbenefit_group: benefit.subbenefit_group,
+                countable: benefit.countable
               })
             })
             
@@ -112,7 +112,7 @@ export default function BenefitsPage() {
               })
             }
           })
-          
+   
           const groups = Array.from(groupsMap.values())
           setBenefitGroups(groups)
           setFilteredGroups(groups)
@@ -277,10 +277,9 @@ export default function BenefitsPage() {
 
   return (
     <div className="min-h-[80vh]">
-      <div className="mx-auto max-w-6xl md:p-0 p-4 space-y-4">
-        <OnBoardingTour pageName='benefits' steps={steps} />
-        
-        {/* Header */}
+      <OnBoardingTour pageName='benefits' steps={steps} />
+
+      <div className="mx-auto max-w-6xl space-y-4">
         <div className="flex md:min-h-[30vh] min-h-[15vh] items-center bg-[url(/illustrations/benefit-banner.png)] bg-cover bg-center bg-no-repeat">
           <div className="mx-auto w-full max-w-6xl px-4 ">
             {/* Header */}
@@ -290,7 +289,9 @@ export default function BenefitsPage() {
             </p>
           </div>
         </div>
+      </div>
 
+      <div className="mx-auto max-w-6xl md:p-0 md:pb-4 p-4 space-y-4">
         {/* Filter Section */}
         <div id="benefits-filter-section" className="bg-white rounded-lg border border-border p-4 mb-6 shadow-lg">
           {/* Desktop: Multiple Select */}
@@ -620,15 +621,17 @@ export default function BenefitsPage() {
                       <table className="w-full text-xs sm:text-sm min-w-123 sm:min-w-150">
                         <thead>
                           <tr className="bg-primary border-b border-border">
-                            <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 min-w-20 sm:min-w-30">{t('benefitName')}</th>
-                            <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 hidden md:table-cell">{t('totalQuota')}</th>
-                            <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 hidden md:table-cell">{t('used')}</th>
-                            <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 hidden md:table-cell">{t('remaining')}</th>
+                            <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 min-w-20 md:w-[60%]">{t('benefitName')}</th>
+                            <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 md:table-cell">{t('totalQuota')}</th>
+                            <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 md:table-cell">{t('used')}</th>
+                            <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 md:table-cell">{t('remaining')}</th>
                             <th className="text-center text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2">{t('detail')}</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
-                          {group.benefits.map((benefit) => {
+                          
+                          {group.benefits.sort((a, b) => b.countable - a.countable).map((benefit) => {
+
                             const detailUrl = `/benefits/${encodeId(Number(benefit.id_benefit_list))}`
                             
                             return (
@@ -640,21 +643,32 @@ export default function BenefitsPage() {
                                     </div>
                                   </div>
                                 </td>
-                                <td className="px-2 sm:px-4 py-1.5 sm:py-3 hidden md:table-cell">
-                                  <span className="text-[10px] sm:text-xs text-muted-foreground">
-                                    {benefit.active_quota?.total || 0}
-                                  </span>
-                                </td>
-                                <td className="px-2 sm:px-4 py-1.5 sm:py-3 hidden md:table-cell">
-                                  <span className="text-[10px] sm:text-xs text-muted-foreground">
-                                    {benefit.active_quota?.used || 0}
-                                  </span>
-                                </td>
-                                <td className="px-2 sm:px-4 py-1.5 sm:py-3 hidden md:table-cell">
-                                  <span className="text-[10px] sm:text-xs text-muted-foreground">
-                                    {benefit.active_quota?.available || 0}
-                                  </span>
-                                </td>
+                                {benefit.countable == 1 ? (
+                                  <>
+                                    <td className="px-2 sm:px-4 py-1.5 sm:py-3 md:table-cell text-center">
+                                      <span className="text-[10px] sm:text-xs text-muted-foreground">
+                                        {benefit.active_quota?.total || 0}
+                                      </span>
+                                    </td>
+                                    <td className="px-2 sm:px-4 py-1.5 sm:py-3 md:table-cell text-center">
+                                      <span className="text-[10px] sm:text-xs text-muted-foreground">
+                                        {benefit.active_quota?.used || 0}
+                                      </span>
+                                    </td>
+                                    <td className="px-2 sm:px-4 py-1.5 sm:py-3 md:table-cell text-center">
+                                      <span className="text-[10px] sm:text-xs text-muted-foreground">
+                                        {benefit.active_quota?.available || 0}
+                                      </span>
+                                    </td>
+                                  </>
+                                ) : (
+                                  <td colSpan={3} className="px-2 sm:px-4 py-1.5 sm:py-3 md:table-cell text-center">
+                                    <span className={`text-[10px] sm:text-xs ${benefit.active_quota.is_expired ? 'text-red-600' : 'text-green-600'}`}>
+                                        {benefit.active_quota.is_expired ? t('expired') : t('active')}
+                                      </span>
+                                  </td>
+                                )}
+                                
                                 <td className="px-2 sm:px-4 py-1.5 sm:py-3 text-right">
                                   <Link href={detailUrl}>
                                     <Button 

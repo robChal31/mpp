@@ -1,21 +1,14 @@
 // components/benefit/benefit-report.tsx
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { encodeId } from '@/lib/utils/hash'
 import { sanitizeDisplay } from '@/lib/utils/sanitize-string'
 import { BenefitGroupV2 } from '@/types/benefit/benefit.type'
 import {
     Activity,
-    AlertCircle,
     BarChart3,
-    CheckCircle,
-    Circle,
-    Dot,
-    Download,
-    FileText,
-    XCircle,
+    FileText
 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
@@ -30,6 +23,7 @@ interface BenefitReportData {
     remaining_quota: number
     percentage: number
     status: 'full' | 'partial' | 'empty'
+    countable: number
 }
 
 interface BenefitGroupByPK {
@@ -48,7 +42,14 @@ interface ListProgramI {
 }
 
 const isExpired = (expiredAt: string) => {
-    return new Date(expiredAt) < new Date()
+  // Reset ke 00:00:00
+  const expired = new Date(expiredAt)
+  expired.setHours(0, 0, 0, 0)
+  
+  const now = new Date()
+  now.setHours(0, 0, 0, 0)
+  
+  return expired < now
 }
 
 export function BenefitReport() {
@@ -99,7 +100,6 @@ export function BenefitReport() {
                         const pkId = pk.id
                         const pkExpired = isExpired(pk.expired_at)
 
-                        // 🔥 Loop benefit_detail, ambil active_quota dari benefit
                         pkg.benefit_detail.forEach((benefit) => {
                             const benefitName = sanitizeDisplay(benefit.benefit_name)
                             
@@ -146,6 +146,7 @@ export function BenefitReport() {
                                     remaining_quota: remainingQuota,
                                     percentage,
                                     status,
+                                    countable: benefit.countable,
                                 })
                             }
                         })
@@ -366,7 +367,7 @@ export function BenefitReport() {
                                 </thead>
                                 <tbody className="divide-y divide-border">
                                     {filteredData.length > 0 ? (
-                                        filteredData.map((data, index) => (
+                                        filteredData.sort((a, b) => b.countable - a.countable).map((data, index) => (
                                             <tr
                                                 key={data.id_benefit_list}
                                                 className={`transition-colors hover:bg-muted/20 ${
@@ -383,22 +384,34 @@ export function BenefitReport() {
                                                         </span>
                                                     </Link>
                                                 </td>
-                                                <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
-                                                    {data.total_quota}
-                                                </td>
-                                                <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
-                                                    {data.used_quota}
-                                                </td>
-                                                <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
-                                                    {data.remaining_quota}
-                                                </td>
-                                                <td className="px-2 py-2 text-center sm:px-4 sm:py-3">
-                                                    <div className="flex items-center justify-center gap-1 sm:gap-2">
-                                                        <span className="text-[9px] font-medium text-secondary sm:text-sm">
-                                                            {data.percentage % 1 === 0 ? data.percentage : data.percentage.toFixed(1)}%
-                                                        </span>
-                                                    </div>
-                                                </td>
+                                                {data.countable == 1 ? (
+                                                    <>
+                                                    <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
+                                                        {data.total_quota}
+                                                    </td>
+                                                    <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
+                                                        {data.used_quota}
+                                                    </td>
+                                                    <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
+                                                        {data.remaining_quota}
+                                                    </td>
+                                                    <td className="px-2 py-2 text-center sm:px-4 sm:py-3">
+                                                        <div className="flex items-center justify-center gap-1 sm:gap-2">
+                                                            <span className="text-[9px] font-medium text-secondary sm:text-sm">
+                                                                {data.percentage % 1 === 0 ? data.percentage : data.percentage.toFixed(1)}%
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    </>
+                                                ): (
+                                                   <>
+                                                        <td colSpan={3}></td>
+                                                        <td className={`px-2 py-2 text-center sm:px-4 sm:py-3 ${reportData.find((p) => p.pkId === selectedPk)?.isExpired ? 'text-red-600' : 'text-green-600'}`}>
+                                                            {reportData.find((p) => p.pkId === selectedPk)?.isExpired ? t('expired') : t('active')}
+                                                        </td>
+                                                   </>
+                                                )}
+                                               
                                             </tr>
                                         ))
                                     ) : (

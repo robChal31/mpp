@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card'
 import { formatDate } from '@/lib/utils/date'
 import { sanitizeDisplay } from '@/lib/utils/sanitize-string'
 import { BenefitDetailI, PK } from '@/types/benefit/benefit.type'
-import { Calendar, Users } from 'lucide-react'
+import { Calendar, CheckCircle, Users, XCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 interface BenefitMainCardProps {
@@ -87,12 +87,33 @@ export function BenefitMainCard({ benefit, pk, totalQuota, expired }: BenefitMai
         {/* Quota & Validity */}
         <div id="benefit-detail-quota" className="mt-3 flex flex-wrap items-center gap-3 border-t border-border pt-3 sm:mt-4 sm:gap-6">
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-primary/10 sm:h-7 sm:w-7">
-              <Users size={12} className="text-primary sm:size-3.5" />
+            <div className={`flex h-6 w-6 items-center justify-center rounded-lg sm:h-7 sm:w-7 ${
+              benefit.countable == 0 
+                ? expired ? 'bg-foreground/10' : 'bg-primary/10'
+                : 'bg-primary/10'
+            }`}>
+              {benefit.countable == 0 ? (
+                expired ? <XCircle size={12} className="text-foreground sm:size-3.5" /> 
+                      : <CheckCircle size={12} className="text-primary sm:size-3.5" />
+              ) : (
+                <Users size={12} className="text-primary sm:size-3.5" />
+              )}
             </div>
             <div>
-              <p className="text-[8px] uppercase tracking-wide text-muted-foreground sm:text-[10px]">{t('availableSlots')}</p>
-              <p className="text-center text-base font-bold text-foreground sm:text-lg">{totalQuota}</p>
+              {benefit.countable == 0 ? (
+                <p className={`text-[8px] font-semibold uppercase tracking-wide ${expired ? 'text-foreground' : 'text-primary'} sm:text-[10px]`}>
+                  {expired ? t('expired') : t('active')}
+                </p>
+              ) : (
+                <div>
+                  <p className="text-[8px] font-medium uppercase tracking-wide text-muted-foreground sm:text-[10px]">
+                    {t('availableSlots')}
+                  </p>
+                  <p className="text-sm font-bold text-foreground sm:text-lg leading-none">
+                    {totalQuota}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
           
