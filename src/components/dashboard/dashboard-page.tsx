@@ -59,14 +59,17 @@ const DashboardPage = ({ user }: DashboardPageProps) => {
   return (
     <div className="space-y-6 max-[640px]:space-y-6">
       <OnboardingTour pageName='dashboard' steps={steps} />
-
-      <HeroSection user={user} />
-
-      <BenefitReport />
-      <hr className='md:my-1 md:py-1 border-border max-w-7xl mx-auto'/>
-      
-      {/* Featured Events Section */}
-      <FeaturedEvents />
+      <div className="relative">
+        <div className="absolute inset-0 bg-white md:bg-primary/5"></div>
+        <HeroSection user={user} />
+      </div>
+        <div className="max-w-6xl mx-auto">
+        <BenefitReport />
+        <hr className='md:my-1 md:py-1 border-border max-w-7xl mx-auto'/>
+        
+        {/* Featured Events Section */}
+        <FeaturedEvents />
+      </div>
     </div>
   )
 }

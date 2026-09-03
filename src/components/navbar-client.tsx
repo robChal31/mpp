@@ -76,7 +76,7 @@ export function NavbarClient({ user, changeLocalAction }: NavbarClientProps) {
       {/* Top linear accent bar */}
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-linear-to-r from-primary/60 via-primary to-primary/60" />
       
-      <div className={`${isItHome ? 'max-w-7xl' : 'max-w-6xl'} mx-auto ${isOpen ? 'fixed inset-x-0 top-0 bg-white border-b border-primary' : ''}`}>
+      <div className={`${isItHome ? 'max-w-6xl' : 'max-w-6xl'} mx-auto ${isOpen ? 'fixed inset-x-0 top-0 bg-white border-b border-primary' : ''}`}>
         <div className="flex items-center justify-between h-18">
           {/* Logo and Brand */}
           <div className="flex items-center gap-4">
