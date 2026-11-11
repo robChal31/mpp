@@ -149,9 +149,10 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
     const loadRelatedEvents = async () => {
       setLoadingEvents(true)
       try {
+        console.log('benefit:', benefit)
         const group = benefit.subbenefit_group
         const subject = benefit.subjects ? benefit.subjects : benefit.subject_benefit
-        const event_group_code = benefit.event_group_code
+        const event_group_code = benefit.event_group_code ?? ''
 
         const res = await fetch(`/api/hy/event?type=${encodeURIComponent(group)}&subject=${encodeURIComponent(subject)}&event_group=${encodeURIComponent(event_group_code)}`)
         console.log('hadiryuk:', `/api/hy/event?type=${encodeURIComponent(group)}&subject=${encodeURIComponent(subject)}&event_group=${encodeURIComponent(event_group_code)}`)
