@@ -24,6 +24,7 @@ interface BenefitReportData {
     percentage: number
     status: 'full' | 'partial' | 'empty'
     countable: number
+    satuan: string
 }
 
 interface BenefitGroupByPK {
@@ -147,6 +148,7 @@ export function BenefitReport() {
                                     percentage,
                                     status,
                                     countable: benefit.countable,
+                                    satuan: benefit.satuan
                                 })
                             }
                         })
@@ -387,7 +389,7 @@ export function BenefitReport() {
                                                 {data.countable == 1 ? (
                                                     <>
                                                     <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
-                                                        {data.total_quota}
+                                                        {data.total_quota} {data.satuan}
                                                     </td>
                                                     <td className="px-2 py-2 text-center text-[9px] font-medium text-foreground sm:px-4 sm:py-3 sm:text-sm">
                                                         {data.used_quota}

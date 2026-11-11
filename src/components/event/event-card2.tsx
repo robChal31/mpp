@@ -105,15 +105,9 @@ export function EventCard2({ event }: { event: EventI }) {
                     
                     {/* Description */}
                     <div className="flex-1 mb-3">
-                        {cleanDescription.trim() ? (
-                            <p className="text-sm text-muted-foreground line-clamp-2 max-[640px]:text-xs">
-                                {cleanDescription.length > 100 ? cleanDescription.slice(0, 100) + '...' : cleanDescription}
-                            </p>
-                        ) : (
-                            <p className="text-sm text-muted-foreground/80 italic max-[640px]:text-xs">
-                                {t('checkDetails')}
-                            </p>
-                        )}
+                        <p className="text-sm text-muted-foreground/80 italic max-[640px]:text-xs">
+                            {t('checkDetails')}
+                        </p>
                     </div>
 
                     {/* Bottom Row: Info + Button in same row */}

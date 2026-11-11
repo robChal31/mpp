@@ -31,27 +31,9 @@ const DashboardPage = ({ user }: DashboardPageProps) => {
       placement: "bottom",
     },
     {
-      target: "#dashboard-featured-header",
-      title: t('tour.featuredEventsHeader.title'),
-      content: t('tour.featuredEventsHeader.content'),
-      placement: "bottom",
-    },
-    {
       target: "#simple-events-scroll",
       title: t('tour.featuredEvents.title'),
       content: t('tour.featuredEvents.content'),
-      placement: "top",
-    },
-    {
-      target: "#dashboard-quick-actions",
-      title: t('tour.quickActions.title'),
-      content: t('tour.quickActions.content'),
-      placement: "top",
-    },
-    {
-      target: "#dashboard-help-section",
-      title: t('tour.helpSection.title'),
-      content: t('tour.helpSection.content'),
       placement: "top",
     },
   ], [t])

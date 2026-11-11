@@ -97,7 +97,8 @@ export default function BenefitsPage() {
                 pk: pk,
                 subject_benefit: benefit.subject_benefit,
                 subbenefit_group: benefit.subbenefit_group,
-                countable: benefit.countable
+                countable: benefit.countable,
+                satuan: benefit.satuan
               })
             })
             
@@ -242,7 +243,7 @@ export default function BenefitsPage() {
       placement: "bottom",
     },
     {
-      target: "#benefits-program-select",
+      target: "#benefits-program-select", // ← sekarang sudah ada di DOM
       title: tour('pkFilter.title'),
       content: tour('pkFilter.content'),
       placement: "bottom",
@@ -265,7 +266,7 @@ export default function BenefitsPage() {
       content: tour('benefitList.content'),
       placement: "top",
     },
-  ], [t])
+  ], [tour])
 
   if (loading) {
     return (
@@ -301,7 +302,7 @@ export default function BenefitsPage() {
                 {t('filterByProgram')}
               </span>
               
-              <div className="relative flex-1 max-w-md">
+              <div id="benefits-program-select" className="relative flex-1 max-w-md">
                 <div 
                   className="w-full min-h-10 px-3 py-1.5 text-xs rounded-lg border border-border bg-white focus:ring-primary cursor-pointer flex flex-wrap items-center gap-1"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -528,7 +529,7 @@ export default function BenefitsPage() {
                 )}
               </div>
               
-              <div className="flex gap-1" id="benefits-expand-buttons">
+              <div className="flex gap-1">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -622,7 +623,7 @@ export default function BenefitsPage() {
                         <thead>
                           <tr className="bg-primary border-b border-border">
                             <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 min-w-20 md:w-[60%]">{t('benefitName')}</th>
-                            <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 md:table-cell">{t('totalQuota')}</th>
+                            <th className="text-center text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 md:table-cell">{t('totalQuota')}</th>
                             <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 md:table-cell">{t('used')}</th>
                             <th className="text-left text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2 md:table-cell">{t('remaining')}</th>
                             <th className="text-center text-[10px] sm:text-xs font-medium text-white px-2 sm:px-4 py-1.5 sm:py-2">{t('detail')}</th>
@@ -647,7 +648,7 @@ export default function BenefitsPage() {
                                   <>
                                     <td className="px-2 sm:px-4 py-1.5 sm:py-3 md:table-cell text-center">
                                       <span className="text-[10px] sm:text-xs text-muted-foreground">
-                                        {benefit.active_quota?.total || 0}
+                                        {benefit.active_quota?.total || 0} {benefit.satuan}
                                       </span>
                                     </td>
                                     <td className="px-2 sm:px-4 py-1.5 sm:py-3 md:table-cell text-center">
@@ -662,7 +663,7 @@ export default function BenefitsPage() {
                                     </td>
                                   </>
                                 ) : (
-                                  <td colSpan={3} className="px-2 sm:px-4 py-1.5 sm:py-3 md:table-cell text-center">
+                                  <td colSpan={3} className="px-2 sm:px-4 py-1.5 sm:py-3 md:table-cell text-start">
                                     <span className={`text-[10px] sm:text-xs ${benefit.active_quota.is_expired ? 'text-red-600' : 'text-green-600'}`}>
                                         {benefit.active_quota.is_expired ? t('expired') : t('active')}
                                       </span>

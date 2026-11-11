@@ -88,15 +88,9 @@ export function EventCard3({ event }: { event: EventI }) {
 
                     {/* Description - shorter */}
                     <div className="flex-1 mb-2">
-                        {cleanDescription.trim() ? (
-                            <p className="text-xs text-muted-foreground line-clamp-2 max-[640px]:text-[11px]">
-                                {cleanDescription.length > 80 ? cleanDescription.slice(0, 80) + '...' : cleanDescription}
-                            </p>
-                        ) : (
-                            <p className="text-xs text-muted-foreground/80 italic max-[640px]:text-[11px]">
-                                {t('checkDetails')}
-                            </p>
-                        )}
+                        <p className="text-xs text-muted-foreground/80 italic max-[640px]:text-[11px]">
+                            {t('checkDetails')}
+                        </p>
                     </div>
 
                     {/* Bottom Row: Location tag + Button */}

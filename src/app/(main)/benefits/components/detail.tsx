@@ -1,51 +1,38 @@
 'use client'
 
-import { useState, useEffect, JSX, useMemo } from 'react'
+import OnBoardingTour from '@/components/OnboardingTour'
+import { BenefitCTA } from '@/components/benefit/benefit-cta'
+import { BenefitMainCard } from '@/components/benefit/benefit-main-card'
+import { HowToClaim } from '@/components/benefit/how-to-claim'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import {
-  Calendar,
-  CheckCircle,
-  Loader2,
-  Clock,
-  ArrowLeft,
-  X,
-  History,
-  Ticket,
-  MapPin,
-  ExternalLink,
-  Info,
-  Layers,
-  Gift,
-  BookOpen,
-  Users,
-  TrendingUp,
-  Trophy,
-  Briefcase,
-  Globe,
-  Mic,
-  Star,
-  ChevronRight,
-  RefreshCw,
-  FileText,
-  Eye,
-  Check,
-  ArrowRight,
-  Package
-} from 'lucide-react'
-import Link from 'next/link'
-import { EventI } from '@/types/event/event.types'
 import { formatDate, formatDateTime } from '@/lib/utils/date'
 import { getEventDetailByRedeemCode } from '@/server/services/hy/event.service'
 import { BenefitDetailI, EventByRedeemCodeI, PK, UsageHistory } from '@/types/benefit/benefit.type'
-import { toast } from 'sonner'
+import { EventI } from '@/types/event/event.types'
+import {
+  ArrowLeft,
+  Calendar,
+  CheckCircle,
+  ChevronRight,
+  Clock,
+  Eye,
+  FileText,
+  History,
+  Loader2,
+  MapPin,
+  Package,
+  RefreshCw,
+  Ticket,
+  Users,
+  X
+} from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import OnBoardingTour from '@/components/OnboardingTour'
-import { HowToClaim } from '@/components/benefit/how-to-claim'
-import { BenefitMainCard } from '@/components/benefit/benefit-main-card'
-import { BenefitCTA } from '@/components/benefit/benefit-cta'
+import Link from 'next/link'
+import { useEffect, useMemo, useState } from 'react'
+import { toast } from 'sonner'
 
 interface BenefitDetailProps {
   data: {
@@ -163,10 +150,11 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
       setLoadingEvents(true)
       try {
         const group = benefit.subbenefit_group
-        const subject = benefit.subject_benefit
+        const subject = benefit.subjects ? benefit.subjects : benefit.subject_benefit
         const event_group_code = benefit.event_group_code
 
         const res = await fetch(`/api/hy/event?type=${encodeURIComponent(group)}&subject=${encodeURIComponent(subject)}&event_group=${encodeURIComponent(event_group_code)}`)
+        console.log('hadiryuk:', `/api/hy/event?type=${encodeURIComponent(group)}&subject=${encodeURIComponent(subject)}&event_group=${encodeURIComponent(event_group_code)}`)
         const data = await res.json()
         
         if (data.status === 'success' && data.data) {

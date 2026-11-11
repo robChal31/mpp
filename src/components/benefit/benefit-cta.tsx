@@ -1,9 +1,8 @@
 // components/benefits/benefits-cta.tsx
 'use client'
 
+import { ArrowRight, HelpCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { Button } from '@/components/ui/button'
-import { ArrowRight, HelpCircle, LifeBuoy, Headphones } from 'lucide-react'
 import Link from 'next/link'
 
 export function BenefitCTA() {
@@ -32,11 +31,11 @@ export function BenefitCTA() {
         </div>
         
         {/* Right side - CTA Button */}
-        <Link href="/help" className="md:w-auto w-full shrink-0 sm:w-auto">
-          <Link href={"/help-center"} className="btn-sm btn-primary w-full">
+        <Link href="/help-center" className="md:w-auto w-full shrink-0 sm:w-auto">
+          <span className="btn-sm btn-primary w-full flex items-center justify-center gap-2">
             <span className="text-[11px] md:text-xs">{t('ctaButton2')}</span>
             <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
+          </span>
         </Link>
       </div>
     </div>

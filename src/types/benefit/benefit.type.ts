@@ -16,6 +16,7 @@ export interface FlattenedBenefit {
   subbenefit_group: string
   countable: number
   active_quota: ActiveQuota
+  satuan: string
 }
 
 export interface BenefitReportDataI {
@@ -169,6 +170,7 @@ export interface BenefitDetailI {
   redeemable: string;
   subbenefit_group: string;
   subject_benefit: string;
+  subjects: string;
   quota: BenefitQuota;
   active_quota: ActiveQuota;
   event_group_code: string;

@@ -35,7 +35,7 @@ export function HowToClaim({ totalQuota, relatedEventsCount, expired = false }: 
   ]
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-white">
+    <div id="benefit-detail-how-to-claim" className="overflow-hidden rounded-xl border border-border bg-white">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-linear-to-r from-primary/5 to-secondary/5 px-4 py-3 sm:px-6">
         <div className="flex items-center gap-2.5">

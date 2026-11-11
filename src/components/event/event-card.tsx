@@ -76,7 +76,7 @@ export function EventCard({ event }: { event: EventI }) {
                     
                     {/* Description */}
                     <div className="flex-1 mb-3">
-                        {cleanDescription.trim() ? (
+                        {/* {cleanDescription.trim() ? (
                             <p className="md:text-sm text-[11px] text-muted-foreground line-clamp-2">
                                 {cleanDescription.length > 100 ? cleanDescription.slice(0, 100) + '...' : cleanDescription}
                             </p>
@@ -84,7 +84,10 @@ export function EventCard({ event }: { event: EventI }) {
                             <p className="md:text-sm text-[11px] text-muted-foreground/80 italic">
                                 {t('checkDetails')}
                             </p>
-                        )}
+                        )} */}
+                        <p className="md:text-sm text-[11px] text-muted-foreground/80 italic">
+                            {t('checkDetails')}
+                        </p>
                     </div>
 
                     {/* Bottom Row: Info + Button in same row */}
