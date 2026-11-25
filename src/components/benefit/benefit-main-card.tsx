@@ -4,6 +4,7 @@
 import { Card } from '@/components/ui/card'
 import { formatDate } from '@/lib/utils/date'
 import { sanitizeDisplay } from '@/lib/utils/sanitize-string'
+import { cleanDescription } from '@/lib/utils/text'
 import { BenefitDetailI, PK } from '@/types/benefit/benefit.type'
 import { Calendar, CheckCircle, Users, XCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -79,7 +80,7 @@ export function BenefitMainCard({ benefit, pk, totalQuota, expired }: BenefitMai
         <div className="mt-3 sm:mt-4">
           <div className="rounded-lg border border-border bg-gray-50 p-2 sm:p-3">
             <p className="whitespace-pre-line text-[11px] leading-relaxed text-foreground sm:text-sm">
-              {benefit.description?.replace(/\s+(\d+\.)/g, '\n$1').replace(/^\n/, '') || '-'}
+              {cleanDescription(benefit.description) || '-'}
             </p>
           </div>
         </div>

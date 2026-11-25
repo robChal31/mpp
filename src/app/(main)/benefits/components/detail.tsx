@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { formatDate, formatDateTime } from '@/lib/utils/date'
+import { cleanDescription } from '@/lib/utils/text'
 import { getEventDetailByRedeemCode } from '@/server/services/hy/event.service'
 import { BenefitDetailI, EventByRedeemCodeI, PK, UsageHistory } from '@/types/benefit/benefit.type'
 import { EventI } from '@/types/event/event.types'
@@ -255,7 +256,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
   ], [t])
   
   return (
-    <div className="space-y-4 min-h-[calc(90vh)]">
+    <div className="space-y-4 min-h-[calc(90vh)] pb-4">
       <OnBoardingTour pageName='claim-benefits' steps={steps} />
       
       <div className="bg-primary/2 px-4 py-6">
@@ -311,7 +312,7 @@ export default function BenefitDetail({ data }: BenefitDetailProps) {
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="font-medium text-sm text-gray-800 line-clamp-6 whitespace-pre-line">
-                                {history.description}
+                                {cleanDescription(history.description)}
                               </p>
                               <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mt-1">
                                 <span className="flex items-center gap-1">

@@ -28,13 +28,13 @@ export function EventsCTA() {
                         </p>
                     </div>
                 </div>
-                
                 {/* Right side - CTA Button */}
-                <Link href="/events" className="w-full md:w-auto flex items-center justify-center">
-                    <Link href="/events" className='btn-sm btn-primary w-full' >
-                        <span className="md:text-xs text-[11px]">{t('viewAllEvents')}</span>
-                        <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                    </Link>
+                <Link
+                href="/events"
+                className="btn-sm btn-primary w-full md:w-auto flex items-center justify-center group"
+                >
+                    <span className="md:text-xs text-[11px]">{t('viewAllEvents')}</span>
+                    <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
             </div>
         </div>

@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select'
 import { getEventTypeIcon } from '@/constants/event.constant'
 import { formatDateRange } from '@/lib/utils/date'
+import { sanitizeDisplay } from '@/lib/utils/sanitize-string'
 import { CheckBenefitByEventGroupResult } from '@/types/benefit/benefit.type'
 import { EventCategory, EventI } from '@/types/event/event.types'
 import he from 'he'
@@ -333,7 +334,7 @@ export default function EventDetailClient({ event, hasBenefit: initialHasBenefit
             <div className="space-y-3 p-4 sm:space-y-4 sm:p-5">
               <div className="rounded-lg border border-primary/20 bg-primary/5 p-2 sm:p-3">
                 <p className="text-[10px] text-muted-foreground sm:text-xs">{t('benefit')}</p>
-                <p className="text-xs font-medium text-foreground sm:text-sm">{claimModal.benefitName}</p>
+                <p className="text-xs font-medium text-foreground sm:text-sm">{sanitizeDisplay(claimModal.benefitName)}</p>
               </div>
 
               {/* Quantity Input */}
@@ -563,7 +564,7 @@ export default function EventDetailClient({ event, hasBenefit: initialHasBenefit
                       <div key={idx} className="flex items-start gap-1.5 text-[10px]  sm:gap-2 sm:text-xs">
                         <Dot size={16} className="mt-0.5 shrink-0 text-primary sm:mt-0 sm:size-3" />
                         <div className="min-w-0 flex-1">
-                          <span className="font-medium">{cleanName}</span>
+                          <span className="font-medium">{sanitizeDisplay(cleanName)}</span>
                           <span className="ml-1.5 sm:ml-2 text-accent">
                             ({remainingQuota} {remainingQuota !== 1 ? t('slotsLeft') : t('slotLeft')})
                           </span>
@@ -614,7 +615,7 @@ export default function EventDetailClient({ event, hasBenefit: initialHasBenefit
                             value={b.benefit.id}
                             className="cursor-pointer text-xs hover:bg-primary/10"
                           >
-                            {b.benefit.name} ({remainingQuota} {remainingQuota !== 1 ? t('slotsLeft') : t('slotLeft')})
+                            {sanitizeDisplay(b.benefit.name)} ({remainingQuota} {remainingQuota !== 1 ? t('slotsLeft') : t('slotLeft')})
                           </SelectItem>
                         )
                       })}
